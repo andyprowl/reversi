@@ -26,13 +26,19 @@
     <ClInclude Include="export\include\reversi\game.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
-    <ClInclude Include="export\include\reversi\score.hpp">
-      <Filter>export\include\reversi</Filter>
-    </ClInclude>
     <ClInclude Include="export\include\reversi\game_board.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
     <ClInclude Include="export\include\reversi\player.hpp">
+      <Filter>export\include\reversi</Filter>
+    </ClInclude>
+    <ClInclude Include="export\include\reversi\cell_position.hpp">
+      <Filter>export\include\reversi</Filter>
+    </ClInclude>
+    <ClInclude Include="export\include\reversi\direction.hpp">
+      <Filter>export\include\reversi</Filter>
+    </ClInclude>
+    <ClInclude Include="export\include\reversi\game_score.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
   </ItemGroup>
@@ -43,10 +49,13 @@
     <ClCompile Include="src\game.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\score.cpp">
+    <ClCompile Include="src\game_board.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\game_board.cpp">
+    <ClCompile Include="src\cell_position.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game_score.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

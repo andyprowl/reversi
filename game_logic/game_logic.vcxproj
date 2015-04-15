@@ -11,16 +11,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="export\include\reversi\cell_position.hpp" />
+    <ClInclude Include="export\include\reversi\direction.hpp" />
     <ClInclude Include="export\include\reversi\game.hpp" />
     <ClInclude Include="export\include\reversi\game_board.hpp" />
     <ClInclude Include="export\include\reversi\player.hpp" />
-    <ClInclude Include="export\include\reversi\score.hpp" />
+    <ClInclude Include="export\include\reversi\game_score.hpp" />
     <ClInclude Include="include\stdafx.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\cell_position.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\game_board.cpp" />
-    <ClCompile Include="src\score.cpp" />
+    <ClCompile Include="src\game_score.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

@@ -3,12 +3,12 @@
 namespace reversi
 {
     
-struct score
+struct game_score
 {
 
 public:
 
-    score(int white, int black);
+    game_score(int white, int black);
 
 public:
     

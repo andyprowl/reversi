@@ -9,12 +9,10 @@ namespace reversi
 
 enum class player;
 
+struct cell_position;
+
 class bad_cell_coordinates_exception : public virtual std::exception
 {
-};
-
-class cell_busy_exception : public virtual std::exception
-{    
 };
 
 class game_board
@@ -26,13 +24,17 @@ public:
 
     int get_size() const;
 
-    void mark_board_cell(int row, int col, player p);
+    void mark_cell(cell_position pos, player p);
+
+    bool is_valid_cell_position(cell_position pos) const;
+
+    bool is_cell_occupied(cell_position const pos) const;
+
+    boost::optional<player> get_cell_mark(cell_position pos) const;
 
 private:
 
-    bool are_cell_coordinates_valid(int row, int col) const;
-
-    bool is_cell_occupied(int row, int col) const;
+    void throw_if_cell_position_is_not_valid(cell_position pos) const;
 
 private:
 

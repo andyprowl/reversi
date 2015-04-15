@@ -1,5 +1,6 @@
 #include "stdafx.hpp"
 
+#include "reversi/cell_position.hpp"
 #include "reversi/game_board.hpp"
 
 namespace reversi
@@ -7,7 +8,7 @@ namespace reversi
 
 game_board::game_board(int const size)
     : size{size}
-    , board(size)
+    , board(size * size)
 {    
 }
 
@@ -15,32 +16,39 @@ int game_board::get_size() const
 {
     return size;
 }
-    
-void game_board::mark_board_cell(int const row, int const col, player const p)
+
+void game_board::mark_cell(cell_position pos, player const p)
 {
-    if (are_cell_coordinates_valid(row, col))
+    throw_if_cell_position_is_not_valid(pos);
+
+    board[pos.row * size + pos.col] = p;
+}
+
+bool game_board::is_valid_cell_position(cell_position const pos) const
+{
+    return ((pos.row >= 0) && (pos.row < size) && (pos.col >= 0) && (pos.col < size));
+}
+
+bool game_board::is_cell_occupied(cell_position const pos) const
+{
+    auto const optional_mark = get_cell_mark(pos);
+
+    return bool{optional_mark};
+}
+
+boost::optional<player> game_board::get_cell_mark(cell_position pos) const
+{
+    throw_if_cell_position_is_not_valid(pos);
+
+    return board[pos.row * size + pos.col];
+}
+
+void game_board::throw_if_cell_position_is_not_valid(cell_position pos) const
+{
+    if (!is_valid_cell_position(pos))
     {
         throw bad_cell_coordinates_exception{};
     }
-
-    if (is_cell_occupied(row, col))
-    {
-        throw cell_busy_exception{};
-    }
-
-    board[row * size + col] = p;
-}
-
-bool game_board::are_cell_coordinates_valid(int const row, int const col) const
-{
-    return ((row < 0) || (row >= size) || (col < 0) || (col >= size));
-}
-
-bool game_board::is_cell_occupied(int const row, int const col) const
-{
-    auto const optional_mark = board[row * size + col];
-
-    return bool{optional_mark};
 }
 
 }

@@ -1,11 +1,11 @@
 #include "stdafx.hpp"
 
-#include "reversi/score.hpp"
+#include "reversi/game_score.hpp"
 
 namespace reversi
 {
     
-score::score(int const white, int const black)
+game_score::game_score(int const white, int const black)
     : white{white}
     , black{black}
 {    
