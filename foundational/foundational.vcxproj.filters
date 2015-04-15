@@ -15,10 +15,16 @@
     <Filter Include="export\include">
       <UniqueIdentifier>{a5fef152-d350-4413-8219-9bffdc97fdfb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="export\include\util">
+      <UniqueIdentifier>{4535f902-0a8a-4190-ae5a-d9b9967190bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\stdafx.hpp">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="export\include\util\value_ref.hpp">
+      <Filter>export\include\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

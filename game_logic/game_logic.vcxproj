@@ -72,7 +72,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;export\include;..\utilities\export\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -89,7 +89,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;export\include;..\utilities\export\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

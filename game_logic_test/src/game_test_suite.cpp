@@ -181,6 +181,16 @@ TEST_THAT(Game,
 
 TEST_THAT(Game,
      WHAT(Place),
+     WHEN(OnSuccess),
+     THEN(UpdatesTheScore))
+{
+    the_game.place({3, 2});
+
+    EXPECT_THAT(the_game.get_score(), Eq(game_score{1, 4}));
+}
+
+TEST_THAT(Game,
+     WHAT(Place),
      WHEN(OnFailure),
      THEN(DoesNotSwitchTurn))
 {
