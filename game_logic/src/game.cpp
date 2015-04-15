@@ -3,16 +3,18 @@
 #include "reversi/cell_position.hpp"
 #include "reversi/direction.hpp"
 #include "reversi/game.hpp"
+#include "reversi/game_logger.hpp"
+#include "reversi/game_score.hpp"
 #include "reversi/player.hpp"
 #include "reversi/placement_outcome.hpp"
-#include "reversi/game_score.hpp"
 #include "util/sequence.hpp"
 
 namespace reversi
 {
 
-game::game(int const board_size)
+game::game(int const board_size, game_logger& logger)
     : board{board_size}
+    , logger{logger}
     , next_moving_player{player::black}
     , score{2, 2}
 {    
@@ -37,7 +39,7 @@ placement_outcome game::place(cell_position const pos)
     
     mark_placement_cell_and_update_score(pos);
 
-    return determine_placement_outcome();
+    return update_game_state();
 }
 
 game_score game::get_score() const
@@ -152,21 +154,53 @@ void game::mark_placement_cell_and_update_score(cell_position const pos)
     board.mark_cell(pos, next_moving_player);
 
     score = increase_score(score, next_moving_player, 1);    
+
+    logger.log_successful_placement(pos, next_moving_player);
 }
 
-placement_outcome game::determine_placement_outcome()
+placement_outcome game::update_game_state()
+{
+    auto outcome = determine_last_placement_outcome();
+    
+    if (outcome == placement_outcome::turn_switched)
+    {
+        next_moving_player = get_opponent_of(next_moving_player);
+    }
+
+    log_placement_outcome(outcome);
+
+    return outcome;
+}
+
+placement_outcome game::determine_last_placement_outcome() const
 {
     auto opponent = get_opponent_of(next_moving_player);
 
     if (can_player_move(opponent))
     {
-        next_moving_player = opponent;
-
         return placement_outcome::turn_switched;
     }
     
     return can_player_move(next_moving_player) ? placement_outcome::turn_skipped :
                                                  placement_outcome::game_over;
+}
+
+void game::log_placement_outcome(placement_outcome const p) const
+{
+    if (p == placement_outcome::turn_switched)
+    {
+        return logger.log_turn_switched_message(next_moving_player);
+    }
+
+    if (p == placement_outcome::turn_skipped)
+    {
+        return logger.log_turn_skipped_message(next_moving_player);
+    }
+
+    if (p == placement_outcome::game_over)
+    {
+        return logger.log_game_over_message(*this);
+    }
 }
 
 bool game::can_player_move(player p) const

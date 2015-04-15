@@ -19,6 +19,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="export\include\reversi\testing\game_logger_spy.hpp" />
     <ClInclude Include="include\stdafx.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -76,7 +77,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;..\foundational\export\include;..\testing\export\include;..\game_logic\export\include;..\gmock_1.7.0\include;..\gmock_1.7.0\gtest\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\testing\export\include;..\game_logic\export\include;..\gmock_1.7.0\include;..\gmock_1.7.0\gtest\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -96,7 +97,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;..\foundational\export\include;..\testing\export\include;..\game_logic\export\include;..\gmock_1.7.0\include;..\gmock_1.7.0\gtest\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\testing\export\include;..\game_logic\export\include;..\gmock_1.7.0\include;..\gmock_1.7.0\gtest\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

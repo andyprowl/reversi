@@ -14,6 +14,8 @@ enum class player;
 struct cell_position;
 struct game_score;
     
+class game_logger;
+
 class no_reversal_triggered_exception : public virtual std::exception
 {    
 };
@@ -27,7 +29,7 @@ class game
     
 public:
 
-    game(int board_size);
+    game(int board_size, game_logger& logger);
 
     int get_board_size() const;
 
@@ -63,7 +65,11 @@ private:
 
     bool can_player_move(player p) const;
 
-    placement_outcome determine_placement_outcome();
+    placement_outcome update_game_state();
+
+    placement_outcome determine_last_placement_outcome() const;
+
+    void log_placement_outcome(placement_outcome p) const;
 
 private:
 
@@ -72,6 +78,8 @@ private:
     player next_moving_player;
 
     game_score score;
+
+    game_logger& logger;
 
 };
 

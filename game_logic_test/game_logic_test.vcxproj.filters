@@ -9,6 +9,18 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="export">
+      <UniqueIdentifier>{fe2bdf45-2a3a-4c5b-b04d-43ef43676b26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="export\include">
+      <UniqueIdentifier>{af1bed50-78db-4c7b-bb42-f92057463f24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="export\include\reversi">
+      <UniqueIdentifier>{271783ce-7d7b-4fe5-8dd8-3bea467db9ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="export\include\reversi\testing">
+      <UniqueIdentifier>{5d8e5ece-9361-4858-a881-a42b6e55ef23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -24,6 +36,9 @@
   <ItemGroup>
     <ClInclude Include="include\stdafx.hpp">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="export\include\reversi\testing\game_logger_spy.hpp">
+      <Filter>export\include\reversi\testing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
