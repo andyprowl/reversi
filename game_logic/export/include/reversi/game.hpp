@@ -26,7 +26,13 @@ class cell_busy_exception : public virtual std::exception
 
 class game
 {
-    
+ 
+public:
+
+    using placement_event_handler = std::function<void(cell_position, player, placement_outcome)>;
+
+    using cell_mark_change_event_handler = game_board::cell_mark_change_event_handler;
+
 public:
 
     game(int board_size, game_logger& logger);
@@ -40,6 +46,11 @@ public:
     game_score get_score() const;
 
     player get_next_moving_player() const;
+
+    boost::signals2::connection register_placement_event_handler(placement_event_handler h);
+
+    boost::signals2::connection register_cell_mark_change_event_handler(
+        cell_mark_change_event_handler h);
 
 private:
 
@@ -73,13 +84,19 @@ private:
 
 private:
 
+    using placement_event = util::signal_type_t<placement_event_handler>;
+
+private:
+
     game_board board;
+
+    game_logger& logger;
 
     player next_moving_player;
 
     game_score score;
 
-    game_logger& logger;
+    placement_event on_placement;
 
 };
 

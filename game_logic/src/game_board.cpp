@@ -22,6 +22,8 @@ void game_board::mark_cell(cell_position pos, player const p)
     throw_if_cell_position_is_not_valid(pos);
 
     board[pos.row * size + pos.col] = p;
+
+    on_cell_mark_change(pos, p);
 }
 
 bool game_board::is_valid_cell_position(cell_position const pos) const
@@ -41,6 +43,12 @@ boost::optional<player> game_board::get_cell_mark(cell_position pos) const
     throw_if_cell_position_is_not_valid(pos);
 
     return board[pos.row * size + pos.col];
+}
+
+boost::signals2::connection game_board::register_cell_mark_change_event_handler(
+    cell_mark_change_event_handler h)
+{
+    return on_cell_mark_change.connect(std::move(h));
 }
 
 void game_board::throw_if_cell_position_is_not_valid(cell_position pos) const

@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="export\include\util\sequence.hpp" />
+    <ClInclude Include="export\include\util\signal_traits.hpp" />
     <ClInclude Include="export\include\util\value_ref.hpp" />
     <ClInclude Include="include\stdafx.hpp" />
   </ItemGroup>
@@ -61,7 +62,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;export\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -78,7 +79,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;export\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

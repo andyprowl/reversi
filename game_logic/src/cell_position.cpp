@@ -13,6 +13,16 @@ cell_position::cell_position(int const row, int const col)
 {    
 }
 
+bool operator == (cell_position lhs, cell_position rhs)
+{
+    return ((lhs.row == rhs.row) && (lhs.col == rhs.col));
+}
+
+bool operator != (cell_position lhs, cell_position rhs)
+{
+    return !(lhs == rhs);
+}
+
 cell_position get_next_cell_position(cell_position const p, direction const d)
 {
     switch (d)

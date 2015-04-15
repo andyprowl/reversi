@@ -310,4 +310,53 @@ TEST_THAT(Game,
     EXPECT_THAT(logger.messages, Contains("GO"));
 }
 
+TEST_THAT(Game,
+     WHAT(Place),
+     WHEN(Always),
+     THEN(InvokesHandlersRegisteredForPlacementEventNotifications))
+{
+    auto invoked = false;
+    the_game.register_placement_event_handler(
+        [&invoked, this] (cell_position const pos, player const p, placement_outcome const outcome)
+    {
+        EXPECT_THAT(pos, Eq(cell_position{2, 3}));
+        EXPECT_THAT(p, Eq(player::white));
+        EXPECT_THAT(outcome, Eq(placement_outcome::turn_switched));
+
+        invoked = true;
+    });
+
+    the_game.place({2, 3});
+
+    EXPECT_TRUE(invoked);
+}
+
+TEST_THAT(Game,
+     WHAT(Place),
+     WHEN(OnSuccess),
+     THEN(InvokesHandlersRegisteredForCellContentChangedEventNofications))
+{
+    the_game.place({3, 2}); // black
+    the_game.place({3, 3}); // white
+    the_game.place({2, 3}); // black
+
+    auto changed_cells = std::vector<cell_position>{};
+
+    the_game.register_cell_mark_change_event_handler(
+        [&changed_cells, this] (cell_position const pos, player const p)
+    {
+        EXPECT_THAT(p, Eq(player::white));
+
+        changed_cells.push_back(pos);
+    });
+
+    the_game.place({1, 3}); // white
+
+    ASSERT_THAT(changed_cells.size(), Eq(3u));
+
+    EXPECT_THAT(changed_cells, Contains(cell_position{2, 3}));
+    EXPECT_THAT(changed_cells, Contains(cell_position{1, 3}));
+    EXPECT_THAT(changed_cells, Contains(cell_position{1, 2}));
+}
+
 } }

@@ -39,7 +39,11 @@ placement_outcome game::place(cell_position const pos)
     
     mark_placement_cell_and_update_score(pos);
 
-    return update_game_state();
+    auto outcome = update_game_state();
+
+    on_placement(pos, next_moving_player, outcome);
+
+    return outcome;
 }
 
 game_score game::get_score() const
@@ -50,6 +54,17 @@ game_score game::get_score() const
 player game::get_next_moving_player() const
 {
     return next_moving_player;
+}
+
+boost::signals2::connection game::register_placement_event_handler(placement_event_handler h)
+{
+    return on_placement.connect(std::move(h));
+}
+
+boost::signals2::connection game::register_cell_mark_change_event_handler(
+    cell_mark_change_event_handler h)
+{
+    return board.register_cell_mark_change_event_handler(std::move(h));
 }
 
 void game::place_initial_marks()
