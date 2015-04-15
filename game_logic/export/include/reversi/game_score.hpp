@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/optional.hpp>
 #include <ostream>
 
 namespace reversi
@@ -29,5 +30,7 @@ bool operator != (game_score lhs, game_score rhs);
 std::ostream& operator << (std::ostream& out, game_score s);
 
 game_score increase_score(game_score s, player p, int points);
+
+boost::optional<player> get_winning_player(game_score s);
 
 }

@@ -44,4 +44,13 @@ game_score increase_score(game_score const s, player const p, int const points)
     }
 }
 
+boost::optional<player> get_winning_player(game_score const s)
+{
+    if (s.white > s.black) { return player::white; }
+
+    if (s.black > s.white) { return player::black; }
+
+    return boost::none;
+}
+
 }

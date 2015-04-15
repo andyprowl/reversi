@@ -7,6 +7,8 @@ enum class player;
     
 struct cell_position;
 
+class game;
+
 class game_logger
 {
     

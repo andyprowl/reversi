@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace reversi
 {
 
@@ -21,5 +23,7 @@ public:
 };
 
 cell_position get_next_cell_position(cell_position p, direction d);
+
+std::string to_string(cell_position p);
 
 }
