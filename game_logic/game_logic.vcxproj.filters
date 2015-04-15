@@ -29,6 +29,12 @@
     <ClInclude Include="export\include\reversi\score.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
+    <ClInclude Include="export\include\reversi\game_board.hpp">
+      <Filter>export\include\reversi</Filter>
+    </ClInclude>
+    <ClInclude Include="export\include\reversi\player.hpp">
+      <Filter>export\include\reversi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -38,6 +44,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\score.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game_board.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
