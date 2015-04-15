@@ -19,6 +19,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\foundational\foundational.vcxproj">
+      <Project>{6946716c-162f-4e34-a66b-5bdd533ac924}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4A3859A0-0B1B-45BA-8AFB-DDADCE200A93}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -57,7 +62,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;export\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;..\utilities\export\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -74,7 +79,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;export\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;..\utilities\export\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

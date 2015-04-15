@@ -11,6 +11,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gmock", "gmock_1.7.0\msvc\2
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_logic_test", "game_logic_test\game_logic_test.vcxproj", "{416C62A5-5538-466F-9DC0-B19C51DD7D57}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testing", "testing\testing.vcxproj", "{58EB322D-E720-4AF3-ACEE-ED934C1BEEC7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "foundational", "foundational\foundational.vcxproj", "{6946716C-162F-4E34-A66B-5BDD533AC924}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -33,6 +37,14 @@ Global
 		{416C62A5-5538-466F-9DC0-B19C51DD7D57}.Debug|x64.Build.0 = Debug|x64
 		{416C62A5-5538-466F-9DC0-B19C51DD7D57}.Release|x64.ActiveCfg = Release|x64
 		{416C62A5-5538-466F-9DC0-B19C51DD7D57}.Release|x64.Build.0 = Release|x64
+		{58EB322D-E720-4AF3-ACEE-ED934C1BEEC7}.Debug|x64.ActiveCfg = Debug|x64
+		{58EB322D-E720-4AF3-ACEE-ED934C1BEEC7}.Debug|x64.Build.0 = Debug|x64
+		{58EB322D-E720-4AF3-ACEE-ED934C1BEEC7}.Release|x64.ActiveCfg = Release|x64
+		{58EB322D-E720-4AF3-ACEE-ED934C1BEEC7}.Release|x64.Build.0 = Release|x64
+		{6946716C-162F-4E34-A66B-5BDD533AC924}.Debug|x64.ActiveCfg = Debug|x64
+		{6946716C-162F-4E34-A66B-5BDD533AC924}.Debug|x64.Build.0 = Debug|x64
+		{6946716C-162F-4E34-A66B-5BDD533AC924}.Release|x64.ActiveCfg = Release|x64
+		{6946716C-162F-4E34-A66B-5BDD533AC924}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
