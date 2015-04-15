@@ -7,6 +7,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_server", "game_server\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_logic", "game_logic\game_logic.vcxproj", "{4A3859A0-0B1B-45BA-8AFB-DDADCE200A93}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gmock", "gmock_1.7.0\msvc\2013\gmock.vcxproj", "{34681F0D-CE45-415D-B5F2-5C662DFE3BD5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_logic_test", "game_logic_test\game_logic_test.vcxproj", "{416C62A5-5538-466F-9DC0-B19C51DD7D57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +25,14 @@ Global
 		{4A3859A0-0B1B-45BA-8AFB-DDADCE200A93}.Debug|x64.Build.0 = Debug|x64
 		{4A3859A0-0B1B-45BA-8AFB-DDADCE200A93}.Release|x64.ActiveCfg = Release|x64
 		{4A3859A0-0B1B-45BA-8AFB-DDADCE200A93}.Release|x64.Build.0 = Release|x64
+		{34681F0D-CE45-415D-B5F2-5C662DFE3BD5}.Debug|x64.ActiveCfg = Debug|x64
+		{34681F0D-CE45-415D-B5F2-5C662DFE3BD5}.Debug|x64.Build.0 = Debug|x64
+		{34681F0D-CE45-415D-B5F2-5C662DFE3BD5}.Release|x64.ActiveCfg = Release|x64
+		{34681F0D-CE45-415D-B5F2-5C662DFE3BD5}.Release|x64.Build.0 = Release|x64
+		{416C62A5-5538-466F-9DC0-B19C51DD7D57}.Debug|x64.ActiveCfg = Debug|x64
+		{416C62A5-5538-466F-9DC0-B19C51DD7D57}.Debug|x64.Build.0 = Debug|x64
+		{416C62A5-5538-466F-9DC0-B19C51DD7D57}.Release|x64.ActiveCfg = Release|x64
+		{416C62A5-5538-466F-9DC0-B19C51DD7D57}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
