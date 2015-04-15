@@ -8,6 +8,7 @@ namespace reversi
 {
 
 enum class direction;
+enum class placement_outcome;
 enum class player;
 
 struct cell_position;
@@ -32,7 +33,7 @@ public:
 
     boost::optional<player> get_board_cell_mark(cell_position pos) const;
 
-    void place(cell_position pos);
+    placement_outcome place(cell_position pos);
     
     game_score get_score() const;
 
@@ -40,17 +41,16 @@ public:
 
 private:
 
-    void switch_turn();
-
     void place_initial_marks();
 
     void throw_if_cell_is_occupied(cell_position pos) const;
     
     void apply_reversals_or_throw_if_none_is_triggered(cell_position pos);
 
-    std::vector<cell_position> get_reversals_for_placement(cell_position pos) const;
+    std::vector<cell_position> get_reversals_for_placement(cell_position pos, player p) const;
 
-    std::vector<cell_position> get_reversals_for_placement_in_direction(cell_position pos, 
+    std::vector<cell_position> get_reversals_for_placement_in_direction(cell_position pos,
+                                                                        player p,
                                                                         direction d) const;
     
     bool is_cell_occupied_by_opponent_of_player(cell_position pos, player p) const;
@@ -60,6 +60,10 @@ private:
     void update_score_after_reversals(util::value_ref<std::vector<cell_position>> reversals);
 
     void mark_placement_cell_and_update_score(cell_position pos);
+
+    bool can_player_move(player p) const;
+
+    placement_outcome determine_placement_outcome();
 
 private:
 

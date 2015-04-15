@@ -2,6 +2,7 @@
 
 #include "reversi/cell_position.hpp"
 #include "reversi/game.hpp"
+#include "reversi/placement_outcome.hpp"
 #include "reversi/player.hpp"
 #include "reversi/game_score.hpp"
 
@@ -204,6 +205,47 @@ TEST_THAT(Game,
     {
         EXPECT_THAT(the_game.get_next_moving_player(), Eq(player::white));
     }
+}
+
+TEST_THAT(Game,
+     WHAT(Place),
+     WHEN(WhenAfterAPlacementTheNextPlayerCannotMakeAValidMoveButTheOneWhoJustMovedCan),
+     THEN(DoesNotSwitchTheTurnAndReturnsTheCorrespondingOutcome))
+{
+    game g{4};
+
+    // See http://reversi-nxn.blogspot.cz/2008/04/reversi-4x4-games.html
+
+    g.place({0, 1}); // black
+    g.place({0, 2}); // white
+    g.place({0, 3}); // black
+    g.place({0, 0}); // white
+    
+    auto const outcome = g.place({2, 0}); // black
+
+    EXPECT_THAT(outcome, Eq(placement_outcome::turn_skipped));
+
+    EXPECT_THAT(g.get_next_moving_player(), Eq(player::black));
+}
+
+TEST_THAT(Game,
+     WHAT(Place),
+     WHEN(WhenAfterAPlacementNeitherOfThePlayersCanMakeAValidMove),
+     THEN(DoesNotSwitchTheTurnAndTheGameIsOver))
+{
+    game g{4};
+
+    // See http://reversi-nxn.blogspot.cz/2008/04/reversi-4x4-games.html
+
+    g.place({0, 1}); // black
+    g.place({0, 2}); // white
+    g.place({0, 3}); // black
+    g.place({0, 0}); // white
+    g.place({2, 0}); // black
+        
+    auto const outcome = g.place({3, 3}); // black again
+
+    EXPECT_THAT(outcome, Eq(placement_outcome::game_over));
 }
 
 } }

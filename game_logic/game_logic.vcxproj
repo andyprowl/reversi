@@ -15,6 +15,7 @@
     <ClInclude Include="export\include\reversi\direction.hpp" />
     <ClInclude Include="export\include\reversi\game.hpp" />
     <ClInclude Include="export\include\reversi\game_board.hpp" />
+    <ClInclude Include="export\include\reversi\placement_outcome.hpp" />
     <ClInclude Include="export\include\reversi\player.hpp" />
     <ClInclude Include="export\include\reversi\game_score.hpp" />
     <ClInclude Include="include\stdafx.hpp" />

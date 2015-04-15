@@ -41,6 +41,9 @@
     <ClInclude Include="export\include\reversi\game_score.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
+    <ClInclude Include="export\include\reversi\placement_outcome.hpp">
+      <Filter>export\include\reversi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">

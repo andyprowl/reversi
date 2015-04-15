@@ -26,9 +26,15 @@
     <ClInclude Include="export\include\util\value_ref.hpp">
       <Filter>export\include\util</Filter>
     </ClInclude>
+    <ClInclude Include="export\include\util\sequence.hpp">
+      <Filter>export\include\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sequence.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
