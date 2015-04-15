@@ -14,9 +14,19 @@ class Game : public Test
     
 protected:
 
-    game the_game;
+    int board_size = 8;
+
+    game the_game{board_size};
 
 };
+
+TEST_THAT(Game,
+     WHAT(GetBoardSize),
+     WHEN(Always),
+     THEN(ReturnsTheSizePassedAtConstruction))
+{
+    EXPECT_THAT(the_game.get_board_size(), Eq(board_size));
+}
 
 TEST_THAT(Game,
      WHAT(GetScore),
