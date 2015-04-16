@@ -1,6 +1,20 @@
 #include "stdafx.hpp"
 
+#include "reversi/remoting/game_server.hpp"
+#include <iostream>
+
 int main(int argc, wchar_t* argv[])
 {
-	return 0;
+    try
+    {
+        auto service = boost::asio::io_service{};
+
+        game_server server{service};
+        
+        service.run();
+    }
+    catch (std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
 }

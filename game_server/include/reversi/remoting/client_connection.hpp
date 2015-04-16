@@ -21,9 +21,7 @@ public:
 private:
     
     void read_next_message();
-
-private:
-
+    
     void on_message_received(std::size_t size_in_bytes);
 
     bool process_message(std::string message);

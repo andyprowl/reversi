@@ -12,12 +12,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\multiplayer_match_registry_test_suite.cpp" />
+    <ClCompile Include="src\multiplayer_match_test_suite.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\reversi\remoting\testing\game_logger_spy_factory.hpp" />
     <ClInclude Include="include\stdafx.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -75,7 +78,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\game_logic\export\include;..\game_server_logic\export\include;..\testing\export\include;..\gmock_1.7.0\include;..\gmock_1.7.0\gtest\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\game_logic\export\include;..\game_server_logic\export\include;..\testing\export\include;..\game_logic_unit_tests\export\include;..\gmock_1.7.0\include;..\gmock_1.7.0\gtest\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -95,7 +98,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\game_logic\export\include;..\game_server_logic\export\include;..\testing\export\include;..\gmock_1.7.0\include;..\gmock_1.7.0\gtest\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\game_logic\export\include;..\game_server_logic\export\include;..\testing\export\include;..\game_logic_unit_tests\export\include;..\gmock_1.7.0\include;..\gmock_1.7.0\gtest\include;c:\libraries\boost\boost-1.56.0.1</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

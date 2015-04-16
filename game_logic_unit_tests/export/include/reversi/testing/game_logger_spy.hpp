@@ -1,5 +1,6 @@
 #pragma once
 
+#include "reversi/cell_position.hpp"
 #include "reversi/game_logger.hpp"
 #include "reversi/player.hpp"
 #include <string>

@@ -4,8 +4,8 @@
 #include "reversi/remoting/client_connection.hpp"
 #include <iostream>
 
-game_server::game_server(boost::asio::io_service& io_service)
-    : listener{io_service, tcp::endpoint(tcp::v4(), 4543)}
+game_server::game_server(boost::asio::io_service& service)
+    : listener{service, tcp::endpoint(tcp::v4(), 4543)}
 {
     start_accepting_connections();
 }

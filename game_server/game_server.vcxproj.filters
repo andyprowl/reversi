@@ -34,10 +34,10 @@
     <ClInclude Include="include\stdafx.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\reversi\remoting\client_connection.hpp">
+    <ClInclude Include="include\reversi\remoting\game_server.hpp">
       <Filter>include\reversi\remoting</Filter>
     </ClInclude>
-    <ClInclude Include="include\reversi\remoting\game_server.hpp">
+    <ClInclude Include="include\reversi\remoting\client_connection.hpp">
       <Filter>include\reversi\remoting</Filter>
     </ClInclude>
   </ItemGroup>

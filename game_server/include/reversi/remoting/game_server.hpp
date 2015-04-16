@@ -12,7 +12,7 @@ class game_server
 
 public:
   
-    explicit game_server(boost::asio::io_service& io_service);
+    explicit game_server(boost::asio::io_service& service);
     
     ~game_server();
 

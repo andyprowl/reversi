@@ -26,9 +26,30 @@
     <ClInclude Include="include\stdafx.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="export\include\reversi\remoting\multiplayer_match.hpp">
+      <Filter>export\include\reversi\remoting</Filter>
+    </ClInclude>
+    <ClInclude Include="export\include\reversi\remoting\multiplayer_match_registry.hpp">
+      <Filter>export\include\reversi\remoting</Filter>
+    </ClInclude>
+    <ClInclude Include="export\include\reversi\remoting\game_logger_factory.hpp">
+      <Filter>export\include\reversi\remoting</Filter>
+    </ClInclude>
+    <ClInclude Include="export\include\reversi\remoting\file_game_logger_factory.hpp">
+      <Filter>export\include\reversi\remoting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\multiplayer_match.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\multiplayer_match_registry.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\file_game_logger_factory.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
