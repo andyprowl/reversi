@@ -10,8 +10,10 @@
 namespace reversi { namespace remoting
 {
 
-multiplayer_match_messenger::multiplayer_match_messenger(multiplayer_match_registry& registry)
+multiplayer_match_messenger::multiplayer_match_messenger(multiplayer_match_registry& registry,
+                                                         client_communication_channel channel)
     : registry{registry}
+    , channel{std::move(channel)}
     , player_name("Anonymous")
 {    
 }

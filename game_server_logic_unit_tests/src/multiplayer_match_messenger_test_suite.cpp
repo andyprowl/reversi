@@ -19,6 +19,10 @@ class MultiplayerMatchMessenger : public Test
 
 protected:
 
+    virtual void SetUp() override
+    {
+    }
+
     void set_player_name(std::string name)
     {
         messenger.execute_command("NAME;" + std::move(name));
@@ -31,13 +35,23 @@ protected:
         return registry.get_match(name);        
     }
 
+    std::function<void(util::value_ref<std::string>)> make_client_communication_channel()
+    {
+        return [this] (std::string msg)
+        {
+            last_messages_for_client.push_back(std::move(msg));
+        };
+    }
+
 protected:
+
+    std::vector<std::string> last_messages_for_client;
 
     game_logger_spy_factory logger_factory;
 
     multiplayer_match_registry registry{logger_factory};
 
-    multiplayer_match_messenger messenger{registry};
+    multiplayer_match_messenger messenger{registry, make_client_communication_channel()};
     
 };
 

@@ -40,6 +40,16 @@ void client_connection::start_reading_messages(message_processor p)
     }
 }
 
+void client_connection::send_message(util::value_ref<std::string> msg)
+{
+    auto& service = socket.get_io_service();
+
+    service.post([this, msg]
+    {
+        write(socket, boost::asio::buffer(msg));
+    });
+}
+
 void client_connection::read_next_message()
 {
     socket.async_read_some(

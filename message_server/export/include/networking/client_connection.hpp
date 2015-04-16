@@ -28,6 +28,8 @@ public:
 
     void start_reading_messages(message_processor p);
 
+    void send_message(util::value_ref<std::string> msg);
+
 private:
     
     void read_next_message();

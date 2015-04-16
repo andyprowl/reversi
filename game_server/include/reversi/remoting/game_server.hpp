@@ -6,7 +6,9 @@
 
 namespace reversi { namespace remoting
 {
-    
+
+class multiplayer_match_messenger;
+
 class game_server : public networking::message_server
 {
 
@@ -18,6 +20,9 @@ private:
 
     virtual networking::client_connection::message_processor get_message_processor_for_connection(
         networking::client_connection& c) override;
+
+    bool forward_non_terminal_message_to_messenger(util::value_ref<std::string> msg,
+                                                   multiplayer_match_messenger& messenger);
 
 private:
 
