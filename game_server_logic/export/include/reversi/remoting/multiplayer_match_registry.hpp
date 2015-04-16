@@ -31,6 +31,8 @@ public:
 
     std::shared_ptr<multiplayer_match> get_match(util::value_ref<std::string> name) const;
 
+    std::vector<std::shared_ptr<multiplayer_match>> get_all_matches() const;
+
 private:
 
     void throw_if_match_name_is_not_unique(util::value_ref<std::string> name) const;

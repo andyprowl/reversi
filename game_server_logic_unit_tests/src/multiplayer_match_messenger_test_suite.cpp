@@ -10,6 +10,7 @@
 namespace reversi { namespace remoting { namespace testing
 {
 
+using ::testing::Contains;
 using ::testing::Eq;
 using ::testing::Ne;
 using ::testing::Test;
@@ -35,7 +36,7 @@ protected:
         return registry.get_match(name);        
     }
 
-    std::function<void(util::value_ref<std::string>)> make_client_communication_channel()
+    multiplayer_match_messenger::client_communication_channel make_client_communication_channel()
     {
         return [this] (std::string msg)
         {
@@ -67,7 +68,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAStringThatEncodesACreateMatchCommand),
+     WHEN(GivenAStringThatEncodesACreateMatchCommandWithAUniqueName),
      THEN(LetsTheRegistryCreateANewMatch))
 {
     messenger.execute_command("CREATE;MY MATCH;4");
@@ -81,7 +82,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAStringThatEncodesACreateMatchCommand),
+     WHEN(GivenAStringThatEncodesACreateMatchCommandWithAUniqueName),
      THEN(JoinsTheNewlyCreatedMatchWithThePreviouslySetPlayerName))
 {
     auto const name = "COOL PLAYER";
@@ -102,10 +103,52 @@ TEST_THAT(MultiplayerMatchMessenger,
 
     EXPECT_TRUE(invoked);
 }
+ 
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAStringThatEncodesACreateMatchCommandWithAUniqueName),
+     THEN(CommunicatesASuccessCodeBackToTheClient))
+{    
+    messenger.execute_command("CREATE;MATCH;8");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("OK"));
+}
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAJoinMatchCommand),
+     WHEN(GivenAStringThatEncodesACreateMatchCommandWithANonUniqueName),
+     THEN(DoesNotThrowAndDoesNotCreateASecondGame))
+{
+    create_match("MATCH");
+
+    EXPECT_NO_THROW(create_match("MATCH"));
+
+    auto matches = registry.get_all_matches();
+
+    EXPECT_THAT(matches.size(), Eq(1u));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAStringThatEncodesACreateMatchCommandWithANonUniqueName),
+     THEN(CommunicatesAnErrorBackToTheClient))
+{
+    create_match("MATCH");
+    
+    last_messages_for_client.clear();
+
+    messenger.execute_command("CREATE;MATCH;8");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("ERROR;NAME NOT UNIQUE"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAJoinMatchCommandWithTheNameOfACurrentlyRegisteredMatch),
      THEN(JoinsTheMatchWithTheEncodedName))
 {
     set_player_name("PLAYER");
@@ -121,6 +164,52 @@ TEST_THAT(MultiplayerMatchMessenger,
     auto& g = m->get_game();
 
     EXPECT_THAT(g.get_player_name(player::white), Eq("PLAYER"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAJoinMatchCommandWithTheNameOfACurrentlyRegisteredMatch),
+     THEN(CommunicatesASuccessCodeBackToTheClient))
+{    
+    auto m = registry.create_new_match("NEW MATCH", 4);    
+
+    last_messages_for_client.clear();
+
+    messenger.execute_command("JOIN;NEW MATCH");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("OK"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAJoinMatchCommandWithANameWhichIsNotTheNameOfAnyRegisteredMatch),
+     THEN(DoesNotThrowAndDoesNotJoinAnyMatch))
+{
+    set_player_name("PLAYER");
+
+    auto m = registry.create_new_match("NEW MATCH", 4);    
+
+    EXPECT_NO_THROW(messenger.execute_command("JOIN;BOGUS MATCH"));
+
+    EXPECT_THAT(messenger.get_joined_match(), Eq(nullptr));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAJoinMatchCommandWithANameWhichIsNotTheNameOfAnyRegisteredMatch),
+     THEN(CommunicatesAnErrorBackToTheClient))
+{
+    create_match("MATCH");
+    
+    last_messages_for_client.clear();
+
+    messenger.execute_command("JOIN;BOGUS MATCH");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("ERROR;MATCH NOT FOUND"));
 }
 
 TEST_THAT(MultiplayerMatchMessenger,

@@ -7,6 +7,7 @@
 namespace reversi { namespace remoting { namespace testing
 {
 
+using ::testing::Contains;
 using ::testing::Eq;
 using ::testing::Test;
 
@@ -81,6 +82,24 @@ TEST_THAT(MultiplayerMatchRegistry,
     }
 
     EXPECT_THROW(registry.get_match(match_name), match_not_found_exception);
+}
+
+TEST_THAT(MultiplayerMatchRegistry,
+     WHAT(GetAllMatches),
+     WHEN(Always),
+     THEN(ReturnsAllTheCurrentlyRegisteredMatches))
+{
+    auto m1 = registry.create_new_match("MATCH 1", 4);
+    auto m2 = registry.create_new_match("MATCH 2", 6);
+    auto m3 = registry.create_new_match("MATCH 3", 8);
+
+    auto all_matches = registry.get_all_matches();
+
+    ASSERT_THAT(all_matches.size(), Eq(3u));
+
+    EXPECT_THAT(all_matches, Contains(m1));
+    EXPECT_THAT(all_matches, Contains(m2));
+    EXPECT_THAT(all_matches, Contains(m3));
 }
 
 } } }

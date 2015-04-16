@@ -4,6 +4,8 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <vector>
+#include <unordered_map>
 
 namespace reversi { namespace remoting
 {
@@ -31,6 +33,22 @@ public:
 
 private:
 
+    void setup_command_handlers();
+
+    void process_set_name_command(util::value_ref<std::vector<std::string>> tokens);
+
+    void process_create_match_command(util::value_ref<std::vector<std::string>> tokens);
+
+    void process_join_match_command(util::value_ref<std::vector<std::string>> tokens);
+
+    void process_place_mark_command(util::value_ref<std::vector<std::string>> tokens);
+
+private:
+
+    using command_handler = std::function<void(util::value_ref<std::vector<std::string>>)>;
+
+private:
+
     multiplayer_match_registry& registry;
 
     client_communication_channel channel;
@@ -38,6 +56,8 @@ private:
     std::shared_ptr<multiplayer_match> joined_match;
 
     std::string player_name;
+
+    std::unordered_map<std::string, command_handler> processors;
 
 };
 

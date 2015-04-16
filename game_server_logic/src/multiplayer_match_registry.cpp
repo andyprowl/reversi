@@ -38,6 +38,23 @@ std::shared_ptr<multiplayer_match> multiplayer_match_registry::get_match(
     return it->second.lock();
 }
 
+std::vector<std::shared_ptr<multiplayer_match>> multiplayer_match_registry::get_all_matches() const
+{
+    auto result = std::vector<std::shared_ptr<multiplayer_match>>{};
+
+    result.reserve(matches.size());
+
+    std::transform(std::cbegin(matches), 
+                   std::cend(matches), 
+                   std::back_inserter(result),
+                   [] (util::value_ref<decltype(matches)::value_type> entry)
+    {
+        return entry.second.lock();  
+    });
+
+    return result;
+}
+
 void multiplayer_match_registry::throw_if_match_name_is_not_unique(
     util::value_ref<std::string> name) const
 {
