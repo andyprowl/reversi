@@ -12,8 +12,13 @@
 namespace reversi
 {
 
-local_game::local_game(int const board_size, game_logger& logger)
+local_game::local_game(int const board_size, 
+                       std::string white_player_name, 
+                       std::string black_player_name, 
+                       game_logger& logger)
     : board{board_size}
+    , white_player_name(std::move(white_player_name))
+    , black_player_name(std::move(black_player_name))
     , logger{logger}
     , next_moving_player{player::black}
     , score{2, 2}
@@ -26,9 +31,21 @@ int local_game::get_board_size() const
     return board.get_size();
 }
 
-boost::optional<player> local_game::get_board_cell_mark(cell_position const pos) const
+std::string local_game::get_player_name(player const p) const
 {
-    return board.get_cell_mark(pos);
+    if (p == player::white)
+    {
+        return white_player_name;
+    }
+    else
+    {
+        return black_player_name;
+    }
+}
+
+game_score local_game::get_score() const
+{
+    return score;
 }
 
 placement_outcome local_game::place(cell_position const pos)
@@ -46,19 +63,19 @@ placement_outcome local_game::place(cell_position const pos)
     return outcome;
 }
 
-game_score local_game::get_score() const
+boost::signals2::connection local_game::register_placement_event_handler(placement_event_handler h)
 {
-    return score;
+    return on_placement.connect(std::move(h));
+}
+
+boost::optional<player> local_game::get_board_cell_mark(cell_position const pos) const
+{
+    return board.get_cell_mark(pos);
 }
 
 player local_game::get_next_moving_player() const
 {
     return next_moving_player;
-}
-
-boost::signals2::connection local_game::register_placement_event_handler(placement_event_handler h)
-{
-    return on_placement.connect(std::move(h));
 }
 
 void local_game::place_initial_marks()

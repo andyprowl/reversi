@@ -41,11 +41,15 @@ protected:
     
 protected:
 
+    std::string white_player_name = "PLAYER 2";
+
+    std::string black_player_name = "PLAYER 1";
+
     int board_size = 4;
 
     game_logger_spy logger;
 
-    local_game the_game{board_size, logger};
+    local_game the_game{board_size, white_player_name, black_player_name, logger};
 
 };
 
@@ -55,6 +59,22 @@ TEST_THAT(LocalGame,
      THEN(ReturnsTheSizePassedAtConstruction))
 {
     EXPECT_THAT(the_game.get_board_size(), Eq(board_size));
+}
+
+TEST_THAT(LocalGame,
+     WHAT(GetPlayerName),
+     WHEN(GivenTheBlackPlayerIdentifier),
+     THEN(ReturnsTheBlackPlayerNamePassedAtConstruction))
+{
+    EXPECT_THAT(the_game.get_player_name(player::white), Eq(white_player_name));
+}
+
+TEST_THAT(LocalGame,
+     WHAT(GetPlayerName),
+     WHEN(GivenTheWhitePlayerIdentifier),
+     THEN(ReturnsTheWhitePlayerNamePassedAtConstruction))
+{
+    EXPECT_THAT(the_game.get_player_name(player::white), Eq(white_player_name));
 }
 
 TEST_THAT(LocalGame,

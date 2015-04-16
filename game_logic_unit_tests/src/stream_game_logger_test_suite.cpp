@@ -36,7 +36,7 @@ protected:
 
     stream_game_logger logger{log};
 
-    local_game the_game{4, logger};
+    local_game the_game{4, "WHITE PLAYER", "BLACK PLAYER", logger};
 
 };
 

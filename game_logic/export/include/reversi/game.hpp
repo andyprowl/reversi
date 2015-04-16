@@ -3,6 +3,7 @@
 #include "util/value_ref.hpp"
 #include <boost/signals2/connection.hpp>
 #include <functional>
+#include <string>
 
 namespace reversi
 {
@@ -28,6 +29,8 @@ public:
     virtual ~game() = default;
 
     virtual int get_board_size() const = 0;
+
+    virtual std::string get_player_name(player p) const = 0;
 
     virtual placement_outcome place(cell_position pos) = 0;
     
