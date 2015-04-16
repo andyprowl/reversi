@@ -23,9 +23,6 @@
     <ClInclude Include="include\stdafx.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="export\include\reversi\game.hpp">
-      <Filter>export\include\reversi</Filter>
-    </ClInclude>
     <ClInclude Include="export\include\reversi\game_board.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
@@ -53,12 +50,15 @@
     <ClInclude Include="export\include\reversi\stream_game_logger.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
+    <ClInclude Include="export\include\reversi\local_game.hpp">
+      <Filter>export\include\reversi</Filter>
+    </ClInclude>
+    <ClInclude Include="export\include\reversi\game.hpp">
+      <Filter>export\include\reversi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\game_board.cpp">
@@ -74,6 +74,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\stream_game_logger.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\local_game.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

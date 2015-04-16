@@ -1,7 +1,7 @@
 #include "stdafx.hpp"
 
 #include "reversi/cell_position.hpp"
-#include "reversi/game.hpp"
+#include "reversi/local_game.hpp"
 #include "reversi/placement_outcome.hpp"
 #include "reversi/player.hpp"
 #include "reversi/game_score.hpp"
@@ -14,7 +14,7 @@ using ::testing::Contains;
 using ::testing::Eq;
 using ::testing::Test;
 
-class Game : public Test
+class LocalGame : public Test
 {
 
 protected:
@@ -45,11 +45,11 @@ protected:
 
     game_logger_spy logger;
 
-    game the_game{board_size, logger};
+    local_game the_game{board_size, logger};
 
 };
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(GetBoardSize),
      WHEN(Always),
      THEN(ReturnsTheSizePassedAtConstruction))
@@ -57,7 +57,7 @@ TEST_THAT(Game,
     EXPECT_THAT(the_game.get_board_size(), Eq(board_size));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(GetScore),
      WHEN(ImmediatelyAfterConstruction),
      THEN(ReturnsTwoForBothWhiteAndBlack))
@@ -68,7 +68,7 @@ TEST_THAT(Game,
     EXPECT_THAT(s.black, Eq(2));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(GetNextMovingPlayer),
      WHEN(ImmediatelyAfterConstruction),
      THEN(ReturnsBlack))
@@ -76,7 +76,7 @@ TEST_THAT(Game,
     EXPECT_THAT(the_game.get_next_moving_player(), Eq(player::black));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(GetBoardCellMark),
      WHEN(GivenTheCoordinatesOfAnEmptyCell),
      THEN(ReturnsAnEmptyOptionalValue))
@@ -88,7 +88,7 @@ TEST_THAT(Game,
     EXPECT_FALSE(is_empty);
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(GetBoardCellMark),
      WHEN(GivenTheCoordinatesOfTheNorthWestCentralCell),
      THEN(ReturnsWhiteMark))
@@ -96,7 +96,7 @@ TEST_THAT(Game,
     EXPECT_THAT(the_game.get_board_cell_mark({1, 1}), Eq(player::white));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(GetBoardCellMark),
      WHEN(GivenTheCoordinatesOfTheSouthEastCentralCell),
      THEN(ReturnsWhiteMark))
@@ -104,7 +104,7 @@ TEST_THAT(Game,
     EXPECT_THAT(the_game.get_board_cell_mark({2, 2}), Eq(player::white));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(GetBoardCellMark),
      WHEN(GivenTheCoordinatesOfTheNorthEastCentralCell),
      THEN(ReturnsBlackMark))
@@ -112,7 +112,7 @@ TEST_THAT(Game,
     EXPECT_THAT(the_game.get_board_cell_mark({1, 2}), Eq(player::black));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(GetBoardCellMark),
      WHEN(GivenTheCoordinatesOfTheSouthWestCentralCell),
      THEN(ReturnsBlackMark))
@@ -120,7 +120,7 @@ TEST_THAT(Game,
     EXPECT_THAT(the_game.get_board_cell_mark({2, 1}), Eq(player::black));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(GivenARowIndexWhichIsLowerThanZero),
      THEN(Throws))
@@ -128,7 +128,7 @@ TEST_THAT(Game,
     EXPECT_THROW((the_game.place({-1, 3})), bad_cell_coordinates_exception);
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(GivenARowIndexWhichIsNotLowerThanTheBoardSize),
      THEN(Throws))
@@ -136,7 +136,7 @@ TEST_THAT(Game,
     EXPECT_THROW((the_game.place({board_size, 3})), bad_cell_coordinates_exception);
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(GivenAColumnIndexWhichIsLowerThanZero),
      THEN(Throws))
@@ -144,7 +144,7 @@ TEST_THAT(Game,
     EXPECT_THROW((the_game.place({1, -2})), bad_cell_coordinates_exception);
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(GivenAColumnIndexWhichIsNotLowerThanTheBoardSize),
      THEN(Throws))
@@ -152,7 +152,7 @@ TEST_THAT(Game,
     EXPECT_THROW((the_game.place({2, board_size})), bad_cell_coordinates_exception);
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(GivenTheCoordinatesOfANonEmptyCell),
      THEN(Throws))
@@ -160,7 +160,7 @@ TEST_THAT(Game,
     EXPECT_THROW((the_game.place({2, 2})), cell_busy_exception);
 }
 
-TEST_THAT(Game, 
+TEST_THAT(LocalGame, 
      WHAT(Place),
      WHEN(GivenTheCoordinatesOfAFreeCellThatDoesNotLeadToAnyReversal),
      THEN(Throws))
@@ -168,7 +168,7 @@ TEST_THAT(Game,
     EXPECT_THROW(the_game.place({0, 0}), no_reversal_triggered_exception);
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(GivenTheCoordinatesOfAFreeCellThatLeadsToSomeReversalEastOfThePlacePosition),
      THEN(PlacesTheMarkAndPerformsTheReversals))
@@ -180,7 +180,7 @@ TEST_THAT(Game,
     EXPECT_THAT(the_game.get_board_cell_mark({1, 1}), Eq(player::black));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(GivenTheCoordinatesOfAFreeCellThatLeadsToSomeReversalWestOfThePlacePosition),
      THEN(PlacesTheMarkAndPerformsTheReversals))
@@ -192,7 +192,7 @@ TEST_THAT(Game,
     EXPECT_THAT(the_game.get_board_cell_mark({2, 2}), Eq(player::black));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(OnSuccess),
      THEN(SwitchesTurn))
@@ -206,7 +206,7 @@ TEST_THAT(Game,
     EXPECT_THAT(the_game.get_next_moving_player(), Eq(player::black));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(OnSuccess),
      THEN(UpdatesTheScore))
@@ -216,7 +216,7 @@ TEST_THAT(Game,
     EXPECT_THAT(the_game.get_score(), Eq(game_score{1, 4}));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(OnFailure),
      THEN(DoesNotSwitchTurn))
@@ -233,7 +233,7 @@ TEST_THAT(Game,
     }
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(WhenAfterAPlacementTheNextPlayerCannotMakeAValidMoveButTheOneWhoJustMovedCan),
      THEN(DoesNotSwitchTheTurnAndReturnsTheCorrespondingOutcome))
@@ -252,10 +252,10 @@ TEST_THAT(Game,
     EXPECT_THAT(the_game.get_next_moving_player(), Eq(player::black));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(WhenAfterAPlacementNeitherOfThePlayersCanMakeAValidMove),
-     THEN(DoesNotSwitchTheTurnAndTheGameIsOver))
+     THEN(DoesNotSwitchTheTurnAndTheLocalGameIsOver))
 {
     // See http://reversi-nxn.blogspot.cz/2008/04/reversi-4x4-games.html
 
@@ -270,7 +270,7 @@ TEST_THAT(Game,
     EXPECT_THAT(outcome, Eq(placement_outcome::game_over));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(OnSuccess),
      THEN(LogsASuccessfulPlacementMessage))
@@ -280,7 +280,7 @@ TEST_THAT(Game,
     EXPECT_THAT(logger.messages, Contains("SP black 2 3"));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(OnATurnSwitch),
      THEN(LogsATurnSwitchedMessage))
@@ -290,7 +290,7 @@ TEST_THAT(Game,
     EXPECT_THAT(logger.messages, Contains("TS white"));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(OnATurnSkip),
      THEN(LogsATurnSkippedMessage))
@@ -300,63 +300,46 @@ TEST_THAT(Game,
     EXPECT_THAT(logger.messages, Contains("TSK black"));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(OnSuccess),
-     THEN(LogsAGameOverMessage))
+     THEN(LogsALocalGameOverMessage))
 {
     make_black_win();
 
     EXPECT_THAT(logger.messages, Contains("GO"));
 }
 
-TEST_THAT(Game,
+TEST_THAT(LocalGame,
      WHAT(Place),
      WHEN(Always),
      THEN(InvokesHandlersRegisteredForPlacementEventNotifications))
-{
-    auto invoked = false;
-    the_game.register_placement_event_handler(
-        [&invoked, this] (cell_position const pos, player const p, placement_outcome const outcome)
-    {
-        EXPECT_THAT(pos, Eq(cell_position{2, 3}));
-        EXPECT_THAT(p, Eq(player::white));
-        EXPECT_THAT(outcome, Eq(placement_outcome::turn_switched));
-
-        invoked = true;
-    });
-
-    the_game.place({2, 3});
-
-    EXPECT_TRUE(invoked);
-}
-
-TEST_THAT(Game,
-     WHAT(Place),
-     WHEN(OnSuccess),
-     THEN(InvokesHandlersRegisteredForCellContentChangedEventNofications))
 {
     the_game.place({3, 2}); // black
     the_game.place({3, 3}); // white
     the_game.place({2, 3}); // black
 
-    auto changed_cells = std::vector<cell_position>{};
-
-    the_game.register_cell_mark_change_event_handler(
-        [&changed_cells, this] (cell_position const pos, player const p)
+    auto invoked = false;
+    the_game.register_placement_event_handler(
+        [&invoked, this] (cell_position const pos, 
+                          player const p, 
+                          placement_outcome const outcome,
+                          util::value_ref<std::vector<cell_position>> flipped_cells)
     {
-        EXPECT_THAT(p, Eq(player::white));
+        EXPECT_THAT(pos, Eq(cell_position{1, 3}));
+        EXPECT_THAT(p, Eq(player::black));
+        EXPECT_THAT(outcome, Eq(placement_outcome::turn_switched));
 
-        changed_cells.push_back(pos);
+        ASSERT_THAT(flipped_cells.size(), Eq(2u));
+        EXPECT_THAT(flipped_cells, Contains(cell_position{2, 3}));
+        EXPECT_THAT(flipped_cells, Contains(cell_position{1, 2}));
+
+        invoked = true;
     });
 
     the_game.place({1, 3}); // white
 
-    ASSERT_THAT(changed_cells.size(), Eq(3u));
-
-    EXPECT_THAT(changed_cells, Contains(cell_position{2, 3}));
-    EXPECT_THAT(changed_cells, Contains(cell_position{1, 3}));
-    EXPECT_THAT(changed_cells, Contains(cell_position{1, 2}));
+    EXPECT_TRUE(invoked);
 }
 
 } }

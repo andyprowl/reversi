@@ -29,10 +29,10 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\game_test_suite.cpp">
+    <ClCompile Include="src\stream_game_logger_test_suite.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\stream_game_logger_test_suite.cpp">
+    <ClCompile Include="src\local_game_test_suite.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

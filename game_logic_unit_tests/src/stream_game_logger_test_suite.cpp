@@ -1,7 +1,7 @@
 #include "stdafx.hpp"
 
 #include "reversi/cell_position.hpp"
-#include "reversi/game.hpp"
+#include "reversi/local_game.hpp"
 #include "reversi/player.hpp"
 #include "reversi/stream_game_logger.hpp"
 #include <sstream>
@@ -36,7 +36,7 @@ protected:
 
     stream_game_logger logger{log};
 
-    game the_game{4, logger};
+    local_game the_game{4, logger};
 
 };
 

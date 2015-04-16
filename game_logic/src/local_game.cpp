@@ -2,7 +2,7 @@
 
 #include "reversi/cell_position.hpp"
 #include "reversi/direction.hpp"
-#include "reversi/game.hpp"
+#include "reversi/local_game.hpp"
 #include "reversi/game_logger.hpp"
 #include "reversi/game_score.hpp"
 #include "reversi/player.hpp"
@@ -12,7 +12,7 @@
 namespace reversi
 {
 
-game::game(int const board_size, game_logger& logger)
+local_game::local_game(int const board_size, game_logger& logger)
     : board{board_size}
     , logger{logger}
     , next_moving_player{player::black}
@@ -21,53 +21,47 @@ game::game(int const board_size, game_logger& logger)
     place_initial_marks();
 }
 
-int game::get_board_size() const
+int local_game::get_board_size() const
 {
     return board.get_size();
 }
 
-boost::optional<player> game::get_board_cell_mark(cell_position const pos) const
+boost::optional<player> local_game::get_board_cell_mark(cell_position const pos) const
 {
     return board.get_cell_mark(pos);
 }
 
-placement_outcome game::place(cell_position const pos)
+placement_outcome local_game::place(cell_position const pos)
 {
     throw_if_cell_is_occupied(pos);
 
-    apply_reversals_or_throw_if_none_is_triggered(pos);
+    auto const reversals = apply_reversals_or_throw_if_none_is_triggered(pos);
     
     mark_placement_cell_and_update_score(pos);
 
-    auto outcome = update_game_state();
+    auto const outcome = update_game_state();
 
-    on_placement(pos, next_moving_player, outcome);
+    on_placement(pos, next_moving_player, outcome, reversals);
 
     return outcome;
 }
 
-game_score game::get_score() const
+game_score local_game::get_score() const
 {
     return score;
 }
 
-player game::get_next_moving_player() const
+player local_game::get_next_moving_player() const
 {
     return next_moving_player;
 }
 
-boost::signals2::connection game::register_placement_event_handler(placement_event_handler h)
+boost::signals2::connection local_game::register_placement_event_handler(placement_event_handler h)
 {
     return on_placement.connect(std::move(h));
 }
 
-boost::signals2::connection game::register_cell_mark_change_event_handler(
-    cell_mark_change_event_handler h)
-{
-    return board.register_cell_mark_change_event_handler(std::move(h));
-}
-
-void game::place_initial_marks()
+void local_game::place_initial_marks()
 {
     auto const board_size = board.get_size();
 
@@ -80,7 +74,7 @@ void game::place_initial_marks()
     board.mark_cell({board_size / 2, board_size / 2 - 1}, player::black);    
 }
     
-void game::throw_if_cell_is_occupied(cell_position const pos) const
+void local_game::throw_if_cell_is_occupied(cell_position const pos) const
 {
     if (board.is_cell_occupied(pos))
     {
@@ -88,7 +82,8 @@ void game::throw_if_cell_is_occupied(cell_position const pos) const
     }   
 }
 
-void game::apply_reversals_or_throw_if_none_is_triggered(cell_position const pos)
+std::vector<cell_position> local_game::apply_reversals_or_throw_if_none_is_triggered(
+    cell_position const pos)
 {
     auto const reversals = get_reversals_for_placement(pos, next_moving_player);
     
@@ -103,9 +98,11 @@ void game::apply_reversals_or_throw_if_none_is_triggered(cell_position const pos
     }
 
     update_score_after_reversals(reversals);
+
+    return reversals;
 }
 
-std::vector<cell_position> game::get_reversals_for_placement(cell_position const pos,
+std::vector<cell_position> local_game::get_reversals_for_placement(cell_position const pos,
                                                              player const p) const
 {
     if (board.is_cell_occupied(pos)) { return {}; }
@@ -122,7 +119,7 @@ std::vector<cell_position> game::get_reversals_for_placement(cell_position const
     return reversals;
 }
 
-std::vector<cell_position> game::get_reversals_for_placement_in_direction(
+std::vector<cell_position> local_game::get_reversals_for_placement_in_direction(
     cell_position const pos, 
     player const p,
     direction const d) const
@@ -143,19 +140,21 @@ std::vector<cell_position> game::get_reversals_for_placement_in_direction(
     return valid_move ? reversals : std::vector<cell_position>{};
 }
 
-bool game::is_cell_occupied_by_opponent_of_player(cell_position const pos, player const p) const
+bool local_game::is_cell_occupied_by_opponent_of_player(cell_position const pos, 
+                                                        player const p) const
 {
     auto const opponent = get_opponent_of(p);
 
     return is_cell_occupied_by_player(pos, opponent);
 }
 
-bool game::is_cell_occupied_by_player(cell_position const pos, player const p) const
+bool local_game::is_cell_occupied_by_player(cell_position const pos, player const p) const
 {
     return ((board.is_valid_cell_position(pos) && (board.get_cell_mark(pos) == p)));
 }
 
-void game::update_score_after_reversals(util::value_ref<std::vector<cell_position>> reversals)
+void local_game::update_score_after_reversals(
+    util::value_ref<std::vector<cell_position>> reversals)
 {
     auto num_of_reversals = static_cast<int>(reversals.size());
 
@@ -164,7 +163,7 @@ void game::update_score_after_reversals(util::value_ref<std::vector<cell_positio
     score = increase_score(score, get_opponent_of(next_moving_player), -num_of_reversals);    
 }
 
-void game::mark_placement_cell_and_update_score(cell_position const pos)
+void local_game::mark_placement_cell_and_update_score(cell_position const pos)
 {
     board.mark_cell(pos, next_moving_player);
 
@@ -173,7 +172,7 @@ void game::mark_placement_cell_and_update_score(cell_position const pos)
     logger.log_successful_placement(pos, next_moving_player);
 }
 
-placement_outcome game::update_game_state()
+placement_outcome local_game::update_game_state()
 {
     auto outcome = determine_last_placement_outcome();
     
@@ -187,7 +186,7 @@ placement_outcome game::update_game_state()
     return outcome;
 }
 
-placement_outcome game::determine_last_placement_outcome() const
+placement_outcome local_game::determine_last_placement_outcome() const
 {
     auto opponent = get_opponent_of(next_moving_player);
 
@@ -200,7 +199,7 @@ placement_outcome game::determine_last_placement_outcome() const
                                                  placement_outcome::game_over;
 }
 
-void game::log_placement_outcome(placement_outcome const p) const
+void local_game::log_placement_outcome(placement_outcome const p) const
 {
     if (p == placement_outcome::turn_switched)
     {
@@ -218,7 +217,7 @@ void game::log_placement_outcome(placement_outcome const p) const
     }
 }
 
-bool game::can_player_move(player p) const
+bool local_game::can_player_move(player p) const
 {
     for (auto const row : util::sequence(0, board.get_size()))
     {

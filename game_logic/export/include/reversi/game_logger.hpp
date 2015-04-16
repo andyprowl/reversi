@@ -7,7 +7,7 @@ enum class player;
     
 struct cell_position;
 
-class game;
+class local_game;
 
 class game_logger
 {
@@ -22,7 +22,7 @@ public:
 
     virtual void log_turn_skipped_message(player p) = 0;
 
-    virtual void log_game_over_message(game const& g) = 0;
+    virtual void log_game_over_message(local_game const& g) = 0;
 
 };
 
