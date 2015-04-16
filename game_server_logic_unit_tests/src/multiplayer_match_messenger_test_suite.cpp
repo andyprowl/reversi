@@ -293,9 +293,7 @@ TEST_THAT(MultiplayerMatchMessenger,
      WHEN(GivenAGetBoardSizeCommandAfterAMatchHasBeenJoined),
      THEN(CommunicatesTheSizeBackToTheClient))
 {
-    auto m = registry.create_new_match("NEW MATCH", 16);    
-
-    messenger.execute_command("JOIN;NEW MATCH");
+    messenger.execute_command("CREATE;NEW MATCH;16");
 
     last_messages_for_client.clear();
 
@@ -311,13 +309,141 @@ TEST_THAT(MultiplayerMatchMessenger,
      WHEN(GivenAGetBoardSizeCommandBeforeAMatchHasBeenJoined),
      THEN(DoesNotThrowAndCommunicatesAnErrorBackToTheClient))
 {
-    auto m = registry.create_new_match("NEW MATCH", 16);    
+    registry.create_new_match("NEW MATCH", 16);    
     
     messenger.execute_command("SIZE");
 
     ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
 
     EXPECT_THAT(last_messages_for_client, Contains("ERROR;NO MATCH JOINED"));    
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAGetWhitePlayerNameCommandAfterStartingAMatchJoinedAsTheFirstPlayer),
+     THEN(CommunicatesOwnNameBackToTheClient))
+{
+    set_player_name("COOL PLAYER");
+
+    auto m = registry.create_new_match("NEW MATCH", 16);
+    
+    messenger.execute_command("JOIN;NEW MATCH");
+
+    m->join("SECOND PLAYER");
+
+    last_messages_for_client.clear();
+    
+    messenger.execute_command("PLAYER;WHITE");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("OK;COOL PLAYER"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAGetWhitePlayerNameCommandAfterStartingAMatchJoinedAsTheSecondPlayer),
+     THEN(CommunicatesNameOfTheOpponentBackToTheClient))
+{
+    set_player_name("COOL PLAYER");
+
+    auto m = registry.create_new_match("NEW MATCH", 16);
+    
+    m->join("OPPONENT");
+
+    messenger.execute_command("JOIN;NEW MATCH");
+
+    last_messages_for_client.clear();
+    
+    messenger.execute_command("PLAYER;WHITE");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("OK;OPPONENT"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAGetBlackPlayerNameCommandAfterStartingAMatchJoinedAsTheFirstPlayer),
+     THEN(CommunicatesNameOfTheOpponentBackToTheClient))
+{
+    set_player_name("COOL PLAYER");
+
+    auto m = registry.create_new_match("NEW MATCH", 16);
+    
+    messenger.execute_command("JOIN;NEW MATCH");
+
+    m->join("OPPONENT");
+
+    last_messages_for_client.clear();
+    
+    messenger.execute_command("PLAYER;BLACK");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("OK;OPPONENT"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAGetBlackPlayerNameCommandAfterStartingAMatchJoinedAsTheSecondPlayer),
+     THEN(CommunicatesOwnNameBackToTheClient))
+{
+    set_player_name("COOL PLAYER");
+
+    auto m = registry.create_new_match("NEW MATCH", 16);
+    
+    m->join("OPPONENT");
+
+    messenger.execute_command("JOIN;NEW MATCH");
+
+    last_messages_for_client.clear();
+    
+    messenger.execute_command("PLAYER;BLACK");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("OK;COOL PLAYER"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAGetPlayerNameCommandBeforeJoiningAMatch),
+     THEN(DoesNotThrowAndCommunicatesAnErrorBackToTheClient))
+{
+    set_player_name("COOL PLAYER");
+
+    auto m = registry.create_new_match("NEW MATCH", 16);
+    
+    m->join("OPPONENT");
+
+    last_messages_for_client.clear();
+
+    EXPECT_NO_THROW(messenger.execute_command("PLAYER;WHITE"));
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("ERROR;NO MATCH JOINED"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAGetPlayerNameCommandAfterAMatchWasJoinedButBeforeTheGameWasStarted),
+     THEN(DoesNotThrowAndCommunicatesAnErrorBackToTheClient))
+{
+    set_player_name("COOL PLAYER");
+
+    auto m = registry.create_new_match("NEW MATCH", 16);
+
+    messenger.execute_command("JOIN;NEW MATCH");
+
+    last_messages_for_client.clear();
+
+    EXPECT_NO_THROW(messenger.execute_command("PLAYER;WHITE"));
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("ERROR;GAME NOT STARTED"));
 }
 
 } } }

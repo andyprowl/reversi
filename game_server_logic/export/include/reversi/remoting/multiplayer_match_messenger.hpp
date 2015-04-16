@@ -45,6 +45,8 @@ private:
 
     void process_board_size_query_command(util::value_ref<std::vector<std::string>> tokens);
 
+    void process_player_name_query_command(util::value_ref<std::vector<std::string>> tokens);
+
 private:
 
     using command_handler = std::function<void(util::value_ref<std::vector<std::string>>)>;

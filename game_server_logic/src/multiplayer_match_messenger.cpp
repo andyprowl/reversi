@@ -2,6 +2,7 @@
 
 #include "reversi/cell_position.hpp"
 #include "reversi/game.hpp"
+#include "reversi/player.hpp"
 #include "reversi/remoting/multiplayer_match.hpp"
 #include "reversi/remoting/multiplayer_match_messenger.hpp"
 #include "reversi/remoting/multiplayer_match_registry.hpp"
@@ -50,6 +51,7 @@ void multiplayer_match_messenger::setup_command_handlers()
     processors["JOIN"] = std::bind(&self::process_join_match_command, this, _1);
     processors["PLACE"] = std::bind(&self::process_place_mark_command, this, _1);
     processors["SIZE"] = std::bind(&self::process_board_size_query_command, this, _1);
+    processors["PLAYER"] = std::bind(&self::process_player_name_query_command, this, _1);
 }
 
 void multiplayer_match_messenger::process_set_name_command(
@@ -124,6 +126,30 @@ void multiplayer_match_messenger::process_board_size_query_command(
     auto const board_size = joined_match->get_board_size();    
 
     channel("OK;" + std::to_string(board_size));
+}
+
+void multiplayer_match_messenger::process_player_name_query_command(
+    util::value_ref<std::vector<std::string>> tokens)
+{
+    if (joined_match == nullptr)
+    {
+        channel("ERROR;NO MATCH JOINED");
+
+        return;
+    }
+
+    try
+    {
+        auto& g = joined_match->get_game();
+
+        auto const p = (tokens[1] == "WHITE") ? player::white : player::black;
+    
+        channel("OK;" + g.get_player_name(p));
+    }
+    catch (std::exception const&)
+    {
+        channel("ERROR;GAME NOT STARTED");
+    }
 }
 
 } }
