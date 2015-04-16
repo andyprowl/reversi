@@ -96,9 +96,18 @@ void multiplayer_match_messenger::process_join_match_command(
 void multiplayer_match_messenger::process_place_mark_command(
     util::value_ref<std::vector<std::string>> tokens)
 {
-    auto& g = joined_match->get_game();
+    try
+    {
+        auto& g = joined_match->get_game();
 
-    g.place({std::stoi(tokens[1]), std::stoi(tokens[2])});    
+        g.place({std::stoi(tokens[1]), std::stoi(tokens[2])});
+
+        channel("OK");
+    }
+    catch (std::exception const&)
+    {
+        channel("ERROR;INVALID POSITION");
+    }
 }
 
 } }

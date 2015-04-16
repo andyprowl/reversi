@@ -214,7 +214,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAPlaceMarkCommandAfterTheJoinedGameHasStarted),
+     WHEN(GivenAPlaceMarkCommandWithAValidCellPositionAfterTheJoinedGameHasStarted),
      THEN(LetTheGamePlaceTheMarkInTheEncodedPosition))
 {
     set_player_name("PLAYER");
@@ -228,6 +228,64 @@ TEST_THAT(MultiplayerMatchMessenger,
     auto& g = m->get_game();
 
     EXPECT_TRUE(bool{g.get_board_cell_mark({0, 1})});
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAPlaceMarkCommandWithAValidCellPositionAfterTheJoinedGameHasStarted),
+     THEN(CommunicatesASuccessCodeBackToTheClient))
+{
+    set_player_name("PLAYER");
+
+    auto m = create_match("MATCH");
+
+    m->join("SECOND PLAYER");
+
+    last_messages_for_client.clear();
+
+    messenger.execute_command("PLACE;0;1");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("OK"));    
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAPlaceMarkCommandWithAnInvalidCellPositionAfterTheJoinedGameHasStarted),
+     THEN(DoesNotThrowAndDoesNotPlaceAndyMark))
+{
+    set_player_name("PLAYER");
+
+    auto m = create_match("MATCH");
+
+    m->join("SECOND PLAYER");
+
+    EXPECT_NO_THROW(messenger.execute_command("PLACE;0;0"));
+
+    auto& g = m->get_game();
+
+    EXPECT_FALSE(bool{g.get_board_cell_mark({0, 0})});
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAPlaceMarkCommandWithAnInvalidCellPositionAfterTheJoinedGameHasStarted),
+     THEN(CommunicatesASuccessCodeBackToTheClient))
+{
+    set_player_name("PLAYER");
+
+    auto m = create_match("MATCH");
+
+    m->join("SECOND PLAYER");
+
+    last_messages_for_client.clear();
+
+    messenger.execute_command("PLACE;0;0");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("ERROR;INVALID POSITION"));    
 }
 
 } } }
