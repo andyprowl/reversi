@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\multiplayer_match_messenger_test_suite.cpp" />
     <ClCompile Include="src\multiplayer_match_registry_test_suite.cpp" />
     <ClCompile Include="src\multiplayer_match_test_suite.cpp" />
     <ClCompile Include="src\stdafx.cpp">

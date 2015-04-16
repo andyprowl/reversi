@@ -37,11 +37,11 @@ public:
     virtual std::string get_player_name(player p) const override;
 
     virtual placement_outcome place(cell_position pos) override;
-    
+
+    virtual boost::optional<player> get_board_cell_mark(cell_position pos) const override;
+
     virtual boost::signals2::connection register_placement_event_handler(
         placement_event_handler h) override;
-
-    boost::optional<player> get_board_cell_mark(cell_position pos) const;
 
     game_score get_score() const;
 

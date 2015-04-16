@@ -10,6 +10,7 @@ namespace reversi { namespace remoting { namespace testing
 
 using ::testing::Eq;
 using ::testing::Lt;
+using ::testing::Ref;
 using ::testing::Test;
 
 class MultiplayerMatch : public Test
@@ -70,6 +71,33 @@ TEST_THAT(MultiplayerMatch,
     the_match.join("John");    
 
     EXPECT_TRUE(invoked);
+}
+
+TEST_THAT(MultiplayerMatch,
+     WHAT(GetGame),
+     WHEN(BeforeTheMatchHasStarted),
+     THEN(Throws))
+{
+    the_match.join("Mark");
+
+    EXPECT_THROW(the_match.get_game(), match_not_started_exception);
+}
+
+TEST_THAT(MultiplayerMatch,
+     WHAT(GetGame),
+     WHEN(AfterTheMatchHasStarted),
+     THEN(ReturnsTheMatchGame))
+{
+    auto started_game = static_cast<game*>(nullptr);
+    the_match.register_match_full_handler([&started_game] (game& g)
+    {
+        started_game = &g;
+    });
+
+    the_match.join("Mark");
+    the_match.join("John");    
+
+    EXPECT_THAT(the_match.get_game(), Ref(*started_game));
 }
 
 } } }

@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClInclude Include="export\include\util\sequence.hpp" />
     <ClInclude Include="export\include\util\signal_traits.hpp" />
+    <ClInclude Include="export\include\util\tokenize.hpp" />
     <ClInclude Include="export\include\util\value_ref.hpp" />
     <ClInclude Include="include\stdafx.hpp" />
   </ItemGroup>

@@ -14,12 +14,14 @@
     <ClInclude Include="export\include\reversi\remoting\file_game_logger_factory.hpp" />
     <ClInclude Include="export\include\reversi\remoting\game_logger_factory.hpp" />
     <ClInclude Include="export\include\reversi\remoting\multiplayer_match.hpp" />
+    <ClInclude Include="export\include\reversi\remoting\multiplayer_match_messenger.hpp" />
     <ClInclude Include="export\include\reversi\remoting\multiplayer_match_registry.hpp" />
     <ClInclude Include="include\stdafx.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\file_game_logger_factory.cpp" />
     <ClCompile Include="src\multiplayer_match.cpp" />
+    <ClCompile Include="src\multiplayer_match_messenger.cpp" />
     <ClCompile Include="src\multiplayer_match_registry.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -22,6 +22,10 @@ class match_full_exception : public virtual std::exception
 {    
 };
 
+class match_not_started_exception : public virtual std::exception
+{    
+};
+
 class multiplayer_match
 {
 
@@ -40,6 +44,8 @@ public:
     int get_board_size() const;
 
     void join(std::string player_name);
+
+    game& get_game() const;
     
     boost::signals2::connection register_match_full_handler(match_full_handler h);
 

@@ -32,6 +32,9 @@
     <ClCompile Include="src\multiplayer_match_registry_test_suite.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\multiplayer_match_messenger_test_suite.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\stdafx.hpp">

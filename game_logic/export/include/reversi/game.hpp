@@ -1,6 +1,7 @@
 #pragma once
 
 #include "util/value_ref.hpp"
+#include <boost/optional.hpp>
 #include <boost/signals2/connection.hpp>
 #include <functional>
 #include <string>
@@ -34,6 +35,8 @@ public:
 
     virtual placement_outcome place(cell_position pos) = 0;
     
+    virtual boost::optional<player> get_board_cell_mark(cell_position pos) const = 0;
+
     virtual boost::signals2::connection register_placement_event_handler(
         placement_event_handler h) = 0;
 

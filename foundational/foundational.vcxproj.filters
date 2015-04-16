@@ -32,6 +32,9 @@
     <ClInclude Include="export\include\util\signal_traits.hpp">
       <Filter>export\include\util</Filter>
     </ClInclude>
+    <ClInclude Include="export\include\util\tokenize.hpp">
+      <Filter>export\include\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">

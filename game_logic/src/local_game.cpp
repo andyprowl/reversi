@@ -43,11 +43,6 @@ std::string local_game::get_player_name(player const p) const
     }
 }
 
-game_score local_game::get_score() const
-{
-    return score;
-}
-
 placement_outcome local_game::place(cell_position const pos)
 {
     throw_if_cell_is_occupied(pos);
@@ -63,14 +58,19 @@ placement_outcome local_game::place(cell_position const pos)
     return outcome;
 }
 
+boost::optional<player> local_game::get_board_cell_mark(cell_position const pos) const
+{
+    return board.get_cell_mark(pos);
+}
+
 boost::signals2::connection local_game::register_placement_event_handler(placement_event_handler h)
 {
     return on_placement.connect(std::move(h));
 }
 
-boost::optional<player> local_game::get_board_cell_mark(cell_position const pos) const
+game_score local_game::get_score() const
 {
-    return board.get_cell_mark(pos);
+    return score;
 }
 
 player local_game::get_next_moving_player() const

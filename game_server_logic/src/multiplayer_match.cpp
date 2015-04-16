@@ -43,6 +43,16 @@ void multiplayer_match::join(std::string player_name)
     }
 }
 
+game& multiplayer_match::get_game() const
+{
+    if (played_game == nullptr)
+    {
+        throw match_not_started_exception{};
+    }
+
+    return *played_game;
+}
+
 boost::signals2::connection multiplayer_match::register_match_full_handler(match_full_handler h)
 {
     return on_match_full.connect(std::move(h));
