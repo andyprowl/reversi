@@ -288,4 +288,36 @@ TEST_THAT(MultiplayerMatchMessenger,
     EXPECT_THAT(last_messages_for_client, Contains("ERROR;INVALID POSITION"));    
 }
 
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAGetBoardSizeCommandAfterAMatchHasBeenJoined),
+     THEN(CommunicatesTheSizeBackToTheClient))
+{
+    auto m = registry.create_new_match("NEW MATCH", 16);    
+
+    messenger.execute_command("JOIN;NEW MATCH");
+
+    last_messages_for_client.clear();
+
+    messenger.execute_command("SIZE");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("OK;16"));    
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAGetBoardSizeCommandBeforeAMatchHasBeenJoined),
+     THEN(DoesNotThrowAndCommunicatesAnErrorBackToTheClient))
+{
+    auto m = registry.create_new_match("NEW MATCH", 16);    
+    
+    messenger.execute_command("SIZE");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("ERROR;NO MATCH JOINED"));    
+}
+
 } } }

@@ -48,7 +48,8 @@ void multiplayer_match_messenger::setup_command_handlers()
     processors["NAME"] = std::bind(&self::process_set_name_command, this, _1);
     processors["CREATE"] = std::bind(&self::process_create_match_command, this, _1);
     processors["JOIN"] = std::bind(&self::process_join_match_command, this, _1);
-    processors["PLACE"] = std::bind(&self::process_place_mark_command, this, _1);    
+    processors["PLACE"] = std::bind(&self::process_place_mark_command, this, _1);
+    processors["SIZE"] = std::bind(&self::process_board_size_query_command, this, _1);
 }
 
 void multiplayer_match_messenger::process_set_name_command(
@@ -108,6 +109,21 @@ void multiplayer_match_messenger::process_place_mark_command(
     {
         channel("ERROR;INVALID POSITION");
     }
+}
+
+void multiplayer_match_messenger::process_board_size_query_command(
+    util::value_ref<std::vector<std::string>> tokens)
+{
+    if (joined_match == nullptr)
+    {
+        channel("ERROR;NO MATCH JOINED");
+
+        return;
+    }
+
+    auto const board_size = joined_match->get_board_size();    
+
+    channel("OK;" + std::to_string(board_size));
 }
 
 } }
