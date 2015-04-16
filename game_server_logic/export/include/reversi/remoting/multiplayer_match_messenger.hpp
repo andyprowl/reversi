@@ -22,8 +22,6 @@ public:
 
     std::string get_player_name() const;
 
-    game& get_current_game() const;
-
 private:
 
     multiplayer_match_registry& registry;

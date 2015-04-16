@@ -1,36 +1,42 @@
 #include "stdafx.hpp"
 
-#include "reversi/remoting/client_connection.hpp"
-#include "reversi/remoting/game_server.hpp"
-#include <iostream>
+#include "networking/client_connection.hpp"
+#include "networking/message_server.hpp"
+
+namespace networking
+{
 
 client_connection::client_connection(int const client_id, 
                                      boost::asio::io_service& service,
-                                     game_server& server)
+                                     message_server& server,
+                                     std::ostream& log)
     : client_id{client_id}
     , socket{service}
     , server{server}
+    , log{log}
 {
 }
 
-tcp::socket& client_connection::get_socket()
+boost::asio::ip::tcp::socket& client_connection::get_socket()
 {
     return socket;
 }
 
-void client_connection::start_reading_messages()
+void client_connection::start_reading_messages(message_processor p)
 {
-    std::cout << "Client " << client_id << " connected, reading messages..." << std::endl;
+    log << "Client " << client_id << " connected, reading messages..." << std::endl;
 
     try
     {
+        processor = p;
+
         read_next_message();
     }
     catch (std::exception const& error)
     {            
-        std::cout << "Problem on client connection: ";
+        log << "Problem on client connection: ";
 
-        std::cout << error.what() << std::endl;
+        log << error.what() << std::endl;
     }
 }
 
@@ -65,14 +71,16 @@ void client_connection::on_message_received(std::size_t const size_in_bytes)
 
 bool client_connection::process_message(std::string msg)
 {
-    std::cout << "Message received from client " << client_id << ": " << msg << std::endl;
+    log << "Received message from client " << client_id << ": " << msg;
 
-    return (msg != "STOP");
+    return processor(std::move(msg));
 }
 
 void client_connection::remove_self_from_server()
 {
-    std::cout << "Client " << client_id << " terminated, disposing connection..." << std::endl;
+    log << "Client " << client_id << " terminated, disposing connection..." << std::endl;
 
     server.dispose_connection(client_id);    
+}
+
 }

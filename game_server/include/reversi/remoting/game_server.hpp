@@ -1,35 +1,30 @@
 #pragma once
 
-#include <boost/asio.hpp>
-#include <unordered_map>
+#include "networking/message_server.hpp"
+#include "reversi/remoting/file_game_logger_factory.hpp"
+#include "reversi/remoting/multiplayer_match_registry.hpp"
 
-using boost::asio::ip::tcp;
-
-class client_connection;
-
-class game_server
+namespace reversi { namespace remoting
+{
+    
+class game_server : public networking::message_server
 {
 
 public:
   
     explicit game_server(boost::asio::io_service& service);
-    
-    ~game_server();
-
-    void dispose_connection(int const client_id);
 
 private:
 
-    void start_accepting_connections();
-
-    client_connection& create_new_connection();
+    virtual networking::client_connection::message_processor get_message_processor_for_connection(
+        networking::client_connection& c) override;
 
 private:
 
-    tcp::acceptor listener;
+    file_game_logger_factory logger_factory;
 
-    std::unordered_map<int, std::unique_ptr<client_connection>> connections;
-
-    int next_client_id = 0;
+    multiplayer_match_registry match_registry;
 
 };
+
+} }

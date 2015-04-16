@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_server_logic", "game_s
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_server_logic_unit_tests", "game_server_logic_unit_tests\game_server_logic_unit_tests.vcxproj", "{848B610F-9BC7-44AA-B70F-492F0A18B824}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "message_server", "message_server\message_server.vcxproj", "{9F3661F0-AD5A-4AF6-BE71-D89DF2B4D611}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -63,6 +65,10 @@ Global
 		{848B610F-9BC7-44AA-B70F-492F0A18B824}.Debug|x64.Build.0 = Debug|x64
 		{848B610F-9BC7-44AA-B70F-492F0A18B824}.Release|x64.ActiveCfg = Release|x64
 		{848B610F-9BC7-44AA-B70F-492F0A18B824}.Release|x64.Build.0 = Release|x64
+		{9F3661F0-AD5A-4AF6-BE71-D89DF2B4D611}.Debug|x64.ActiveCfg = Debug|x64
+		{9F3661F0-AD5A-4AF6-BE71-D89DF2B4D611}.Debug|x64.Build.0 = Debug|x64
+		{9F3661F0-AD5A-4AF6-BE71-D89DF2B4D611}.Release|x64.ActiveCfg = Release|x64
+		{9F3661F0-AD5A-4AF6-BE71-D89DF2B4D611}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

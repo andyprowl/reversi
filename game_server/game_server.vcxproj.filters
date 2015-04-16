@@ -26,18 +26,12 @@
     <ClCompile Include="src\game_server.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\client_connection.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\stdafx.hpp">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\reversi\remoting\game_server.hpp">
-      <Filter>include\reversi\remoting</Filter>
-    </ClInclude>
-    <ClInclude Include="include\reversi\remoting\client_connection.hpp">
       <Filter>include\reversi\remoting</Filter>
     </ClInclude>
   </ItemGroup>

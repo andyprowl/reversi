@@ -9,7 +9,7 @@ int main(int argc, wchar_t* argv[])
     {
         auto service = boost::asio::io_service{};
 
-        game_server server{service};
+        reversi::remoting::game_server server{service};
         
         service.run();
     }

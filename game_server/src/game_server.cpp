@@ -1,51 +1,34 @@
 #include "stdafx.hpp"
 
 #include "reversi/remoting/game_server.hpp"
-#include "reversi/remoting/client_connection.hpp"
+#include "reversi/remoting/multiplayer_match_messenger.hpp"
 #include <iostream>
 
+namespace reversi { namespace remoting
+{
+
 game_server::game_server(boost::asio::io_service& service)
-    : listener{service, tcp::endpoint(tcp::v4(), 4543)}
+    : message_server{service, 4543, std::cout}
+    , match_registry{logger_factory}
 {
-    start_accepting_connections();
 }
 
-game_server::~game_server() = default;
-
-void game_server::dispose_connection(int const client_id)
+networking::client_connection::message_processor game_server::get_message_processor_for_connection(
+    networking::client_connection& c)
 {
-    connections.erase(client_id);
-}
+    auto messenger = std::make_shared<multiplayer_match_messenger>(match_registry);
 
-void game_server::start_accepting_connections()
-{
-    std::cout << "Ready to accept new client connections..." << std::endl;
-
-    auto& connection = create_new_connection();
-
-    listener.async_accept(connection.get_socket(), 
-                          [this, &connection] (boost::system::error_code const& e)
+    return [messenger] (util::value_ref<std::string> msg)
     {
-        if (!e)
+        if (msg == "STOP")
         {
-            connection.start_reading_messages();
+            return false;
         }
 
-        start_accepting_connections(); 
-    });
+        messenger->execute_command(msg);
+
+        return true;
+    };
 }
 
-client_connection& game_server::create_new_connection()
-{
-    auto client_id = ++next_client_id;
-
-    auto connection = std::make_unique<client_connection>(next_client_id, 
-                                                          listener.get_io_service(),
-                                                          *this);
-
-    auto& new_connection = *connection;
-
-    connections.emplace(client_id, std::move(connection));
-
-    return new_connection;
-}
+} }
