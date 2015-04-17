@@ -4,6 +4,7 @@
 #include "reversi/file_game_logger.hpp"
 #include "reversi/game.hpp"
 #include "reversi/game_board_renderer.hpp"
+#include "reversi/game_score.hpp"
 #include "reversi/player.hpp"
 #include "reversi/player_info_renderer.hpp"
 #include <cinder/gl/Texture.h>
@@ -107,9 +108,7 @@ private:
 
     bool game_over = false;
 
-    int white_score = 2;
-
-    int black_score = 2;
+    game_score score = {2, 2};
 
     double message_seconds = 0.0;
 

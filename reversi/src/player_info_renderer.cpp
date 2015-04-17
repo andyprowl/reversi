@@ -1,6 +1,7 @@
 #include "stdafx.hpp"
 
 #include "reversi/game.hpp"
+#include "reversi/game_score.hpp"
 #include "reversi/player.hpp"
 #include "reversi/player_info_renderer.hpp"
 #include <cinder/ImageIo.h>
@@ -20,16 +21,15 @@ player_info_renderer::player_info_renderer(game& g,
 
 void player_info_renderer::draw_player_info(bool const game_over,
                                             player const next_mover,
-                                            int const white_score, 
-                                            int const black_score)
+                                            game_score const score)
 {
-    draw_white_player_info(white_score);
+    draw_white_player_info(score.white);
 
-    draw_black_player_info(black_score);
+    draw_black_player_info(score.black);
 
     draw_turn_indicator(game_over, next_mover);
 
-    draw_winner_indicator(game_over, white_score, black_score);
+    draw_winner_indicator(game_over, score);
 }
 
 void player_info_renderer::create_fonts()
@@ -207,15 +207,14 @@ void player_info_renderer::draw_black_player_turn_indicator() const
 }
 
 void player_info_renderer::draw_winner_indicator(bool const game_over,
-                                                 int const white_score,
-                                                 int const black_score) const
+                                                 game_score const score) const
 {
-    if (!game_over || (white_score == black_score))
+    if (!game_over || (score.white == score.black))
     {
         return; 
     }
 
-    if (white_score > black_score)
+    if (score.white > score.black)
     {
         draw_white_player_winner_indicator();
     }

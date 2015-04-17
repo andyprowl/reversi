@@ -182,9 +182,7 @@ void application::start_new_game(int const board_size)
 
     game_over = false;
 
-    white_score = 2;
-
-    black_score = 2;
+    score = {2, 2};
 
     next_mover = player::black;
 
@@ -236,8 +234,7 @@ void application::draw_player_info() const
 {
     player_renderer->draw_player_info(game_over, 
                                       next_mover, 
-                                      white_score, 
-                                      black_score);
+                                      score);
 }
 
 void application::draw_hint_message() const
@@ -317,13 +314,13 @@ void application::update_score(player const scorer, int const num_of_reversals)
 {
     if (scorer == player::white)
     {
-        white_score += static_cast<int>(num_of_reversals + 1);
-        black_score -= static_cast<int>(num_of_reversals);
+        score.white += static_cast<int>(num_of_reversals + 1);
+        score.black-= static_cast<int>(num_of_reversals);
     }
     else
     {
-        black_score += static_cast<int>(num_of_reversals + 1);
-        white_score -= static_cast<int>(num_of_reversals);
+        score.black += static_cast<int>(num_of_reversals + 1);
+        score.white -= static_cast<int>(num_of_reversals);
     }    
 }
 
@@ -365,18 +362,14 @@ void application::show_turn_skipped_message()
 
 std::string application::get_game_result_description() const
 {
-    if (white_score == black_score)
+    auto const winner = get_winning_player(score);
+
+    if (!winner)
     {
         return "Nobody wins.";
     }
-    else if (white_score > black_score)
-    {
-        return current_game->get_player_name(player::white) + " wins!";
-    }
-    else
-    {
-        return current_game->get_player_name(player::black) + " wins!";
-    }
+
+    return current_game->get_player_name(*winner) + " wins!";
 }
 
 }

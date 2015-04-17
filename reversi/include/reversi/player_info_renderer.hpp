@@ -6,6 +6,8 @@
 namespace reversi
 {
 
+struct game_score;
+
 class game;
     
 class player_info_renderer
@@ -15,10 +17,7 @@ public:
 
     player_info_renderer(game& g, float board_display_size);
 
-    void draw_player_info(bool game_over,
-                          player next_mover, 
-                          int white_score, 
-                          int black_score);
+    void draw_player_info(bool game_over, player next_mover, game_score score);
 
 private:
 
@@ -44,9 +43,7 @@ private:
 
     void draw_black_player_turn_indicator() const;
 
-    void draw_winner_indicator(bool game_over, 
-                               int white_score, 
-                               int black_score) const;
+    void draw_winner_indicator(bool game_over, game_score score) const;
 
     void draw_white_player_winner_indicator() const;
 
