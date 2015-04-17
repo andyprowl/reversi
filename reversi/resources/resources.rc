@@ -1,0 +1,3 @@
+#include "../include/resources.hpp"
+
+1	ICON	"..\\resources\\reversi.ico"
