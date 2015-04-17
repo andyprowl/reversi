@@ -152,8 +152,6 @@ void application::load_pictures()
 
     load_title_picture();
 
-    load_winner_picture();
-
     load_game_over_picture();
 }
 
@@ -169,13 +167,6 @@ void application::load_title_picture()
     auto const asset = cinder::app::loadAsset("title.png");
 
     title_picture = cinder::loadImage(asset);         
-}
-
-void application::load_winner_picture()
-{
-    auto const asset = cinder::app::loadAsset("winner.png");
-
-    winner_picture = cinder::loadImage(asset);      
 }
 
 void application::load_game_over_picture()
@@ -224,8 +215,6 @@ void application::draw_frame() const
     draw_game_board();
 
     draw_player_info();
-
-    draw_winner_indicator();
 
     draw_game_over_label();
 
@@ -281,62 +270,6 @@ void application::draw_hint_message() const
                                    pos, 
                                    {1.0, 1.0, 0.0, transparency}, 
                                    message_font);
-}
-
-void application::draw_winner_indicator() const
-{
-    if (!game_over || (white_score == black_score))
-    {
-        return; 
-    }
-
-    if (white_score > black_score)
-    {
-        draw_white_player_winner_indicator();
-    }
-    else
-    {        
-        draw_black_player_winner_indicator();
-    }
-}
-
-void application::draw_white_player_winner_indicator() const
-{
-    auto const x_center = (getWindowCenter().x - board_display_size / 2) / 2;
-
-    auto const y_center = getWindowCenter().y - board_display_size / 2.f + 10.f;
-
-    auto const center = cinder::Vec2d{x_center - 5.f, y_center};
-
-    auto const top_left = center - 
-                          cinder::Vec2f{winner_picture.getSize()} / 4.5;
-
-    auto const bottom_right = center + 
-                              cinder::Vec2f{winner_picture.getSize()} / 4.5;
-
-    cinder::gl::draw(winner_picture, {top_left, bottom_right});        
-}
-
-void application::draw_black_player_winner_indicator() const
-{
-    auto const window_center = getWindowCenter();
-
-    auto const window_size = getWindowSize();
-
-    auto const x_center = 
-        (window_size.x + (window_center.y + board_display_size)) / 2;
-
-    auto const y_center = window_center.y - board_display_size / 2.f + 10.f;
-
-    auto const center = cinder::Vec2d{x_center - 25.f, y_center};
-
-    auto const top_left = center - 
-                          cinder::Vec2f{winner_picture.getSize()} / 4.5;
-
-    auto const bottom_right = center + 
-                              cinder::Vec2f{winner_picture.getSize()} / 4.5;
-
-    cinder::gl::draw(winner_picture, {top_left, bottom_right});    
 }
 
 void application::draw_game_over_label() const

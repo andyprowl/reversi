@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cinder/gl/Texture.h>
 #include <cinder/Text.h>
 
 namespace reversi
@@ -23,6 +24,8 @@ private:
 
     void create_fonts();
 
+    void load_winner_picture();
+
     void draw_white_player_info(int white_score) const;
 
     void draw_white_player_name() const;
@@ -41,6 +44,14 @@ private:
 
     void draw_black_player_turn_indicator() const;
 
+    void draw_winner_indicator(bool game_over, 
+                               int white_score, 
+                               int black_score) const;
+
+    void draw_white_player_winner_indicator() const;
+
+    void draw_black_player_winner_indicator() const;
+
 private:
 
     game& current_game;
@@ -50,6 +61,8 @@ private:
     cinder::Font player_name_font;
 
     cinder::Font score_font;
+
+    cinder::gl::Texture winner_picture;
 
 };
 

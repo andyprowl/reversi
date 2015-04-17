@@ -3,6 +3,7 @@
 #include "reversi/game.hpp"
 #include "reversi/player.hpp"
 #include "reversi/player_info_renderer.hpp"
+#include <cinder/ImageIo.h>
 
 namespace reversi
 {
@@ -13,6 +14,8 @@ player_info_renderer::player_info_renderer(game& g,
     , board_display_size{board_display_size}
 {    
     create_fonts();
+
+    load_winner_picture();
 }
 
 void player_info_renderer::draw_player_info(bool const game_over,
@@ -25,6 +28,8 @@ void player_info_renderer::draw_player_info(bool const game_over,
     draw_black_player_info(black_score);
 
     draw_turn_indicator(game_over, next_mover);
+
+    draw_winner_indicator(game_over, white_score, black_score);
 }
 
 void player_info_renderer::create_fonts()
@@ -32,6 +37,13 @@ void player_info_renderer::create_fonts()
     player_name_font = cinder::Font{"Arial", 50.f};
 
     score_font = cinder::Font{"Arial", 150.f};    
+}
+
+void player_info_renderer::load_winner_picture()
+{
+    auto const asset = cinder::app::loadAsset("winner.png");
+
+    winner_picture = cinder::loadImage(asset);      
 }
 
 void player_info_renderer::draw_white_player_info(int const white_score) const
@@ -192,6 +204,66 @@ void player_info_renderer::draw_black_player_turn_indicator() const
     cinder::gl::drawStrokedRoundedRect({top_left, bottom_right}, 5.0);
 
     cinder::gl::color(cinder::ColorA{1.f, 1.f, 1.f, 1.f});     
+}
+
+void player_info_renderer::draw_winner_indicator(bool const game_over,
+                                                 int const white_score,
+                                                 int const black_score) const
+{
+    if (!game_over || (white_score == black_score))
+    {
+        return; 
+    }
+
+    if (white_score > black_score)
+    {
+        draw_white_player_winner_indicator();
+    }
+    else
+    {        
+        draw_black_player_winner_indicator();
+    }
+}
+
+void player_info_renderer::draw_white_player_winner_indicator() const
+{
+    auto const window_center = cinder::app::getWindowCenter();
+
+    auto const x_center = (window_center.x - board_display_size / 2) / 2;
+
+    auto const y_center = window_center.y - board_display_size / 2.f + 10.f;
+
+    auto const center = cinder::Vec2d{x_center - 5.f, y_center};
+
+    auto const top_left = center - 
+                          cinder::Vec2f{winner_picture.getSize()} / 4.5;
+
+    auto const bottom_right = center + 
+                              cinder::Vec2f{winner_picture.getSize()} / 4.5;
+
+    cinder::gl::draw(winner_picture, {top_left, bottom_right});        
+}
+
+void player_info_renderer::draw_black_player_winner_indicator() const
+{
+    auto const window_center = cinder::app::getWindowCenter();
+
+    auto const window_size = cinder::app::getWindowSize();
+
+    auto const x_center = 
+        (window_size.x + (window_center.y + board_display_size)) / 2;
+
+    auto const y_center = window_center.y - board_display_size / 2.f + 10.f;
+
+    auto const center = cinder::Vec2d{x_center - 25.f, y_center};
+
+    auto const top_left = center - 
+                          cinder::Vec2f{winner_picture.getSize()} / 4.5;
+
+    auto const bottom_right = center + 
+                              cinder::Vec2f{winner_picture.getSize()} / 4.5;
+
+    cinder::gl::draw(winner_picture, {top_left, bottom_right});    
 }
 
 }

@@ -53,8 +53,6 @@ private:
 
     void load_title_picture();
 
-    void load_winner_picture();
-
     void load_game_over_picture();
 
     void create_fonts();
@@ -72,12 +70,6 @@ private:
     void draw_player_info() const;
 
     void draw_hint_message() const;
-
-    void draw_winner_indicator() const;
-
-    void draw_white_player_winner_indicator() const;
-
-    void draw_black_player_winner_indicator() const;
 
     void draw_game_over_label() const;
 
@@ -109,8 +101,6 @@ private:
     cinder::gl::Texture background_picture;
 
     cinder::gl::Texture title_picture;
-
-    cinder::gl::Texture winner_picture;
 
     cinder::gl::Texture game_over_picture;
 
