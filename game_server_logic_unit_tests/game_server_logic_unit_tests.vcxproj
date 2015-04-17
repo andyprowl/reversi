@@ -25,9 +25,6 @@
     <ClInclude Include="include\stdafx.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\game_server_logic\game_server_logic.vcxproj">
-      <Project>{e892c3c5-11b6-4243-806e-02ec06c00892}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\gmock_1.7.0\msvc\2013\gmock.vcxproj">
       <Project>{34681f0d-ce45-415d-b5f2-5c662dfe3bd5}</Project>
     </ProjectReference>

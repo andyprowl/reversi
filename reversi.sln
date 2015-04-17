@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_server", "game_server\game_server.vcxproj", "{80574542-1BB0-46F3-9BDE-3713C9B2D763}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_logic", "game_logic\game_logic.vcxproj", "{4A3859A0-0B1B-45BA-8AFB-DDADCE200A93}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gmock", "gmock_1.7.0\msvc\2013\gmock.vcxproj", "{34681F0D-CE45-415D-B5F2-5C662DFE3BD5}"
@@ -17,14 +15,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_logic_unit_tests", "ga
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_logic_integration_tests", "game_logic_integration_tests\game_logic_integration_tests.vcxproj", "{327185CD-694C-4539-8B42-27730221889E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_server_logic", "game_server_logic\game_server_logic.vcxproj", "{E892C3C5-11B6-4243-806E-02EC06C00892}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_server_logic_unit_tests", "game_server_logic_unit_tests\game_server_logic_unit_tests.vcxproj", "{848B610F-9BC7-44AA-B70F-492F0A18B824}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "message_server", "message_server\message_server.vcxproj", "{9F3661F0-AD5A-4AF6-BE71-D89DF2B4D611}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_client", "game_client\game_client.vcxproj", "{8FCBC6A0-539F-4D50-B9F3-E49201DFE14F}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "reversi", "reversi\reversi.vcxproj", "{FDD68AC9-D34D-4C17-AA56-00C144DA8360}"
 EndProject
 Global
@@ -33,10 +23,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{80574542-1BB0-46F3-9BDE-3713C9B2D763}.Debug|x64.ActiveCfg = Debug|x64
-		{80574542-1BB0-46F3-9BDE-3713C9B2D763}.Debug|x64.Build.0 = Debug|x64
-		{80574542-1BB0-46F3-9BDE-3713C9B2D763}.Release|x64.ActiveCfg = Release|x64
-		{80574542-1BB0-46F3-9BDE-3713C9B2D763}.Release|x64.Build.0 = Release|x64
 		{4A3859A0-0B1B-45BA-8AFB-DDADCE200A93}.Debug|x64.ActiveCfg = Debug|x64
 		{4A3859A0-0B1B-45BA-8AFB-DDADCE200A93}.Debug|x64.Build.0 = Debug|x64
 		{4A3859A0-0B1B-45BA-8AFB-DDADCE200A93}.Release|x64.ActiveCfg = Release|x64
@@ -61,22 +47,6 @@ Global
 		{327185CD-694C-4539-8B42-27730221889E}.Debug|x64.Build.0 = Debug|x64
 		{327185CD-694C-4539-8B42-27730221889E}.Release|x64.ActiveCfg = Release|x64
 		{327185CD-694C-4539-8B42-27730221889E}.Release|x64.Build.0 = Release|x64
-		{E892C3C5-11B6-4243-806E-02EC06C00892}.Debug|x64.ActiveCfg = Debug|x64
-		{E892C3C5-11B6-4243-806E-02EC06C00892}.Debug|x64.Build.0 = Debug|x64
-		{E892C3C5-11B6-4243-806E-02EC06C00892}.Release|x64.ActiveCfg = Release|x64
-		{E892C3C5-11B6-4243-806E-02EC06C00892}.Release|x64.Build.0 = Release|x64
-		{848B610F-9BC7-44AA-B70F-492F0A18B824}.Debug|x64.ActiveCfg = Debug|x64
-		{848B610F-9BC7-44AA-B70F-492F0A18B824}.Debug|x64.Build.0 = Debug|x64
-		{848B610F-9BC7-44AA-B70F-492F0A18B824}.Release|x64.ActiveCfg = Release|x64
-		{848B610F-9BC7-44AA-B70F-492F0A18B824}.Release|x64.Build.0 = Release|x64
-		{9F3661F0-AD5A-4AF6-BE71-D89DF2B4D611}.Debug|x64.ActiveCfg = Debug|x64
-		{9F3661F0-AD5A-4AF6-BE71-D89DF2B4D611}.Debug|x64.Build.0 = Debug|x64
-		{9F3661F0-AD5A-4AF6-BE71-D89DF2B4D611}.Release|x64.ActiveCfg = Release|x64
-		{9F3661F0-AD5A-4AF6-BE71-D89DF2B4D611}.Release|x64.Build.0 = Release|x64
-		{8FCBC6A0-539F-4D50-B9F3-E49201DFE14F}.Debug|x64.ActiveCfg = Debug|x64
-		{8FCBC6A0-539F-4D50-B9F3-E49201DFE14F}.Debug|x64.Build.0 = Debug|x64
-		{8FCBC6A0-539F-4D50-B9F3-E49201DFE14F}.Release|x64.ActiveCfg = Release|x64
-		{8FCBC6A0-539F-4D50-B9F3-E49201DFE14F}.Release|x64.Build.0 = Release|x64
 		{FDD68AC9-D34D-4C17-AA56-00C144DA8360}.Debug|x64.ActiveCfg = Debug|x64
 		{FDD68AC9-D34D-4C17-AA56-00C144DA8360}.Debug|x64.Build.0 = Debug|x64
 		{FDD68AC9-D34D-4C17-AA56-00C144DA8360}.Release|x64.ActiveCfg = Release|x64
