@@ -27,12 +27,18 @@
     <ClInclude Include="include\reversi\application.hpp">
       <Filter>include\reversi</Filter>
     </ClInclude>
+    <ClInclude Include="include\reversi\game_board_renderer.hpp">
+      <Filter>include\reversi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\application.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game_board_renderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

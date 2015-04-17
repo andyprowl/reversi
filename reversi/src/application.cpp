@@ -60,15 +60,17 @@ void application::draw()
 
 void application::keyDown(cinder::app::KeyEvent const e)
 {
+    using cinder::app::KeyEvent;
+
     switch (e.getCode())
     {
-        case cinder::app::KeyEvent::KEY_F4:
-        case cinder::app::KeyEvent::KEY_F6:
-        case cinder::app::KeyEvent::KEY_F8:
-        case cinder::app::KeyEvent::KEY_F10:
-        case cinder::app::KeyEvent::KEY_F12:
+        case KeyEvent::KEY_F4:
+        case KeyEvent::KEY_F6:
+        case KeyEvent::KEY_F8:
+        case KeyEvent::KEY_F10:
+        case KeyEvent::KEY_F12:
         {
-            auto const new_size = 4 + (e.getCode() - cinder::app::KeyEvent::KEY_F4);
+            auto const new_size = 4 + (e.getCode() - KeyEvent::KEY_F4);
 
             start_new_game(new_size);
 
@@ -96,13 +98,16 @@ void application::mouseDown(cinder::app::MouseEvent const e)
 
     try
     {
-        auto const pos = get_cell_position_from_window_position(e.getPos());
-
-        current_game->place(pos);
+        auto const pos = board_renderer->get_currently_hovered_cell();
+        if (pos)
+        {
+            current_game->place(*pos);
+        }
     }
     catch (std::exception const&)
     {        
-        set_shown_hint_message("This is not a valid move :-( Please try again...");
+        set_shown_hint_message(
+            "This is not a valid move :-( Please try again...");
     }
 }
 
@@ -134,9 +139,11 @@ void application::disable_maximize_button() const
 
 void application::setup_asset_directories() const
 {
-    cinder::app::addAssetDirectory(boost::filesystem::current_path());
+    auto const current_path = boost::filesystem::current_path();
 
-    cinder::app::addAssetDirectory(boost::filesystem::current_path() / "assets");    
+    cinder::app::addAssetDirectory(current_path);
+
+    cinder::app::addAssetDirectory(current_path / "assets");    
 }
 
 void application::load_pictures()
@@ -144,12 +151,6 @@ void application::load_pictures()
     load_background_picture();
 
     load_title_picture();
-
-    load_game_board_picture();
-
-    load_game_board_frame_picture();
-
-    load_token_pictures();    
 
     load_winner_picture();
 
@@ -168,31 +169,6 @@ void application::load_title_picture()
     auto const asset = cinder::app::loadAsset("title.png");
 
     title_picture = cinder::loadImage(asset);         
-}
-
-void application::load_game_board_picture()
-{
-    auto const asset = cinder::app::loadAsset("game board.jpg");
-
-    game_board_picture = cinder::loadImage(asset);      
-}
-
-void application::load_game_board_frame_picture()
-{
-    auto const asset = cinder::app::loadAsset("frame.png");
-
-    game_board_frame_picture = cinder::loadImage(asset);      
-}
-
-void application::load_token_pictures()
-{
-    auto const wt_asset = cinder::app::loadAsset("white token.png");
-
-    white_token_picture = cinder::loadImage(wt_asset);
-
-    auto const bt_asset = cinder::app::loadAsset("black token.png");
-
-    black_token_picture = cinder::loadImage(bt_asset);
 }
 
 void application::load_winner_picture()
@@ -220,7 +196,13 @@ void application::create_fonts()
 
 void application::start_new_game(int const board_size)
 {
-    current_game = std::make_unique<local_game>(board_size, "Player 1", "Player 2", logger);
+    current_game = std::make_unique<local_game>(board_size, 
+                                                "Player 1", 
+                                                "Player 2", 
+                                                logger);
+
+    board_renderer = std::make_unique<game_board_renderer>(*current_game, 
+                                                           board_display_size);
 
     game_over = false;
 
@@ -263,13 +245,21 @@ void application::draw_background() const
 
 void application::draw_title() const
 {
-    auto const center = cinder::Vec2f{getWindowCenter().x, title_picture.getSize().y / 2 + 5.f};
+    auto const center = cinder::Vec2f{getWindowCenter().x, 
+                                      title_picture.getSize().y / 2 + 5.f};
 
-    auto const top_left = center - cinder::Vec2f{title_picture.getSize()} / 2.8f;
+    auto const top_left = center - 
+                          cinder::Vec2f{title_picture.getSize()} / 2.8f;
 
-    auto const bottom_right = center + cinder::Vec2f{title_picture.getSize()} / 2.8f;
+    auto const bottom_right = center + 
+                              cinder::Vec2f{title_picture.getSize()} / 2.8f;
 
     cinder::gl::draw(title_picture, {top_left, bottom_right});    
+}
+
+void application::draw_game_board() const
+{
+    board_renderer->draw_board(game_over);
 }
 
 void application::draw_white_player_info() const
@@ -287,13 +277,15 @@ void application::draw_white_player_name() const
 
     auto const left = margin;
 
-    auto const right = getWindowCenter().x - board_size / 2.f - margin;
+    auto const right = getWindowCenter().x - board_display_size / 2.f - margin;
 
-    auto const y_center = getWindowCenter().y - board_size / 4.f;
+    auto const y_center = getWindowCenter().y - board_display_size / 4.f;
 
     auto const center = cinder::Vec2f{(right + left) / 2.f, y_center};
 
-    cinder::gl::drawStringCentered(name, center, {1.f, 1.f, 1.f, 1.f}, player_name_font);
+    auto const white_color = cinder::ColorA{1.f, 1.f, 1.f, 1.f};
+
+    cinder::gl::drawStringCentered(name, center, white_color, player_name_font);
 }
 
 void application::draw_white_player_score() const
@@ -304,13 +296,15 @@ void application::draw_white_player_score() const
 
     auto const left = margin;
 
-    auto const right = getWindowCenter().x - board_size / 2.f - margin;
+    auto const right = getWindowCenter().x - board_display_size / 2.f - margin;
 
     auto const y_center = getWindowCenter().y;
 
     auto const center = cinder::Vec2f{(right + left) / 2.f, y_center};
 
-    cinder::gl::drawStringCentered(score, center, {1.f, 1.f, 1.f, 1.f}, score_font);    
+    auto const white_color = cinder::ColorA{1.f, 1.f, 1.f, 1.f};
+
+    cinder::gl::drawStringCentered(score, center, white_color, score_font);    
 }
 
 void application::draw_black_player_info() const
@@ -326,15 +320,17 @@ void application::draw_black_player_name() const
 
     auto const margin = 10.f;
 
-    auto const left = getWindowCenter().x + board_size / 2.f + margin;
+    auto const left = getWindowCenter().x + board_display_size / 2.f + margin;
 
     auto const right = getWindowSize().x - margin;
 
-    auto const y_center = getWindowCenter().y - board_size / 4.f;
+    auto const y_center = getWindowCenter().y - board_display_size / 4.f;
 
     auto const center = cinder::Vec2f{(right + left) / 2.f, y_center};
 
-    cinder::gl::drawStringCentered(name, center, {0.f, 0.f, 0.f, 1.f}, player_name_font);    
+    auto const black_color = cinder::ColorA{0.f, 0.f, 0.f, 1.f};
+
+    cinder::gl::drawStringCentered(name, center, black_color, player_name_font);    
 }
 
 void application::draw_black_player_score() const
@@ -343,7 +339,7 @@ void application::draw_black_player_score() const
 
     auto const margin = 10.f;
 
-    auto const left = getWindowCenter().x + board_size / 2.f + margin;
+    auto const left = getWindowCenter().x + board_display_size / 2.f + margin;
 
     auto const right = getWindowSize().x - margin;
 
@@ -351,7 +347,9 @@ void application::draw_black_player_score() const
 
     auto const center = cinder::Vec2f{(right + left) / 2.f, y_center};
 
-    cinder::gl::drawStringCentered(score, center, {0.f, 0.f, 0.f, 1.f}, score_font);    
+    auto const black_color = cinder::ColorA{0.f, 0.f, 0.f, 1.f};
+
+    cinder::gl::drawStringCentered(score, center, black_color, score_font);    
 }
 
 void application::draw_turn_indicator() const
@@ -374,10 +372,12 @@ void application::draw_turn_indicator() const
 void application::draw_white_player_turn_indicator() const
 {
     auto const margin = 10.f;
-        
-    auto const right = getWindowCenter().x - board_size / 2.f - margin - 20.f;
 
-    auto const y_center = getWindowCenter().y - board_size / 4.f;
+    auto const center = getWindowCenter();
+        
+    auto const right = center.x - board_display_size / 2.f - margin - 20.f;
+
+    auto const y_center = center.y - board_display_size / 4.f;
 
     auto const top_left = cinder::Vec2f{margin, y_center - 5.f};
 
@@ -396,10 +396,11 @@ void application::draw_black_player_turn_indicator() const
         
     auto const right = getWindowSize().x - margin;
 
-    auto const y_center = getWindowCenter().y - board_size / 4.f;
+    auto const y_center = getWindowCenter().y - board_display_size / 4.f;
 
-    auto const top_left = cinder::Vec2f{getWindowCenter().x + board_size / 2.f + margin + 15.f, 
-                                        y_center - 5.f};
+    auto const top_left = cinder::Vec2f{
+        getWindowCenter().x + board_display_size / 2.f + margin + 15.f, 
+        y_center - 5.f};
 
     auto const bottom_right = cinder::Vec2f{right, y_center + 45.f};
 
@@ -410,172 +411,21 @@ void application::draw_black_player_turn_indicator() const
     cinder::gl::color(cinder::ColorA{1.f, 1.f, 1.f, 1.f});     
 }
 
-void application::draw_game_board() const
-{
-    draw_game_board_background();     
-    
-    draw_game_board_grid();
-    
-    draw_game_board_frame();    
-
-    draw_tokens();
-
-    draw_currently_hovered_cell();
-}
-
-void application::draw_game_board_background() const
-{
-    auto const top_left = get_game_board_origin();
-
-    auto const bottom_right = top_left + cinder::Vec2f{board_size, board_size};
-    
-    cinder::gl::draw(game_board_picture, {top_left, bottom_right});    
-}
-
-void application::draw_game_board_grid() const
-{
-    cinder::gl::color(1.f, 1.f, 1.f);
-
-    draw_game_board_grid_rows();
-
-    draw_game_board_grid_columns();
-}
-
-void application::draw_game_board_grid_rows() const
-{
-    auto const cell_size = get_cell_size();
-
-    auto const board_top_left = get_game_board_origin();
-
-    auto const num_of_cells = current_game->get_board_size();
-
-    for (auto const row : util::sequence(0, num_of_cells))
-    {
-        auto const cell_origin_y = board_top_left.y + row * cell_size;
-
-        auto const from = cinder::Vec2f{board_top_left.x, cell_origin_y};
-
-        auto const to = cinder::Vec2f{board_top_left.x + board_size, cell_origin_y};
-
-        cinder::gl::drawLine(from, to);
-    }    
-}
-
-void application::draw_game_board_grid_columns() const
-{
-    auto const cell_size = get_cell_size();
-
-    auto const board_top_left = get_game_board_origin();
-
-    auto const num_of_cells = current_game->get_board_size();
-
-    for (auto const col : util::sequence(0, num_of_cells))
-    {
-        auto const cell_origin_x = board_top_left.x + col * cell_size;
-
-        auto const from = cinder::Vec2f{cell_origin_x, board_top_left.y};
-
-        auto const to = cinder::Vec2f{cell_origin_x, board_top_left.y + board_size};
-
-        cinder::gl::drawLine(from, to);
-    }    
-}
-
-void application::draw_game_board_frame() const
-{
-    auto const center = getWindowCenter();
-
-    auto padding = 15.f;
-
-    auto radius = cinder::Vec2f{board_size / 2.f + padding, board_size / 2.f + padding};
-
-    auto const top_left = center - radius;
-
-    auto const bottom_right = center + radius;
-    
-    cinder::gl::draw(game_board_frame_picture, {top_left, bottom_right});    
-}
-
-void application::draw_tokens() const
-{
-    auto const num_of_cells = current_game->get_board_size();
-
-    for (auto const row : util::sequence(0, num_of_cells))
-    {
-        for (auto const col : util::sequence(0, num_of_cells))
-        {
-            draw_cell_content({row, col});
-        }
-    }
-}
-
-void application::draw_cell_content(cell_position const pos) const
-{
-    auto const mark = current_game->get_board_cell_mark(pos);
-    if (!mark)
-    {
-        return;
-    }
-
-    draw_player_token(pos.row, pos.col, *mark);
-}
-
-void application::draw_player_token(int const row, int const col, player const p) const
-{
-    auto const cell_size = get_cell_size();
-
-    auto const cell_origin = get_cell_origin(row, col);
-
-    auto const margin = cell_size * 0.1f;
-
-    auto const top_left = cell_origin + cinder::Vec2f{margin, margin};
-
-    auto const bottom_right = cell_origin + cinder::Vec2f{cell_size - margin, cell_size - margin};
-
-    draw_token_shape(p, {top_left, bottom_right});        
-}
-
-void application::draw_token_shape(player const p, cinder::Rectf const bounds) const
-{
-    if (p == player::white)
-    {
-        cinder::gl::draw(white_token_picture, bounds);    
-    }
-    else
-    {
-        cinder::gl::draw(black_token_picture, bounds);    
-    }    
-}
-
-void application::draw_currently_hovered_cell() const
-{
-    if (game_over)
-    {
-        return;
-    }
-
-    auto const cell = get_currently_hovered_cell();
-    if (cell)
-    {
-        cinder::gl::color(1.0, 0.f, 0.f, 1.f);
-
-        cinder::gl::drawStrokedRoundedRect(get_cell_bounds(cell->row, cell->col), 5.f);
-
-        cinder::gl::color(1.0, 0.f, 0.f, 1.f);
-    }    
-}
-
 void application::draw_hint_message() const
 {
     auto const center = getWindowCenter();
 
-    auto const pos = cinder::Vec2f{center.x, center.y + board_size / 2.f + 25.f};
+    auto const pos = cinder::Vec2f{center.x, 
+                                   center.y + board_display_size / 2.f + 25.f};
 
-    auto const elapsed_seconds = cinder::app::getElapsedSeconds() - message_seconds;
+    auto const duration = cinder::app::getElapsedSeconds() - message_seconds;
 
-    auto const transparency = ((elapsed_seconds < 2.0) || game_over) ? 1.f : 0.f;
+    auto const transparency = ((duration < 2.0) || game_over) ? 1.f : 0.f;
 
-    cinder::gl::drawStringCentered(hint_message, pos, {1.0, 1.0, 0.0, transparency}, message_font);
+    cinder::gl::drawStringCentered(hint_message, 
+                                   pos, 
+                                   {1.0, 1.0, 0.0, transparency}, 
+                                   message_font);
 }
 
 void application::draw_winner_indicator() const
@@ -597,30 +447,39 @@ void application::draw_winner_indicator() const
 
 void application::draw_white_player_winner_indicator() const
 {
-    auto const x_center = (getWindowCenter().x - board_size / 2) / 2;
+    auto const x_center = (getWindowCenter().x - board_display_size / 2) / 2;
 
-    auto const y_center = getWindowCenter().y - board_size / 2.f + 10.f;
+    auto const y_center = getWindowCenter().y - board_display_size / 2.f + 10.f;
 
     auto const center = cinder::Vec2d{x_center - 5.f, y_center};
 
-    auto const top_left = center - cinder::Vec2f{winner_picture.getSize()} / 4.5;
+    auto const top_left = center - 
+                          cinder::Vec2f{winner_picture.getSize()} / 4.5;
 
-    auto const bottom_right = center + cinder::Vec2f{winner_picture.getSize()} / 4.5;
+    auto const bottom_right = center + 
+                              cinder::Vec2f{winner_picture.getSize()} / 4.5;
 
     cinder::gl::draw(winner_picture, {top_left, bottom_right});        
 }
 
 void application::draw_black_player_winner_indicator() const
 {
-    auto const x_center = (getWindowSize().x + (getWindowCenter().y + board_size)) / 2;
+    auto const window_center = getWindowCenter();
 
-    auto const y_center = getWindowCenter().y - board_size / 2.f + 10.f;
+    auto const window_size = getWindowSize();
+
+    auto const x_center = 
+        (window_size.x + (window_center.y + board_display_size)) / 2;
+
+    auto const y_center = window_center.y - board_display_size / 2.f + 10.f;
 
     auto const center = cinder::Vec2d{x_center - 25.f, y_center};
 
-    auto const top_left = center - cinder::Vec2f{winner_picture.getSize()} / 4.5;
+    auto const top_left = center - 
+                          cinder::Vec2f{winner_picture.getSize()} / 4.5;
 
-    auto const bottom_right = center + cinder::Vec2f{winner_picture.getSize()} / 4.5;
+    auto const bottom_right = center + 
+                              cinder::Vec2f{winner_picture.getSize()} / 4.5;
 
     cinder::gl::draw(winner_picture, {top_left, bottom_right});    
 }
@@ -634,9 +493,11 @@ void application::draw_game_over_label() const
 
     auto const center = getWindowCenter();
 
-    auto const label_center = center + cinder::Vec2f{0.f, center.y * 0.75f + 20.f};
+    auto const label_center = center + 
+                              cinder::Vec2f{0.f, center.y * 0.75f + 20.f};
     
-    auto const top_left = label_center - cinder::Vec2f{game_over_picture.getSize()} / 2.f;
+    auto const top_left = label_center - 
+                          cinder::Vec2f{game_over_picture.getSize()} / 2.f;
 
     auto const bottom_right = label_center + game_over_picture.getSize() / 2;
 
@@ -648,73 +509,6 @@ void application::set_shown_hint_message(std::string msg)
     message_seconds = cinder::app::getElapsedSeconds();
 
     hint_message = std::move(msg);
-}
-
-cinder::Rectf application::get_cell_bounds(int const row, int const col) const
-{
-    auto const cell_size = get_cell_size();
-
-    auto const top_left = get_cell_origin(row, col);
-
-    auto const bottom_right = top_left + cinder::Vec2f{cell_size, cell_size};
-
-    return {top_left, bottom_right};
-}
-
-cinder::Vec2f application::get_cell_origin(int const row, int const col) const
-{
-    auto const cell_size = get_cell_size();
-
-    auto const board_top_left = get_game_board_origin();
-
-    auto const cell_origin_x = board_top_left.x + col * cell_size;
-
-    auto const cell_origin_y = board_top_left.y + row * cell_size;
-
-    return {cell_origin_x, cell_origin_y};    
-}
-
-boost::optional<cell_position> application::get_currently_hovered_cell() const
-{
-    auto const mouse_position = getMousePos() - getWindowPos();
-
-    auto const pos = get_cell_position_from_window_position(mouse_position);
-
-    auto const game_size = current_game->get_board_size();
-
-    if ((pos.row >= 0) && (pos.col >= 0) && (pos.row < game_size) && (pos.col < game_size))
-    {
-        return pos;
-    }
-    else
-    {
-        return boost::none;
-    }
-}
-
-cinder::Vec2f application::get_game_board_origin() const
-{
-    auto const center = getWindowCenter();
-
-    return (center - cinder::Vec2f{board_size / 2.f, board_size / 2.f});
-}
-
-cell_position application::get_cell_position_from_window_position(cinder::Vec2f const pos) const
-{
-    auto const board_origin = get_game_board_origin();
-
-    auto const cell_size = get_cell_size();
-
-    auto const relative_pos = (pos - board_origin);
-
-    auto const cell_pos = (relative_pos / cell_size);
-
-    return {cell_pos.y, cell_pos.x};
-}
-
-float application::get_cell_size() const
-{
-    return (board_size / current_game->get_board_size());
 }
 
 void application::register_for_placement_notifications_from_current_game()
@@ -729,12 +523,15 @@ void application::register_for_placement_notifications_from_current_game()
     current_game->register_placement_event_handler(std::move(handler));
 }
 
-void application::on_placement(cell_position pos, 
-                               player p, 
-                               placement_outcome outcome, 
-                               util::value_ref<std::vector<cell_position>> reversals)
+void application::on_placement(
+    cell_position pos, 
+    player p, 
+    placement_outcome outcome, 
+    util::value_ref<std::vector<cell_position>> reversals)
 {
-    auto const scorer = (outcome == placement_outcome::turn_switched) ? get_opponent_of(p) : p;
+    auto const scorer = (outcome == placement_outcome::turn_switched) ? 
+        get_opponent_of(p) : 
+        p;
 
     update_score(scorer, static_cast<int>(reversals.size()));
 
@@ -769,7 +566,8 @@ void application::process_placement_outcome(placement_outcome const outcome)
 
         set_shown_hint_message(
             get_game_result_description() + 
-            " Press F4, F6, F8, F10, or F12 to start a new game of the corresponding size...");
+            " Press F4, F6, F8, F10, or F12 "
+            "to start a new game of the corresponding size...");
     }
     else
     {
@@ -781,7 +579,8 @@ void application::show_turn_skipped_message()
 {
     auto next_mover_name = current_game->get_player_name(next_mover);
 
-    auto skipped_player_name = current_game->get_player_name(get_opponent_of(next_mover));
+    auto skipped_player_name = 
+        current_game->get_player_name(get_opponent_of(next_mover));
 
     auto msg = std::move(skipped_player_name) + 
                " cannot move: " + 

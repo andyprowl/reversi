@@ -2,6 +2,7 @@
 
 #include "reversi/file_game_logger.hpp"
 #include "reversi/game.hpp"
+#include "reversi/game_board_renderer.hpp"
 #include "reversi/player.hpp"
 #include <cinder/gl/Texture.h>
 #include <cinder/Font.h>
@@ -51,12 +52,6 @@ private:
 
     void load_title_picture();
 
-    void load_game_board_picture();
-
-    void load_game_board_frame_picture();
-
-    void load_token_pictures();
-
     void load_winner_picture();
 
     void load_game_over_picture();
@@ -70,6 +65,8 @@ private:
     void draw_background() const;
 
     void draw_title() const;
+
+    void draw_game_board() const;
 
     void draw_white_player_info() const;
 
@@ -89,28 +86,6 @@ private:
 
     void draw_black_player_turn_indicator() const;
 
-    void draw_game_board() const;
-
-    void draw_game_board_background() const;
-
-    void draw_game_board_grid() const;
-
-    void draw_game_board_grid_rows() const;
-
-    void draw_game_board_grid_columns() const;
-
-    void draw_game_board_frame() const;
-
-    void draw_tokens() const;
-
-    void draw_cell_content(cell_position pos) const;
-
-    void draw_player_token(int row, int col, player p) const;
-
-    void draw_token_shape(player p, cinder::Rectf bounds) const;
-
-    void draw_currently_hovered_cell() const;
-
     void draw_hint_message() const;
 
     void draw_winner_indicator() const;
@@ -122,18 +97,6 @@ private:
     void draw_game_over_label() const;
 
     void set_shown_hint_message(std::string msg);
-
-    cinder::Rectf get_cell_bounds(int row, int col) const;
-
-    cinder::Vec2f get_cell_origin(int row, int col) const;
-
-    cinder::Vec2f get_game_board_origin() const;
-
-    boost::optional<cell_position> get_currently_hovered_cell() const;
-
-    cell_position get_cell_position_from_window_position(cinder::Vec2f pos) const;
-
-    float get_cell_size() const;
 
     void register_for_placement_notifications_from_current_game();
 
@@ -152,17 +115,11 @@ private:
 
 private:
 
+    std::unique_ptr<game_board_renderer> board_renderer;
+
     cinder::gl::Texture background_picture;
 
     cinder::gl::Texture title_picture;
-
-    cinder::gl::Texture game_board_picture;
-
-    cinder::gl::Texture game_board_frame_picture;
-
-    cinder::gl::Texture black_token_picture;
-
-    cinder::gl::Texture white_token_picture;
 
     cinder::gl::Texture winner_picture;
 
@@ -174,7 +131,7 @@ private:
 
     cinder::Font message_font;
 
-    float board_size = 400.f;
+    float board_display_size = 400.f;
 
     std::unique_ptr<game> current_game;
 
