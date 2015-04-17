@@ -45,13 +45,13 @@ public:
 
     void join(std::string player_name);
 
+    bool is_full() const;
+
     game& get_game() const;
     
     boost::signals2::connection register_match_full_handler(match_full_handler h);
 
 private:
-
-    bool is_full() const;
 
     void add_player(std::string player_name);
 

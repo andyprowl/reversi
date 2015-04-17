@@ -2,6 +2,7 @@
 
 #include "reversi/cell_position.hpp"
 #include "reversi/game.hpp"
+#include "reversi/placement_outcome.hpp"
 #include "reversi/player.hpp"
 #include "reversi/remoting/multiplayer_match.hpp"
 #include "reversi/remoting/multiplayer_match_messenger.hpp"
@@ -66,11 +67,9 @@ void multiplayer_match_messenger::process_create_match_command(
 {
     try
     {
-        joined_match = registry.create_new_match(tokens[1], std::stoi(tokens[2]));
+        auto m = registry.create_new_match(tokens[1], std::stoi(tokens[2]));
 
-        joined_match->join(player_name);
-
-        channel("OK");
+        join_match(std::move(m));
     }
     catch (std::exception const&)
     {
@@ -84,12 +83,8 @@ void multiplayer_match_messenger::process_join_match_command(
     try
     {
         auto m = registry.get_match(tokens[1]);
-
-        m->join(player_name);
-
-        joined_match = m;
-
-        channel("OK");
+        
+        join_match(std::move(m));
     }
     catch (std::exception const&)
     {            
@@ -169,7 +164,7 @@ void multiplayer_match_messenger::process_cell_mark_query_command(
 
         auto content = g.get_board_cell_mark({std::stoi(tokens[1]), std::stoi(tokens[2])});
 
-        channel("OK;" + format_board_cell_content(content));
+        channel("OK;" + format_optional_player(content));
     }
     catch (std::exception const&)
     {
@@ -177,8 +172,101 @@ void multiplayer_match_messenger::process_cell_mark_query_command(
     }
 }
 
-std::string multiplayer_match_messenger::format_board_cell_content(
-    boost::optional<player> content) const
+void multiplayer_match_messenger::join_match(std::shared_ptr<multiplayer_match> m)
+{
+    m->join(player_name);
+
+    joined_match = std::move(m);
+
+    if (joined_match->is_full())
+    {
+        auto& g = joined_match->get_game();
+
+        register_for_placement_notifications(g);
+    }
+    else
+    {
+        register_for_full_match_notifications_from_joined_match();
+    }
+
+    channel("OK");
+}
+
+void multiplayer_match_messenger::register_for_full_match_notifications_from_joined_match()
+{
+    joined_match->register_match_full_handler([this] (game& g)
+    {
+        register_for_placement_notifications(g);
+    });
+}
+
+void multiplayer_match_messenger::register_for_placement_notifications(game& g)
+{
+    using std::placeholders::_1;
+    using std::placeholders::_2;
+    using std::placeholders::_3;
+    using std::placeholders::_4;
+    using self = multiplayer_match_messenger;
+
+    auto handler = std::bind(&self::on_placement_in_joined_game, this, _1, _2, _3, _4);
+
+    g.register_placement_event_handler(handler);
+}
+
+void multiplayer_match_messenger::on_placement_in_joined_game(
+    cell_position const pos, 
+    player const p, 
+    placement_outcome const outcome, 
+    util::value_ref<std::vector<cell_position>> reversals)
+{
+    auto formatted_position = format_position(pos);
+
+    auto formatted_player = format_optional_player(p);
+
+    auto formatted_outcome = format_placement_outcome(outcome);
+
+    auto formatted_reversals = format_all_positions(reversals);
+
+    auto msg = "PLACEMENT;" + 
+               std::move(formatted_position) + 
+               ";" + 
+               std::move(formatted_player) +
+               ";" +
+               std::move(formatted_outcome) +
+               ";" +
+               std::move(formatted_reversals);
+
+    channel(std::move(msg));
+}
+
+std::string multiplayer_match_messenger::format_all_positions(
+    util::value_ref<std::vector<cell_position>> positions) const
+{
+    auto result = std::string{};
+
+    auto first = true;    
+    for (auto const pos : positions)
+    {
+        if (!first)
+        {
+            result += ";";
+        }
+
+        result += format_position(pos);
+
+        first = false;
+    }
+
+    return result;
+}
+
+std::string multiplayer_match_messenger::format_position(cell_position const pos) const
+{
+    return std::to_string(pos.row) + ";" + std::to_string(pos.col);
+}
+
+std::string multiplayer_match_messenger::format_optional_player(
+    boost::optional<player> const content) const
 {
     if (!content)
     {
@@ -192,6 +280,23 @@ std::string multiplayer_match_messenger::format_board_cell_content(
     {
         return "BLACK";
     }    
+}
+
+std::string multiplayer_match_messenger::format_placement_outcome(
+    placement_outcome const outcome) const
+{
+    if (outcome == placement_outcome::turn_switched)
+    {
+        return "SWITCH";
+    }
+    else if (outcome == placement_outcome::turn_skipped)
+    {
+        return "SKIP";
+    }
+    else
+    {
+        return "OVER";
+    }
 }
 
 } }

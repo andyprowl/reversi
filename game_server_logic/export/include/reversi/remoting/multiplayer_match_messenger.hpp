@@ -11,7 +11,12 @@
 namespace reversi
 {
     
+enum class placement_outcome;
 enum class player;
+
+struct cell_position;
+
+class game;
 
 }
 
@@ -57,7 +62,24 @@ private:
 
     void process_cell_mark_query_command(util::value_ref<std::vector<std::string>> tokens);
 
-    std::string format_board_cell_content(boost::optional<player> content) const;
+    void join_match(std::shared_ptr<multiplayer_match> m);
+
+    void register_for_full_match_notifications_from_joined_match();
+
+    void register_for_placement_notifications(game& g);
+
+    void on_placement_in_joined_game(cell_position pos, 
+                                     player p, 
+                                     placement_outcome outcome, 
+                                     util::value_ref<std::vector<cell_position>> reversals);
+
+    std::string format_all_positions(util::value_ref<std::vector<cell_position>> positions) const;
+
+    std::string format_position(cell_position pos) const;
+
+    std::string format_optional_player(boost::optional<player> content) const;
+
+    std::string format_placement_outcome(placement_outcome outcome) const;
 
 private:
 

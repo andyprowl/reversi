@@ -43,6 +43,11 @@ void multiplayer_match::join(std::string player_name)
     }
 }
 
+bool multiplayer_match::is_full() const
+{
+    return (player_names.size() == 2u);
+}
+
 game& multiplayer_match::get_game() const
 {
     if (played_game == nullptr)
@@ -56,11 +61,6 @@ game& multiplayer_match::get_game() const
 boost::signals2::connection multiplayer_match::register_match_full_handler(match_full_handler h)
 {
     return on_match_full.connect(std::move(h));
-}
-
-bool multiplayer_match::is_full() const
-{
-    return (player_names.size() == 2u);
 }
 
 void multiplayer_match::add_player(std::string player_name)

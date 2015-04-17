@@ -12,6 +12,7 @@ namespace reversi { namespace remoting { namespace testing
 
 using ::testing::Contains;
 using ::testing::Eq;
+using ::testing::Ge;
 using ::testing::Ne;
 using ::testing::Test;
 
@@ -245,7 +246,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
     messenger.execute_command("PLACE;0;1");
 
-    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+    ASSERT_THAT(last_messages_for_client.size(), Ge(1u));
 
     EXPECT_THAT(last_messages_for_client, Contains("OK"));    
 }
@@ -530,6 +531,109 @@ TEST_THAT(MultiplayerMatchMessenger,
     ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
 
     EXPECT_THAT(last_messages_for_client, Contains("ERROR;NO MATCH JOINED"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(InternalEventHandlingLogic),
+     WHEN(WhenTheJoinedGameSendsPlacementNotificationsThatLeadToATurnSwitch),
+     THEN(CommunicatesTheCorrectlySerializedPayloadToTheClient))
+{
+    auto m = create_match("MATCH");
+
+    m->join("OPPONENT");
+
+    auto& g = m->get_game();
+
+    last_messages_for_client.clear();
+
+    g.place({0, 1});
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("PLACEMENT;0;1;WHITE;SWITCH;1;1"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(InternalEventHandlingLogic),
+     WHEN(WhenTheJoinedGameSendsPlacementNotificationsThatLeadToATurnSkip),
+     THEN(CommunicatesTheCorrectlySerializedPayloadToTheClient))
+{
+    auto m = registry.create_new_match("NEW MATCH", 4);
+
+    messenger.execute_command("JOIN;NEW MATCH");
+
+    m->join("OPPONENT");
+
+    auto& g = m->get_game();
+
+    // See http://reversi-nxn.blogspot.cz/2008/04/reversi-4x4-games.html
+
+    g.place({0, 1}); // black
+    g.place({0, 2}); // white
+    g.place({0, 3}); // black
+    g.place({0, 0}); // white
+
+    last_messages_for_client.clear();
+
+    g.place({2, 0}); // black
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("PLACEMENT;2;0;BLACK;SKIP;1;1"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(InternalEventHandlingLogic),
+     WHEN(WhenTheJoinedGameSendsNotificationsAboutPlacementsThatCauseMoreThanOneReversals),
+     THEN(CommunicatesAllTheReversalsToTheClient))
+{
+    auto m = create_match("MATCH");
+
+    m->join("OPPONENT");
+
+    auto& g = m->get_game();
+
+    g.place({0, 1}); // black
+    g.place({2, 0}); // white
+    g.place({3, 3}); // black
+    g.place({0, 2}); // white
+    g.place({1, 0}); // black
+
+    last_messages_for_client.clear();
+
+    g.place({3, 2}); // white
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("PLACEMENT;3;2;BLACK;SWITCH;2;2;1;2"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(InternalEventHandlingLogic),
+     WHEN(WhenTheJoinedGameSendsNotificationsAboutPlacementsThatCauseTheGameToEnd),
+     THEN(CommunicatesTheGameOverEventToTheClient))
+{
+    auto m = create_match("MATCH");
+
+    m->join("OPPONENT");
+
+    auto& g = m->get_game();
+
+    // See http://reversi-nxn.blogspot.cz/2008/04/reversi-4x4-games.html
+
+    g.place({0, 1}); // black
+    g.place({0, 2}); // white
+    g.place({0, 3}); // black
+    g.place({0, 0}); // white
+    g.place({2, 0}); // black
+
+    last_messages_for_client.clear();
+
+    g.place({3, 3}); // black
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("PLACEMENT;3;3;BLACK;OVER;2;2"));
 }
 
 } } }
