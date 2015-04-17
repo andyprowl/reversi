@@ -187,10 +187,6 @@ void application::load_game_over_picture()
 
 void application::create_fonts()
 {
-    player_name_font = cinder::Font{"Arial", 50.f};
-
-    score_font = cinder::Font{"Arial", 150.f};
-
     message_font = cinder::Font{"Arial", 30.f};
 }
 
@@ -203,6 +199,10 @@ void application::start_new_game(int const board_size)
 
     board_renderer = std::make_unique<game_board_renderer>(*current_game, 
                                                            board_display_size);
+
+    player_renderer = std::make_unique<player_info_renderer>(
+        *current_game, 
+        board_display_size);
 
     game_over = false;
 
@@ -223,11 +223,7 @@ void application::draw_frame() const
 
     draw_game_board();
 
-    draw_white_player_info();
-
-    draw_black_player_info();
-
-    draw_turn_indicator();
+    draw_player_info();
 
     draw_winner_indicator();
 
@@ -262,153 +258,12 @@ void application::draw_game_board() const
     board_renderer->draw_board(game_over);
 }
 
-void application::draw_white_player_info() const
+void application::draw_player_info() const
 {
-    draw_white_player_name();
-
-    draw_white_player_score();
-}
-
-void application::draw_white_player_name() const
-{
-    auto const name = current_game->get_player_name(player::white);
-
-    auto const margin = 10.f;
-
-    auto const left = margin;
-
-    auto const right = getWindowCenter().x - board_display_size / 2.f - margin;
-
-    auto const y_center = getWindowCenter().y - board_display_size / 4.f;
-
-    auto const center = cinder::Vec2f{(right + left) / 2.f, y_center};
-
-    auto const white_color = cinder::ColorA{1.f, 1.f, 1.f, 1.f};
-
-    cinder::gl::drawStringCentered(name, center, white_color, player_name_font);
-}
-
-void application::draw_white_player_score() const
-{
-    auto const score = std::to_string(white_score);
-
-    auto const margin = 10.f;
-
-    auto const left = margin;
-
-    auto const right = getWindowCenter().x - board_display_size / 2.f - margin;
-
-    auto const y_center = getWindowCenter().y;
-
-    auto const center = cinder::Vec2f{(right + left) / 2.f, y_center};
-
-    auto const white_color = cinder::ColorA{1.f, 1.f, 1.f, 1.f};
-
-    cinder::gl::drawStringCentered(score, center, white_color, score_font);    
-}
-
-void application::draw_black_player_info() const
-{
-    draw_black_player_name();
-
-    draw_black_player_score();
-}
-
-void application::draw_black_player_name() const
-{
-    auto const name = current_game->get_player_name(player::black);
-
-    auto const margin = 10.f;
-
-    auto const left = getWindowCenter().x + board_display_size / 2.f + margin;
-
-    auto const right = getWindowSize().x - margin;
-
-    auto const y_center = getWindowCenter().y - board_display_size / 4.f;
-
-    auto const center = cinder::Vec2f{(right + left) / 2.f, y_center};
-
-    auto const black_color = cinder::ColorA{0.f, 0.f, 0.f, 1.f};
-
-    cinder::gl::drawStringCentered(name, center, black_color, player_name_font);    
-}
-
-void application::draw_black_player_score() const
-{
-    auto const score = std::to_string(black_score);
-
-    auto const margin = 10.f;
-
-    auto const left = getWindowCenter().x + board_display_size / 2.f + margin;
-
-    auto const right = getWindowSize().x - margin;
-
-    auto const y_center = getWindowCenter().y;
-
-    auto const center = cinder::Vec2f{(right + left) / 2.f, y_center};
-
-    auto const black_color = cinder::ColorA{0.f, 0.f, 0.f, 1.f};
-
-    cinder::gl::drawStringCentered(score, center, black_color, score_font);    
-}
-
-void application::draw_turn_indicator() const
-{
-    if (game_over)
-    {
-        return;
-    }
-
-    if (next_mover == player::white)
-    {
-        draw_white_player_turn_indicator();
-    }
-    else
-    {
-        draw_black_player_turn_indicator();
-    }
-}
-
-void application::draw_white_player_turn_indicator() const
-{
-    auto const margin = 10.f;
-
-    auto const center = getWindowCenter();
-        
-    auto const right = center.x - board_display_size / 2.f - margin - 20.f;
-
-    auto const y_center = center.y - board_display_size / 4.f;
-
-    auto const top_left = cinder::Vec2f{margin, y_center - 5.f};
-
-    auto const bottom_right = cinder::Vec2f{right + 5.f, y_center + 45.f};
-
-    cinder::gl::color(cinder::ColorA{1.f, 1.f, 0.f, 1.f});
-
-    cinder::gl::drawStrokedRoundedRect({top_left, bottom_right}, 5.0);
-
-    cinder::gl::color(cinder::ColorA{1.f, 1.f, 1.f, 1.f});    
-}
-
-void application::draw_black_player_turn_indicator() const
-{
-    auto const margin = 10.f;
-        
-    auto const right = getWindowSize().x - margin;
-
-    auto const y_center = getWindowCenter().y - board_display_size / 4.f;
-
-    auto const top_left = cinder::Vec2f{
-        getWindowCenter().x + board_display_size / 2.f + margin + 15.f, 
-        y_center - 5.f};
-
-    auto const bottom_right = cinder::Vec2f{right, y_center + 45.f};
-
-    cinder::gl::color(cinder::ColorA{1.f, 1.f, 0.f, 1.f});
-
-    cinder::gl::drawStrokedRoundedRect({top_left, bottom_right}, 5.0);
-
-    cinder::gl::color(cinder::ColorA{1.f, 1.f, 1.f, 1.f});     
+    player_renderer->draw_player_info(game_over, 
+                                      next_mover, 
+                                      white_score, 
+                                      black_score);
 }
 
 void application::draw_hint_message() const

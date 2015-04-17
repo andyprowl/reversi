@@ -4,6 +4,7 @@
 #include "reversi/game.hpp"
 #include "reversi/game_board_renderer.hpp"
 #include "reversi/player.hpp"
+#include "reversi/player_info_renderer.hpp"
 #include <cinder/gl/Texture.h>
 #include <cinder/Font.h>
 #include <boost/optional.hpp>
@@ -68,23 +69,7 @@ private:
 
     void draw_game_board() const;
 
-    void draw_white_player_info() const;
-
-    void draw_white_player_name() const;
-
-    void draw_white_player_score() const;
-
-    void draw_black_player_info() const;
-
-    void draw_black_player_name() const;
-
-    void draw_black_player_score() const;
-
-    void draw_turn_indicator() const;
-
-    void draw_white_player_turn_indicator() const;
-
-    void draw_black_player_turn_indicator() const;
+    void draw_player_info() const;
 
     void draw_hint_message() const;
 
@@ -115,7 +100,11 @@ private:
 
 private:
 
+    std::unique_ptr<game> current_game;
+
     std::unique_ptr<game_board_renderer> board_renderer;
+
+    std::unique_ptr<player_info_renderer> player_renderer;
 
     cinder::gl::Texture background_picture;
 
@@ -125,15 +114,9 @@ private:
 
     cinder::gl::Texture game_over_picture;
 
-    cinder::Font player_name_font;
-
-    cinder::Font score_font;
-
     cinder::Font message_font;
 
     float board_display_size = 400.f;
-
-    std::unique_ptr<game> current_game;
 
     player next_mover = player::black;
 
