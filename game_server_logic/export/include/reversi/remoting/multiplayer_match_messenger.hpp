@@ -1,11 +1,19 @@
 #pragma once
 
 #include "util/value_ref.hpp"
+#include <boost/optional.hpp>
 #include <functional>
 #include <memory>
 #include <string>
 #include <vector>
 #include <unordered_map>
+
+namespace reversi
+{
+    
+enum class player;
+
+}
 
 namespace reversi { namespace remoting
 {
@@ -46,6 +54,10 @@ private:
     void process_board_size_query_command(util::value_ref<std::vector<std::string>> tokens);
 
     void process_player_name_query_command(util::value_ref<std::vector<std::string>> tokens);
+
+    void process_cell_mark_query_command(util::value_ref<std::vector<std::string>> tokens);
+
+    std::string format_board_cell_content(boost::optional<player> content) const;
 
 private:
 

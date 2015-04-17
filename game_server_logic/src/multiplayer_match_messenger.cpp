@@ -52,6 +52,7 @@ void multiplayer_match_messenger::setup_command_handlers()
     processors["PLACE"] = std::bind(&self::process_place_mark_command, this, _1);
     processors["SIZE"] = std::bind(&self::process_board_size_query_command, this, _1);
     processors["PLAYER"] = std::bind(&self::process_player_name_query_command, this, _1);
+    processors["CELL"] = std::bind(&self::process_cell_mark_query_command, this, _1);
 }
 
 void multiplayer_match_messenger::process_set_name_command(
@@ -150,6 +151,47 @@ void multiplayer_match_messenger::process_player_name_query_command(
     {
         channel("ERROR;GAME NOT STARTED");
     }
+}
+
+void multiplayer_match_messenger::process_cell_mark_query_command(
+    util::value_ref<std::vector<std::string>> tokens)
+{
+    if (joined_match == nullptr)
+    {
+        channel("ERROR;NO MATCH JOINED");
+
+        return;
+    }
+
+    try
+    {
+        auto& g = joined_match->get_game();
+
+        auto content = g.get_board_cell_mark({std::stoi(tokens[1]), std::stoi(tokens[2])});
+
+        channel("OK;" + format_board_cell_content(content));
+    }
+    catch (std::exception const&)
+    {
+        channel("ERROR;GAME NOT STARTED");
+    }
+}
+
+std::string multiplayer_match_messenger::format_board_cell_content(
+    boost::optional<player> content) const
+{
+    if (!content)
+    {
+        return "EMPTY";
+    }
+    else if (content == player::white)
+    {
+        return "WHITE";
+    }
+    else
+    {
+        return "BLACK";
+    }    
 }
 
 } }

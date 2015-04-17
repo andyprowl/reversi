@@ -446,4 +446,90 @@ TEST_THAT(MultiplayerMatchMessenger,
     EXPECT_THAT(last_messages_for_client, Contains("ERROR;GAME NOT STARTED"));
 }
 
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAGetBoardCellMarkForCommandAnEmptyCellAfterTheJoinedGameWasStarted),
+     THEN(CommunicatesTheEmptinessOfTheCellBackToTheClient))
+{
+    auto m = create_match("NEW MATCH");
+
+    m->join("SECOND PLAYER");
+
+    last_messages_for_client.clear();
+
+    messenger.execute_command("CELL;0;3");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("OK;EMPTY"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAGetBoardCellMarkCommandForACellWithAWhiteMarkAfterTheJoinedGameWasStarted),
+     THEN(CommunicatesTheContentOfTheCellBackToTheClient))
+{
+    auto m = create_match("NEW MATCH");
+
+    m->join("SECOND PLAYER");
+
+    last_messages_for_client.clear();
+
+    messenger.execute_command("CELL;1;1");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("OK;WHITE"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAGetBoardCellMarkCommandForACellWithABlackMarkAfterTheJoinedGameWasStarted),
+     THEN(CommunicatesTheContentOfTheCellBackToTheClient))
+{
+    auto m = create_match("NEW MATCH");
+
+    m->join("SECOND PLAYER");
+
+    last_messages_for_client.clear();
+
+    messenger.execute_command("CELL;1;2");
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("OK;BLACK"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAGetBoardCellMarkCommandBeforeTheJoinedGameWasStarted),
+     THEN(DoesNotThrowAndCommunicatesAnErrorBackToTheClient))
+{
+    auto m = create_match("NEW MATCH");
+
+    last_messages_for_client.clear();
+
+    EXPECT_NO_THROW(messenger.execute_command("CELL;1;2"));
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("ERROR;GAME NOT STARTED"));
+}
+
+TEST_THAT(MultiplayerMatchMessenger,
+     WHAT(ExecuteCommand),
+     WHEN(GivenAGetBoardCellMarkCommandBeforeAMatchWasJoined),
+     THEN(DoesNotThrowAndCommunicatesAnErrorBackToTheClient))
+{
+    auto m = registry.create_new_match("MATCH", 4);
+
+    last_messages_for_client.clear();
+
+    EXPECT_NO_THROW(messenger.execute_command("CELL;1;2"));
+
+    ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
+
+    EXPECT_THAT(last_messages_for_client, Contains("ERROR;NO MATCH JOINED"));
+}
+
 } } }
