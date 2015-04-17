@@ -10,7 +10,7 @@ The rules of the game are quite simple and can be found [here](http://en.wikiped
 
 ## Limitations
 
-At the moment, neither AI nor online multi-player mode are supported. Both features are planned for the future.
+At the moment, neither AI nor online multi-player mode are supported. Both features are planned for future versions.
 
 ## Installation instructions
 
