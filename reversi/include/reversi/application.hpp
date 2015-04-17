@@ -1,5 +1,6 @@
 #pragma once
 
+#include "reversi/cell_position.hpp"
 #include "reversi/file_game_logger.hpp"
 #include "reversi/game.hpp"
 #include "reversi/game_board_renderer.hpp"
@@ -31,15 +32,7 @@ private:
 
     virtual void keyDown(cinder::app::KeyEvent e) override;
 
-    virtual void mouseMove(cinder::app::MouseEvent e) override;
-
     virtual void mouseDown(cinder::app::MouseEvent e) override;
-
-    virtual void mouseDrag(cinder::app::MouseEvent e) override;
-
-    virtual void mouseWheel(cinder::app::MouseEvent e) override;
-
-    virtual void resize() override;
 
 private:
 
@@ -97,6 +90,8 @@ private:
     std::unique_ptr<game_board_renderer> board_renderer;
 
     std::unique_ptr<player_info_renderer> player_renderer;
+
+    boost::optional<cell_position> placement_target;
 
     cinder::gl::Texture background_picture;
 

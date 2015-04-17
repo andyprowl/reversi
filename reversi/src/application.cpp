@@ -42,7 +42,24 @@ void application::setup()
 }   
 
 void application::update()
-{    
+{   
+    if (!placement_target)
+    {
+        return;
+    }
+
+    try
+    {
+        current_game->place(*placement_target);
+    }
+    catch (std::exception const&)
+    {        
+        auto error_message = "This is not a valid move :-( Please try again...";
+
+        set_shown_hint_message(std::move(error_message));
+    }
+
+    placement_target = boost::none;
 }   
 
 void application::draw()
@@ -84,11 +101,6 @@ void application::keyDown(cinder::app::KeyEvent const e)
     }
 }
 
-void application::mouseMove(cinder::app::MouseEvent const e)
-{
-    
-}
-
 void application::mouseDown(cinder::app::MouseEvent const e)
 {
     if (game_over)
@@ -96,34 +108,7 @@ void application::mouseDown(cinder::app::MouseEvent const e)
         return;
     }
 
-    try
-    {
-        auto const pos = board_renderer->get_currently_hovered_cell();
-        if (pos)
-        {
-            current_game->place(*pos);
-        }
-    }
-    catch (std::exception const&)
-    {        
-        set_shown_hint_message(
-            "This is not a valid move :-( Please try again...");
-    }
-}
-
-void application::mouseDrag(cinder::app::MouseEvent const e)
-{
-    
-}
-
-void application::mouseWheel(cinder::app::MouseEvent const e)
-{
-    
-}
-
-void application::resize()
-{
-    
+    placement_target = board_renderer->get_currently_hovered_cell();
 }
 
 void application::disable_maximize_button() const
