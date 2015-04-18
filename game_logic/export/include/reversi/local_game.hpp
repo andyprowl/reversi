@@ -12,14 +12,6 @@ enum class direction;
     
 class game_logger;
 
-class no_reversal_triggered_exception : public virtual std::exception
-{    
-};
-
-class cell_busy_exception : public virtual std::exception
-{    
-};
-
 class local_game : public game
 {
 

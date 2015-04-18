@@ -11,7 +11,7 @@ struct sequence_iterator
 
 public:
     
-    sequence_iterator(int const n, int const upper);
+    sequence_iterator(int n, int upper);
     
     int operator * () const;
     
@@ -55,6 +55,6 @@ class bad_interval_exception : public virtual std::exception
 {
 };
 
-detail::sequence sequence(int const from, int const to);
+detail::sequence sequence(int from, int to);
 
 }

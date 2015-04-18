@@ -15,6 +15,14 @@ enum class player;
 struct cell_position;
 struct game_score;
 
+class no_reversal_triggered_exception : public virtual std::exception
+{    
+};
+
+class cell_busy_exception : public virtual std::exception
+{    
+};
+
 class game
 {
 

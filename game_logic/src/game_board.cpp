@@ -17,7 +17,7 @@ int game_board::get_size() const
     return size;
 }
 
-void game_board::mark_cell(cell_position pos, player const p)
+void game_board::mark_cell(cell_position const pos, player const p)
 {
     throw_if_cell_position_is_not_valid(pos);
 
@@ -39,14 +39,15 @@ bool game_board::is_cell_occupied(cell_position const pos) const
     return bool{optional_mark};
 }
 
-boost::optional<player> game_board::get_cell_mark(cell_position pos) const
+boost::optional<player> game_board::get_cell_mark(cell_position const pos) const
 {
     throw_if_cell_position_is_not_valid(pos);
 
     return board[pos.row * size + pos.col];
 }
 
-void game_board::throw_if_cell_position_is_not_valid(cell_position pos) const
+void game_board::throw_if_cell_position_is_not_valid(
+    cell_position const pos) const
 {
     if (!is_valid_cell_position(pos))
     {

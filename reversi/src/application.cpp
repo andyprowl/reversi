@@ -12,7 +12,7 @@ namespace reversi
 {
   
 application::application()
-    : logger{"log.txt"}
+    : logger{"reversi.log"}
 {    
 }
 
@@ -170,9 +170,13 @@ void application::start_new_game(int const board_size)
 
 std::unique_ptr<game> application::create_new_game(int board_size) const
 {
-    return std::make_unique<local_game>(board_size, 
-                                        "Player 1", 
-                                        "Player 2", 
+    auto black_player_name = "Player 1";
+
+    auto white_player_name = "Player 2";
+
+    return std::make_unique<local_game>(board_size,
+                                        black_player_name, 
+                                        white_player_name, 
                                         logger);
 }
 
@@ -253,7 +257,6 @@ void application::draw_hint_message() const
 void application::draw_game_over_label() const
 {
     auto const game_over = current_game->is_over();
-
     if (!game_over)
     {
         return;
@@ -261,11 +264,11 @@ void application::draw_game_over_label() const
 
     auto const center = getWindowCenter();
 
-    auto const label_center = center + 
-                              cinder::Vec2f{0.f, center.y * 0.75f + 20.f};
+    auto const label_center = 
+        center + cinder::Vec2f{0.f, center.y * 0.75f + 20.f};
     
-    auto const top_left = label_center - 
-                          cinder::Vec2f{game_over_picture.getSize()} / 2.f;
+    auto const top_left = 
+        label_center - cinder::Vec2f{game_over_picture.getSize()} / 2.f;
 
     auto const bottom_right = label_center + game_over_picture.getSize() / 2;
 
@@ -285,9 +288,9 @@ void application::register_for_placement_notifications_from_current_game()
 }
 
 void application::on_placement(
-    cell_position pos, 
-    player p, 
-    placement_outcome outcome, 
+    cell_position const pos, 
+    player const p, 
+    placement_outcome const outcome, 
     util::value_ref<std::vector<cell_position>> reversals)
 {
     process_placement_outcome(outcome);
@@ -316,7 +319,7 @@ void application::show_turn_skipped_message()
 {
     auto const next_mover = current_game->get_next_moving_player();
 
-    auto next_mover_name = current_game->get_player_name(next_mover);
+    auto const next_mover_name = current_game->get_player_name(next_mover);
 
     auto skipped_player_name = 
         current_game->get_player_name(get_opponent_of(next_mover));
@@ -337,7 +340,6 @@ void application::set_shown_hint_message(std::string message) const
 std::string application::get_game_result_description() const
 {
     auto const winner = get_winning_player(*current_game);
-
     if (!winner)
     {
         return "Nobody wins.";
