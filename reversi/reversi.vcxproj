@@ -117,12 +117,14 @@
     <ClInclude Include="include\resources.hpp" />
     <ClInclude Include="include\reversi\application.hpp" />
     <ClInclude Include="include\reversi\game_board_renderer.hpp" />
+    <ClInclude Include="include\reversi\hint_message_renderer.hpp" />
     <ClInclude Include="include\reversi\player_info_renderer.hpp" />
     <ClInclude Include="include\stdafx.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application.cpp" />
     <ClCompile Include="src\game_board_renderer.cpp" />
+    <ClCompile Include="src\hint_message_renderer.cpp" />
     <ClCompile Include="src\player_info_renderer.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

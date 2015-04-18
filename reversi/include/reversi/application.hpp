@@ -5,10 +5,10 @@
 #include "reversi/game.hpp"
 #include "reversi/game_board_renderer.hpp"
 #include "reversi/game_score.hpp"
+#include "reversi/hint_message_renderer.hpp"
 #include "reversi/player.hpp"
 #include "reversi/player_info_renderer.hpp"
 #include <cinder/gl/Texture.h>
-#include <cinder/Font.h>
 #include <boost/optional.hpp>
 
 namespace reversi
@@ -49,8 +49,6 @@ private:
 
     void load_game_over_picture();
 
-    void create_fonts();
-
     void start_new_game(int board_size);
 
     void draw_frame() const;
@@ -67,8 +65,6 @@ private:
 
     void draw_game_over_label() const;
 
-    void set_shown_hint_message(std::string msg);
-
     void register_for_placement_notifications_from_current_game();
 
     void on_placement(cell_position pos, 
@@ -82,6 +78,8 @@ private:
 
     void show_turn_skipped_message();
 
+    void set_shown_hint_message(std::string message) const;
+
     std::string get_game_result_description() const;
 
 private:
@@ -92,6 +90,8 @@ private:
 
     std::unique_ptr<player_info_renderer> player_renderer;
 
+    std::unique_ptr<hint_message_renderer> hint_renderer;
+
     boost::optional<cell_position> placement_target;
 
     cinder::gl::Texture background_picture;
@@ -100,8 +100,6 @@ private:
 
     cinder::gl::Texture game_over_picture;
 
-    cinder::Font message_font;
-
     float board_display_size = 400.f;
 
     player next_mover = player::black;
@@ -109,10 +107,6 @@ private:
     bool game_over = false;
 
     game_score score = {2, 2};
-
-    double message_seconds = 0.0;
-
-    std::string hint_message;
 
     file_game_logger logger;
 

@@ -36,8 +36,6 @@ void application::setup()
 
     load_pictures();
 
-    create_fonts();
-
     start_new_game(6);
 }   
 
@@ -161,11 +159,6 @@ void application::load_game_over_picture()
     game_over_picture = cinder::loadImage(asset);      
 }
 
-void application::create_fonts()
-{
-    message_font = cinder::Font{"Arial", 30.f};
-}
-
 void application::start_new_game(int const board_size)
 {
     current_game = std::make_unique<local_game>(board_size, 
@@ -179,6 +172,8 @@ void application::start_new_game(int const board_size)
     player_renderer = std::make_unique<player_info_renderer>(
         *current_game, 
         board_display_size);
+    
+    hint_renderer = std::make_unique<hint_message_renderer>(board_display_size);
 
     game_over = false;
 
@@ -239,19 +234,7 @@ void application::draw_player_info() const
 
 void application::draw_hint_message() const
 {
-    auto const center = getWindowCenter();
-
-    auto const pos = cinder::Vec2f{center.x, 
-                                   center.y + board_display_size / 2.f + 25.f};
-
-    auto const duration = cinder::app::getElapsedSeconds() - message_seconds;
-
-    auto const transparency = ((duration < 2.0) || game_over) ? 1.f : 0.f;
-
-    cinder::gl::drawStringCentered(hint_message, 
-                                   pos, 
-                                   {1.0, 1.0, 0.0, transparency}, 
-                                   message_font);
+    hint_renderer->draw_hint(game_over);
 }
 
 void application::draw_game_over_label() const
@@ -272,13 +255,6 @@ void application::draw_game_over_label() const
     auto const bottom_right = label_center + game_over_picture.getSize() / 2;
 
     cinder::gl::draw(game_over_picture, {top_left, bottom_right});    
-}
-
-void application::set_shown_hint_message(std::string msg)
-{
-    message_seconds = cinder::app::getElapsedSeconds();
-
-    hint_message = std::move(msg);
 }
 
 void application::register_for_placement_notifications_from_current_game()
@@ -358,6 +334,11 @@ void application::show_turn_skipped_message()
                " shall move again!";
 
     set_shown_hint_message(std::move(msg));    
+}
+
+void application::set_shown_hint_message(std::string message) const
+{
+    hint_renderer->set_hint(std::move(message));
 }
 
 std::string application::get_game_result_description() const
