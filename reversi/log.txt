@@ -2,63 +2,63 @@ A black mark has been placed at position (row = 1, col = 2).
 Turn switched, white moves.
 A white mark has been placed at position (row = 1, col = 3).
 Turn switched, black moves.
-A black mark has been placed at position (row = 2, col = 4).
+A black mark has been placed at position (row = 1, col = 4).
 Turn switched, white moves.
-A white mark has been placed at position (row = 3, col = 5).
+A white mark has been placed at position (row = 1, col = 1).
 Turn switched, black moves.
-A black mark has been placed at position (row = 3, col = 4).
+A black mark has been placed at position (row = 1, col = 0).
 Turn switched, white moves.
-A white mark has been placed at position (row = 4, col = 4).
+A white mark has been placed at position (row = 3, col = 1).
 Turn switched, black moves.
-A black mark has been placed at position (row = 4, col = 5).
-Turn switched, white moves.
-A white mark has been placed at position (row = 5, col = 5).
-Turn switched, black moves.
-A black mark has been placed at position (row = 5, col = 4).
-Turn switched, white moves.
-A white mark has been placed at position (row = 4, col = 3).
-Turn switched, black moves.
-A black mark has been placed at position (row = 5, col = 2).
+A black mark has been placed at position (row = 4, col = 1).
 Turn switched, white moves.
 A white mark has been placed at position (row = 4, col = 2).
 Turn switched, black moves.
-A black mark has been placed at position (row = 1, col = 4).
+A black mark has been placed at position (row = 4, col = 4).
 Turn switched, white moves.
-A white mark has been placed at position (row = 2, col = 5).
+A white mark has been placed at position (row = 3, col = 4).
 Turn switched, black moves.
-A black mark has been placed at position (row = 5, col = 1).
+A black mark has been placed at position (row = 2, col = 4).
 Turn switched, white moves.
-A white mark has been placed at position (row = 5, col = 3).
-Skipping black's turn because they cannot move; white moves again.
-A white mark has been placed at position (row = 4, col = 1).
+A white mark has been placed at position (row = 1, col = 5).
 Turn switched, black moves.
-A black mark has been placed at position (row = 3, col = 1).
+A black mark has been placed at position (row = 2, col = 5).
+Turn switched, white moves.
+A white mark has been placed at position (row = 3, col = 5).
+Turn switched, black moves.
+A black mark has been placed at position (row = 4, col = 5).
+Turn switched, white moves.
+A white mark has been placed at position (row = 4, col = 3).
+Turn switched, black moves.
+A black mark has been placed at position (row = 5, col = 3).
+Turn switched, white moves.
+A white mark has been placed at position (row = 5, col = 4).
+Turn switched, black moves.
+A black mark has been placed at position (row = 5, col = 5).
+Turn switched, white moves.
+A white mark has been placed at position (row = 5, col = 1).
+Turn switched, black moves.
+A black mark has been placed at position (row = 3, col = 0).
+Turn switched, white moves.
+A white mark has been placed at position (row = 2, col = 1).
+Turn switched, black moves.
+A black mark has been placed at position (row = 2, col = 0).
 Turn switched, white moves.
 A white mark has been placed at position (row = 4, col = 0).
 Turn switched, black moves.
 A black mark has been placed at position (row = 5, col = 0).
 Turn switched, white moves.
-A white mark has been placed at position (row = 3, col = 0).
+A white mark has been placed at position (row = 5, col = 2).
 Turn switched, black moves.
-A black mark has been placed at position (row = 2, col = 0).
+A black mark has been placed at position (row = 0, col = 5).
 Turn switched, white moves.
-A white mark has been placed at position (row = 2, col = 1).
+A white mark has been placed at position (row = 0, col = 4).
 Turn switched, black moves.
-A black mark has been placed at position (row = 1, col = 1).
+A black mark has been placed at position (row = 0, col = 3).
 Turn switched, white moves.
-A white mark has been placed at position (row = 1, col = 0).
+A white mark has been placed at position (row = 0, col = 2).
 Turn switched, black moves.
-A black mark has been placed at position (row = 0, col = 0).
+A black mark has been placed at position (row = 0, col = 1).
 Turn switched, white moves.
-A white mark has been placed at position (row = 0, col = 1).
-Turn switched, black moves.
-A black mark has been placed at position (row = 0, col = 2).
-Turn switched, white moves.
-A white mark has been placed at position (row = 0, col = 3).
-Turn switched, black moves.
-A black mark has been placed at position (row = 0, col = 4).
-Skipping white's turn because they cannot move; black moves again.
-A black mark has been placed at position (row = 1, col = 5).
-Turn switched, white moves.
-A white mark has been placed at position (row = 0, col = 5).
-Game over: black wins with score 21 - 15
+A white mark has been placed at position (row = 0, col = 0).
+Game over: black wins with score 23 - 13

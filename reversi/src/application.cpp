@@ -101,6 +101,7 @@ void application::keyDown(cinder::app::KeyEvent const e)
 
 void application::mouseDown(cinder::app::MouseEvent const e)
 {
+    auto const game_over = current_game->is_over();
     if (game_over)
     {
         return;
@@ -161,27 +162,30 @@ void application::load_game_over_picture()
 
 void application::start_new_game(int const board_size)
 {
-    current_game = std::make_unique<local_game>(board_size, 
-                                                "Player 1", 
-                                                "Player 2", 
-                                                logger);
+    current_game = create_new_game(board_size);
 
-    board_renderer = std::make_unique<game_board_renderer>(*current_game, 
-                                                           board_display_size);
-
-    player_renderer = std::make_unique<player_info_renderer>(
-        *current_game, 
-        board_display_size);
-    
-    hint_renderer = std::make_unique<hint_message_renderer>(board_display_size);
-
-    game_over = false;
-
-    score = {2, 2};
-
-    next_mover = player::black;
+    create_renderers_for_game(*current_game);
 
     register_for_placement_notifications_from_current_game();    
+}
+
+std::unique_ptr<game> application::create_new_game(int board_size) const
+{
+    return std::make_unique<local_game>(board_size, 
+                                        "Player 1", 
+                                        "Player 2", 
+                                        logger);
+}
+
+void application::create_renderers_for_game(game& g)
+{
+    board_renderer = 
+        std::make_unique<game_board_renderer>(g, board_display_size);
+
+    player_renderer = 
+        std::make_unique<player_info_renderer>(g, board_display_size);
+    
+    hint_renderer = std::make_unique<hint_message_renderer>(board_display_size);
 }
 
 void application::draw_frame() const
@@ -222,11 +226,19 @@ void application::draw_title() const
 
 void application::draw_game_board() const
 {
+    auto const game_over = current_game->is_over();
+
     board_renderer->draw_board(game_over);
 }
 
 void application::draw_player_info() const
 {
+    auto const next_mover = current_game->get_next_moving_player();
+
+    auto const score = current_game->get_score();
+
+    auto const game_over = current_game->is_over();
+
     player_renderer->draw_player_info(game_over, 
                                       next_mover, 
                                       score);
@@ -234,11 +246,15 @@ void application::draw_player_info() const
 
 void application::draw_hint_message() const
 {
+    auto const game_over = current_game->is_over();
+
     hint_renderer->draw_hint(game_over);
 }
 
 void application::draw_game_over_label() const
 {
+    auto const game_over = current_game->is_over();
+
     if (!game_over)
     {
         return;
@@ -275,29 +291,7 @@ void application::on_placement(
     placement_outcome outcome, 
     util::value_ref<std::vector<cell_position>> reversals)
 {
-    auto const scorer = (outcome == placement_outcome::turn_switched) ? 
-        get_opponent_of(p) : 
-        p;
-
-    update_score(scorer, static_cast<int>(reversals.size()));
-
-    next_mover = p;
-
     process_placement_outcome(outcome);
-}
-
-void application::update_score(player const scorer, int const num_of_reversals)
-{
-    if (scorer == player::white)
-    {
-        score.white += static_cast<int>(num_of_reversals + 1);
-        score.black-= static_cast<int>(num_of_reversals);
-    }
-    else
-    {
-        score.black += static_cast<int>(num_of_reversals + 1);
-        score.white -= static_cast<int>(num_of_reversals);
-    }    
 }
 
 void application::process_placement_outcome(placement_outcome const outcome)
@@ -308,8 +302,6 @@ void application::process_placement_outcome(placement_outcome const outcome)
     }
     else if (outcome == placement_outcome::game_over)
     {
-        game_over = true;
-
         set_shown_hint_message(
             get_game_result_description() + 
             " Press F4, F6, F8, F10, or F12 "
@@ -323,6 +315,8 @@ void application::process_placement_outcome(placement_outcome const outcome)
 
 void application::show_turn_skipped_message()
 {
+    auto const next_mover = current_game->get_next_moving_player();
+
     auto next_mover_name = current_game->get_player_name(next_mover);
 
     auto skipped_player_name = 
@@ -343,7 +337,7 @@ void application::set_shown_hint_message(std::string message) const
 
 std::string application::get_game_result_description() const
 {
-    auto const winner = get_winning_player(score);
+    auto const winner = get_winning_player(*current_game);
 
     if (!winner)
     {

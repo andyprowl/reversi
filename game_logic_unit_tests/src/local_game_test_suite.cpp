@@ -362,4 +362,22 @@ TEST_THAT(LocalGame,
     EXPECT_TRUE(invoked);
 }
 
+TEST_THAT(LocalGame,
+     WHAT(IsOver),
+     WHEN(WhenTheGameIsNotOver),
+     THEN(ReturnsFalse))
+{
+    EXPECT_FALSE(the_game.is_over());
+}
+
+TEST_THAT(LocalGame,
+     WHAT(IsOver),
+     WHEN(WhenTheGameIsOver),
+     THEN(ReturnsTrue))
+{
+    make_black_win();
+
+    EXPECT_TRUE(the_game.is_over());
+}
+
 } }

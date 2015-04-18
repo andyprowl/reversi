@@ -13,6 +13,7 @@ enum class placement_outcome;
 enum class player;
 
 struct cell_position;
+struct game_score;
 
 class game
 {
@@ -35,11 +36,20 @@ public:
 
     virtual placement_outcome place(cell_position pos) = 0;
     
-    virtual boost::optional<player> get_board_cell_mark(cell_position pos) const = 0;
+    virtual boost::optional<player> get_board_cell_mark(
+        cell_position pos) const = 0;
+
+    virtual game_score get_score() const = 0;
+
+    virtual player get_next_moving_player() const = 0;
+
+    virtual bool is_over() const = 0;
 
     virtual boost::signals2::connection register_placement_event_handler(
         placement_event_handler h) = 0;
 
 }; 
+
+boost::optional<player> get_winning_player(game const& g);
 
 }

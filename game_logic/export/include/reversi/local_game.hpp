@@ -9,8 +9,6 @@ namespace reversi
 {
 
 enum class direction;
-
-struct game_score;
     
 class game_logger;
 
@@ -38,14 +36,17 @@ public:
 
     virtual placement_outcome place(cell_position pos) override;
 
-    virtual boost::optional<player> get_board_cell_mark(cell_position pos) const override;
+    virtual boost::optional<player> get_board_cell_mark(
+        cell_position pos) const override;
+
+    virtual game_score get_score() const override;
+
+    virtual player get_next_moving_player() const override;
+
+    virtual bool is_over() const override;
 
     virtual boost::signals2::connection register_placement_event_handler(
         placement_event_handler h) override;
-
-    game_score get_score() const;
-
-    player get_next_moving_player() const;
 
 private:
 
@@ -53,19 +54,24 @@ private:
 
     void throw_if_cell_is_occupied(cell_position pos) const;
     
-    std::vector<cell_position> apply_reversals_or_throw_if_none_is_triggered(cell_position pos);
+    std::vector<cell_position> apply_reversals_or_throw_if_none_is_triggered(
+        cell_position pos);
 
-    std::vector<cell_position> get_reversals_for_placement(cell_position pos, player p) const;
+    std::vector<cell_position> get_reversals_for_placement(cell_position pos, 
+                                                           player p) const;
 
-    std::vector<cell_position> get_reversals_for_placement_in_direction(cell_position pos,
-                                                                        player p,
-                                                                        direction d) const;
+    std::vector<cell_position> get_reversals_for_placement_in_direction(
+        cell_position pos,
+        player p,
+        direction d) const;
     
-    bool is_cell_occupied_by_opponent_of_player(cell_position pos, player p) const;
+    bool is_cell_occupied_by_opponent_of_player(
+        cell_position pos, player p) const;
 
     bool is_cell_occupied_by_player(cell_position pos, player p) const;
 
-    void update_score_after_reversals(util::value_ref<std::vector<cell_position>> reversals);
+    void update_score_after_reversals(
+        util::value_ref<std::vector<cell_position>> reversals);
 
     void mark_placement_cell_and_update_score(cell_position pos);
 
@@ -96,6 +102,8 @@ private:
     game_score score;
 
     placement_event on_placement;
+
+    bool game_over;
 
 };
 

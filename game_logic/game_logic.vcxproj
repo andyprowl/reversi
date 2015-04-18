@@ -27,6 +27,7 @@
   <ItemGroup>
     <ClCompile Include="src\cell_position.cpp" />
     <ClCompile Include="src\file_game_logger.cpp" />
+    <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\local_game.cpp" />
     <ClCompile Include="src\game_board.cpp" />
     <ClCompile Include="src\game_score.cpp" />

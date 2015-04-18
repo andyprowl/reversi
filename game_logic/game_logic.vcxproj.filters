@@ -79,5 +79,8 @@
     <ClCompile Include="src\local_game.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\game.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

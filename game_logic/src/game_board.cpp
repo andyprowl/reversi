@@ -26,7 +26,10 @@ void game_board::mark_cell(cell_position pos, player const p)
 
 bool game_board::is_valid_cell_position(cell_position const pos) const
 {
-    return ((pos.row >= 0) && (pos.row < size) && (pos.col >= 0) && (pos.col < size));
+    return ((pos.row >= 0) && 
+            (pos.row < size) && 
+            (pos.col >= 0) && 
+            (pos.col < size));
 }
 
 bool game_board::is_cell_occupied(cell_position const pos) const

@@ -22,6 +22,7 @@ local_game::local_game(int const board_size,
     , logger{logger}
     , next_moving_player{player::black}
     , score{2, 2}
+    , game_over{false}
 {    
     place_initial_marks();
 }
@@ -58,12 +59,14 @@ placement_outcome local_game::place(cell_position const pos)
     return outcome;
 }
 
-boost::optional<player> local_game::get_board_cell_mark(cell_position const pos) const
+boost::optional<player> local_game::get_board_cell_mark(
+    cell_position const pos) const
 {
     return board.get_cell_mark(pos);
 }
 
-boost::signals2::connection local_game::register_placement_event_handler(placement_event_handler h)
+boost::signals2::connection local_game::register_placement_event_handler(
+    placement_event_handler h)
 {
     return on_placement.connect(std::move(h));
 }
@@ -76,6 +79,11 @@ game_score local_game::get_score() const
 player local_game::get_next_moving_player() const
 {
     return next_moving_player;
+}
+
+bool local_game::is_over() const
+{
+    return game_over;
 }
 
 void local_game::place_initial_marks()
@@ -99,8 +107,9 @@ void local_game::throw_if_cell_is_occupied(cell_position const pos) const
     }   
 }
 
-std::vector<cell_position> local_game::apply_reversals_or_throw_if_none_is_triggered(
-    cell_position const pos)
+std::vector<cell_position> 
+    local_game::apply_reversals_or_throw_if_none_is_triggered(
+        cell_position const pos)
 {
     auto const reversals = get_reversals_for_placement(pos, next_moving_player);
     
@@ -119,8 +128,9 @@ std::vector<cell_position> local_game::apply_reversals_or_throw_if_none_is_trigg
     return reversals;
 }
 
-std::vector<cell_position> local_game::get_reversals_for_placement(cell_position const pos,
-                                                             player const p) const
+std::vector<cell_position> local_game::get_reversals_for_placement(
+    cell_position const pos,
+    player const p) const
 {
     if (board.is_cell_occupied(pos)) { return {}; }
 
@@ -157,17 +167,20 @@ std::vector<cell_position> local_game::get_reversals_for_placement_in_direction(
     return valid_move ? reversals : std::vector<cell_position>{};
 }
 
-bool local_game::is_cell_occupied_by_opponent_of_player(cell_position const pos, 
-                                                        player const p) const
+bool local_game::is_cell_occupied_by_opponent_of_player(
+    cell_position const pos, 
+    player const p) const
 {
     auto const opponent = get_opponent_of(p);
 
     return is_cell_occupied_by_player(pos, opponent);
 }
 
-bool local_game::is_cell_occupied_by_player(cell_position const pos, player const p) const
+bool local_game::is_cell_occupied_by_player(cell_position const pos, 
+                                            player const p) const
 {
-    return ((board.is_valid_cell_position(pos) && (board.get_cell_mark(pos) == p)));
+    return ((board.is_valid_cell_position(pos) && 
+            (board.get_cell_mark(pos) == p)));
 }
 
 void local_game::update_score_after_reversals(
@@ -177,7 +190,9 @@ void local_game::update_score_after_reversals(
 
     score = increase_score(score, next_moving_player, num_of_reversals);
 
-    score = increase_score(score, get_opponent_of(next_moving_player), -num_of_reversals);    
+    auto const opponent = get_opponent_of(next_moving_player);
+
+    score = increase_score(score, opponent, -num_of_reversals);    
 }
 
 void local_game::mark_placement_cell_and_update_score(cell_position const pos)
@@ -197,6 +212,10 @@ placement_outcome local_game::update_game_state()
     {
         next_moving_player = get_opponent_of(next_moving_player);
     }
+    else if (outcome == placement_outcome::game_over)
+    {
+        game_over = true;
+    }
 
     log_placement_outcome(outcome);
 
@@ -212,8 +231,9 @@ placement_outcome local_game::determine_last_placement_outcome() const
         return placement_outcome::turn_switched;
     }
     
-    return can_player_move(next_moving_player) ? placement_outcome::turn_skipped :
-                                                 placement_outcome::game_over;
+    return can_player_move(next_moving_player) ? 
+        placement_outcome::turn_skipped :
+        placement_outcome::game_over;
 }
 
 void local_game::log_placement_outcome(placement_outcome const p) const

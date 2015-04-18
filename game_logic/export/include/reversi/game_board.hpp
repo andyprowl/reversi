@@ -20,7 +20,8 @@ class game_board
 
 public:
 
-    using cell_mark_change_event_handler = std::function<void(cell_position, player)>;
+    using cell_mark_change_event_handler = 
+          std::function<void(cell_position, player)>;
 
 public:
 

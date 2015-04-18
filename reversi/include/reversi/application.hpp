@@ -4,7 +4,6 @@
 #include "reversi/file_game_logger.hpp"
 #include "reversi/game.hpp"
 #include "reversi/game_board_renderer.hpp"
-#include "reversi/game_score.hpp"
 #include "reversi/hint_message_renderer.hpp"
 #include "reversi/player.hpp"
 #include "reversi/player_info_renderer.hpp"
@@ -51,6 +50,10 @@ private:
 
     void start_new_game(int board_size);
 
+    std::unique_ptr<game> create_new_game(int board_size) const;
+
+    void create_renderers_for_game(game& g);
+
     void draw_frame() const;
 
     void draw_background() const;
@@ -71,9 +74,7 @@ private:
                       player p, 
                       placement_outcome outcome, 
                       util::value_ref<std::vector<cell_position>> reversals);
-
-    void update_score(player scorer, int num_of_reversals);
-
+    
     void process_placement_outcome(placement_outcome outcome);
 
     void show_turn_skipped_message();
@@ -102,13 +103,7 @@ private:
 
     float board_display_size = 400.f;
 
-    player next_mover = player::black;
-
-    bool game_over = false;
-
-    game_score score = {2, 2};
-
-    file_game_logger logger;
+    mutable file_game_logger logger;
 
 };
 

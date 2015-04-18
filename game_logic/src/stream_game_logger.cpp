@@ -16,7 +16,8 @@ stream_game_logger::stream_game_logger(std::ostream& log)
     
 }
     
-void stream_game_logger::log_successful_placement(cell_position const pos, player const p)
+void stream_game_logger::log_successful_placement(cell_position const pos, 
+                                                  player const p)
 {
     log << "A " 
         << to_string(p) 
