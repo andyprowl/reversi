@@ -2,7 +2,7 @@
 
 #include "reversi/cell_position.hpp"
 #include "reversi/game_score.hpp"
-#include "reversi/local_game.hpp"
+#include "reversi/game.hpp"
 #include "reversi/player.hpp"
 #include "reversi/stream_game_logger.hpp"
 #include <algorithm>
@@ -43,7 +43,7 @@ void stream_game_logger::log_turn_skipped_message(player const p)
         << std::endl;
 }
 
-void stream_game_logger::log_game_over_message(local_game const& g)
+void stream_game_logger::log_game_over_message(game const& g)
 {
     auto const score = g.get_score();
 

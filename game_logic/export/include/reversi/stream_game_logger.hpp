@@ -19,7 +19,7 @@ public:
 
     virtual void log_turn_skipped_message(player p) override;
 
-    virtual void log_game_over_message(local_game const& g) override;
+    virtual void log_game_over_message(game const& g) override;
 
 private:
 

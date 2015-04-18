@@ -2,7 +2,7 @@
 
 #include "reversi/application.hpp"
 #include "reversi/cell_position.hpp"
-#include "reversi/local_game.hpp"
+#include "reversi/game.hpp"
 #include "reversi/file_game_logger.hpp"
 #include "reversi/placement_outcome.hpp"
 #include "reversi/player.hpp"
@@ -170,7 +170,7 @@ void application::start_new_game(int const board_size)
 
 std::unique_ptr<game> application::create_new_game(int board_size) const
 {
-    return std::make_unique<local_game>(board_size, 
+    return std::make_unique<game>(board_size, 
                                         "Player 1", 
                                         "Player 2", 
                                         logger);

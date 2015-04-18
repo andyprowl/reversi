@@ -15,7 +15,6 @@
     <ClInclude Include="export\include\reversi\direction.hpp" />
     <ClInclude Include="export\include\reversi\file_game_logger.hpp" />
     <ClInclude Include="export\include\reversi\game.hpp" />
-    <ClInclude Include="export\include\reversi\local_game.hpp" />
     <ClInclude Include="export\include\reversi\game_board.hpp" />
     <ClInclude Include="export\include\reversi\game_logger.hpp" />
     <ClInclude Include="export\include\reversi\placement_outcome.hpp" />
@@ -28,7 +27,6 @@
     <ClCompile Include="src\cell_position.cpp" />
     <ClCompile Include="src\file_game_logger.cpp" />
     <ClCompile Include="src\game.cpp" />
-    <ClCompile Include="src\local_game.cpp" />
     <ClCompile Include="src\game_board.cpp" />
     <ClCompile Include="src\game_score.cpp" />
     <ClCompile Include="src\stdafx.cpp">

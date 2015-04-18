@@ -34,7 +34,7 @@ public:
         messages.emplace_back("TSK " + to_string(p));
     }
 
-    virtual void log_game_over_message(local_game const& g) override
+    virtual void log_game_over_message(game const& g) override
     {
         messages.emplace_back("GO");
     }
