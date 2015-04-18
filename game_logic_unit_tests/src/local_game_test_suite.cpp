@@ -41,15 +41,18 @@ protected:
     
 protected:
 
-    std::string white_player_name = "PLAYER 2";
-
     std::string black_player_name = "PLAYER 1";
+
+    std::string white_player_name = "PLAYER 2";
 
     int board_size = 4;
 
     game_logger_spy logger;
 
-    local_game the_game{board_size, white_player_name, black_player_name, logger};
+    local_game the_game{board_size, 
+                        black_player_name, 
+                        white_player_name, 
+                        logger};
 
 };
 
@@ -153,7 +156,8 @@ TEST_THAT(LocalGame,
      WHEN(GivenARowIndexWhichIsNotLowerThanTheBoardSize),
      THEN(Throws))
 {
-    EXPECT_THROW((the_game.place({board_size, 3})), bad_cell_coordinates_exception);
+    EXPECT_THROW((the_game.place({board_size, 3})), 
+                 bad_cell_coordinates_exception);
 }
 
 TEST_THAT(LocalGame,
@@ -169,7 +173,8 @@ TEST_THAT(LocalGame,
      WHEN(GivenAColumnIndexWhichIsNotLowerThanTheBoardSize),
      THEN(Throws))
 {
-    EXPECT_THROW((the_game.place({2, board_size})), bad_cell_coordinates_exception);
+    EXPECT_THROW((the_game.place({2, board_size})), 
+                 bad_cell_coordinates_exception);
 }
 
 TEST_THAT(LocalGame,
@@ -190,7 +195,7 @@ TEST_THAT(LocalGame,
 
 TEST_THAT(LocalGame,
      WHAT(Place),
-     WHEN(GivenTheCoordinatesOfAFreeCellThatLeadsToSomeReversalEastOfThePlacePosition),
+     WHEN(GivenTheCoordinatesOfAFreeCellThatLeadsToSomeReversalTowardsEast),
      THEN(PlacesTheMarkAndPerformsTheReversals))
 {
     the_game.place({1, 0});
@@ -202,7 +207,7 @@ TEST_THAT(LocalGame,
 
 TEST_THAT(LocalGame,
      WHAT(Place),
-     WHEN(GivenTheCoordinatesOfAFreeCellThatLeadsToSomeReversalWestOfThePlacePosition),
+     WHEN(GivenTheCoordinatesOfAFreeCellThatLeadsToSomeReversalTowardsWest),
      THEN(PlacesTheMarkAndPerformsTheReversals))
 {
     the_game.place({2, 3});
@@ -255,7 +260,7 @@ TEST_THAT(LocalGame,
 
 TEST_THAT(LocalGame,
      WHAT(Place),
-     WHEN(WhenAfterAPlacementTheNextPlayerCannotMakeAValidMoveButTheOneWhoJustMovedCan),
+     WHEN(WhenAfterPlacementTheNextPlayerCannotMakeAValidMoveButTheOpponentCan),
      THEN(DoesNotSwitchTheTurnAndReturnsTheCorrespondingOutcome))
 {
     // See http://reversi-nxn.blogspot.cz/2008/04/reversi-4x4-games.html
@@ -344,15 +349,15 @@ TEST_THAT(LocalGame,
         [&invoked, this] (cell_position const pos, 
                           player const p, 
                           placement_outcome const outcome,
-                          util::value_ref<std::vector<cell_position>> flipped_cells)
+                          util::value_ref<std::vector<cell_position>> reversals)
     {
         EXPECT_THAT(pos, Eq(cell_position{1, 3}));
         EXPECT_THAT(p, Eq(player::black));
         EXPECT_THAT(outcome, Eq(placement_outcome::turn_switched));
 
-        ASSERT_THAT(flipped_cells.size(), Eq(2u));
-        EXPECT_THAT(flipped_cells, Contains(cell_position{2, 3}));
-        EXPECT_THAT(flipped_cells, Contains(cell_position{1, 2}));
+        ASSERT_THAT(reversals.size(), Eq(2u));
+        EXPECT_THAT(reversals, Contains(cell_position{2, 3}));
+        EXPECT_THAT(reversals, Contains(cell_position{1, 2}));
 
         invoked = true;
     });

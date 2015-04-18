@@ -12,18 +12,18 @@ game_score::game_score(int const white, int const black)
 {    
 }
 
-bool operator == (game_score lhs, game_score rhs)
+bool operator == (game_score const lhs, game_score const rhs)
 {
     return ((lhs.white == rhs.white) && (lhs.black == rhs.black));
             
 }
 
-bool operator != (game_score lhs, game_score rhs)
+bool operator != (game_score const lhs, game_score const rhs)
 {
     return !(lhs == rhs);
 }
 
-std::ostream& operator << (std::ostream& out, game_score s)
+std::ostream& operator << (std::ostream& out, game_score const s)
 {
     out << "{ " << player::white << ": " << s.white << "; ";
     

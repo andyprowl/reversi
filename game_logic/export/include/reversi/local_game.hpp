@@ -26,8 +26,8 @@ class local_game : public game
 public:
 
     local_game(int board_size, 
-               std::string white_player_name, 
                std::string black_player_name, 
+               std::string white_player_name, 
                game_logger& logger); 
 
     virtual int get_board_size() const override;
@@ -91,9 +91,9 @@ private:
 
     game_board board;
 
-    std::string white_player_name;
-
     std::string black_player_name;
+
+    std::string white_player_name;
 
     game_logger& logger;
 

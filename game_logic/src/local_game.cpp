@@ -13,12 +13,12 @@ namespace reversi
 {
 
 local_game::local_game(int const board_size, 
-                       std::string white_player_name, 
                        std::string black_player_name, 
+                       std::string white_player_name, 
                        game_logger& logger)
     : board{board_size}
-    , white_player_name(std::move(white_player_name))
     , black_player_name(std::move(black_player_name))
+    , white_player_name(std::move(white_player_name))
     , logger{logger}
     , next_moving_player{player::black}
     , score{2, 2}
@@ -34,13 +34,13 @@ int local_game::get_board_size() const
 
 std::string local_game::get_player_name(player const p) const
 {
-    if (p == player::white)
+    if (p == player::black)
     {
-        return white_player_name;
+        return black_player_name;
     }
     else
     {
-        return black_player_name;
+        return white_player_name;
     }
 }
 
@@ -254,7 +254,7 @@ void local_game::log_placement_outcome(placement_outcome const p) const
     }
 }
 
-bool local_game::can_player_move(player p) const
+bool local_game::can_player_move(player const p) const
 {
     for (auto const row : util::sequence(0, board.get_size()))
     {

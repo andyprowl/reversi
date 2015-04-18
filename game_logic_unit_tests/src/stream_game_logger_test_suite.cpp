@@ -36,14 +36,14 @@ protected:
 
     stream_game_logger logger{log};
 
-    local_game the_game{4, "WHITE PLAYER", "BLACK PLAYER", logger};
+    local_game the_game{4, "BLACK PLAYER", "WHITE PLAYER", logger};
 
 };
 
 TEST_THAT(StreamGameLogger,
      WHAT(LogSuccessfulPlacement),
      WHEN(GivenACellPositionAndAPlayer),
-     THEN(InsertsTheCoordinatesOfThatPositionAndThePlayersDefaultRepresentation))
+     THEN(InsertsTheCoordinatesOfThatPositionAndARepresentationOfThePlayer))
 {
     logger.log_successful_placement({15, 42}, player::white);
 

@@ -25,29 +25,29 @@ private:
 
     void load_winner_picture();
 
-    void draw_white_player_info(int white_score) const;
-
-    void draw_white_player_name() const;
-
-    void draw_white_player_score(int white_score) const;
-
     void draw_black_player_info(int black_score) const;
 
     void draw_black_player_name() const;
 
     void draw_black_player_score(int black_score) const;
 
-    void draw_turn_indicator(bool game_over, player next_mover) const;
+    void draw_white_player_info(int white_score) const;
 
-    void draw_white_player_turn_indicator() const;
+    void draw_white_player_name() const;
+
+    void draw_white_player_score(int white_score) const;
+
+    void draw_turn_indicator(bool game_over, player next_mover) const;
 
     void draw_black_player_turn_indicator() const;
 
+    void draw_white_player_turn_indicator() const;
+
     void draw_winner_indicator(bool game_over, game_score score) const;
 
-    void draw_white_player_winner_indicator() const;
-
     void draw_black_player_winner_indicator() const;
+
+    void draw_white_player_winner_indicator() const;
 
 private:
 

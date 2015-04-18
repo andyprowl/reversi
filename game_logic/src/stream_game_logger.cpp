@@ -54,17 +54,17 @@ void stream_game_logger::log_game_over_message(local_game const& g)
         log << "Game over: " 
             << to_string(*winner) 
             << " wins with score " 
-            << std::max(score.white, score.black)
+            << std::max(score.black, score.white)
             << " - "
-            << std::min(score.white, score.black)
+            << std::min(score.black, score.white)
             << std::endl;
     }
     else
     {
         log << "Game over: there is no winner. The final score is " 
-            << score.white 
+            << score.black 
             << " - " 
-            << score.black
+            << score.white
             << "." << std::endl;
     }
 }
