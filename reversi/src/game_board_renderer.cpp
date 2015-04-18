@@ -4,8 +4,8 @@
 #include "reversi/game.hpp"
 #include "reversi/game_board_renderer.hpp"
 #include "reversi/player.hpp"
-#include <cinder/ImageIo.h>
 #include "util/sequence.hpp"
+#include <cinder/ImageIo.h>
 
 namespace reversi
 {

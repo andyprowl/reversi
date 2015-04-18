@@ -10,7 +10,7 @@ class hint_message_renderer
     
 public:
 
-    hint_message_renderer(float board_display_size);
+    explicit hint_message_renderer(float board_display_size);
 
     void draw_hint(bool game_over);
 

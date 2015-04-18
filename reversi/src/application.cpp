@@ -6,7 +6,6 @@
 #include "reversi/file_game_logger.hpp"
 #include "reversi/placement_outcome.hpp"
 #include "reversi/player.hpp"
-#include "util/sequence.hpp"
 #include <cinder/ImageIo.h>
 
 namespace reversi
