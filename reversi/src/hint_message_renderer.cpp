@@ -15,17 +15,16 @@ void hint_message_renderer::draw_hint(bool const game_over)
 {
     auto const center = cinder::app::getWindowCenter();
 
-    auto const pos = cinder::Vec2f{center.x, 
-                                   center.y + board_display_size / 2.f + 25.f};
+    auto const pos = 
+        cinder::Vec2f{center.x, center.y + board_display_size / 2.f + 25.f};
 
     auto const duration = cinder::app::getElapsedSeconds() - hint_timestamp;
 
     auto const transparency = ((duration < 2.0) || game_over) ? 1.f : 0.f;
 
-    cinder::gl::drawStringCentered(hint, 
-                                   pos, 
-                                   {1.0, 1.0, 0.0, transparency}, 
-                                   hint_font);
+    auto const color = cinder::ColorA{1.0, 1.0, 0.0, transparency};
+
+    cinder::gl::drawStringCentered(hint, pos, color, hint_font);
 }
 
 void hint_message_renderer::set_hint(std::string message)

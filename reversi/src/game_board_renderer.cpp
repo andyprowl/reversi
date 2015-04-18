@@ -166,10 +166,10 @@ void game_board_renderer::draw_game_board_frame() const
 {
     auto const center = cinder::app::getWindowCenter();
 
-    auto padding = 15.f;
+    auto const padding = 15.f;
 
-    auto radius = cinder::Vec2f{board_display_size / 2.f + padding, 
-                                board_display_size / 2.f + padding};
+    auto const radius = cinder::Vec2f{board_display_size / 2.f + padding, 
+                                      board_display_size / 2.f + padding};
 
     auto const top_left = center - radius;
 

@@ -17,8 +17,9 @@ enum class placement_outcome;
 enum class player;
     
 struct cell_position;
-class game_logger;
 struct game_score;
+
+class game_logger;
 
 class no_reversal_triggered_exception : public virtual std::exception
 {    
