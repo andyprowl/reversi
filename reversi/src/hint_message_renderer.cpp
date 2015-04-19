@@ -16,7 +16,7 @@ void hint_message_renderer::draw_hint(bool const game_over)
     auto const center = cinder::app::getWindowCenter();
 
     auto const pos = 
-        cinder::Vec2f{center.x, center.y + board_display_size / 2.f + 25.f};
+        cinder::Vec2f{center.x, center.y + board_display_size / 2.f + 31.f};
 
     auto const duration = cinder::app::getElapsedSeconds() - hint_timestamp;
 
