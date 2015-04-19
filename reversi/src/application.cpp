@@ -12,7 +12,7 @@ namespace reversi
 {
   
 application::application()
-    : logger{"log.txt"}
+    : logger{"reversi.log"}
 {    
 }
 
