@@ -2,7 +2,7 @@
 
 This is a simple *reversi* game for Windows developed in C++ with [Cinder](http://libcinder.org/).
 
-![Game over screenshot](https://github.com/andyprowl/reversi/blob/master/screenshots/screenshot01.jpg)
+![Game over screenshot](https://github.com/andyprowl/reversi/blob/basic/screenshots/screenshot01.jpg)
 
 ## Rules
 
@@ -16,7 +16,7 @@ At the moment, neither AI nor online multi-player mode are supported. Both featu
 
 The quickest way to play Reversi is to:
 
- 1. Download the [`reversi.zip`](https://github.com/andyprowl/reversi/raw/master/deploy/reversi.zip) file from the `/deploy` subfolder in this repository.
+ 1. Download the [`reversi.zip`](https://github.com/andyprowl/reversi/raw/basic/deploy/reversi.zip) file from the `/deploy` subfolder in this repository.
  2. Unzip it to some local folder. 
  3. Start the `reversi.exe` executable from the unzipped `/reversi` folder.
 
