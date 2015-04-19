@@ -2,8 +2,8 @@
 
 #include "reversi/application.hpp"
 #include "reversi/cell_position.hpp"
-#include "reversi/local_game.hpp"
 #include "reversi/file_game_logger.hpp"
+#include "reversi/local_game.hpp"
 #include "reversi/placement_outcome.hpp"
 #include "reversi/player.hpp"
 #include <cinder/ImageIo.h>
@@ -93,9 +93,16 @@ void application::keyDown(cinder::app::KeyEvent const e)
 
         default:
         {
+            this->board_renderer->show_next_move_token(e.isControlDown());
+
             return;
         }
     }
+}
+
+void application::keyUp(cinder::app::KeyEvent const e)
+{
+    this->board_renderer->show_next_move_token(e.isControlDown());
 }
 
 void application::mouseDown(cinder::app::MouseEvent const e)
@@ -170,13 +177,9 @@ void application::start_new_game(int const board_size)
 
 std::unique_ptr<game> application::create_new_game(int board_size) const
 {
-    auto black_player_name = "Player 1";
-
-    auto white_player_name = "Player 2";
-
-    return std::make_unique<local_game>(board_size,
-                                        black_player_name, 
-                                        white_player_name, 
+    return std::make_unique<local_game>(board_size, 
+                                        "Player 1", 
+                                        "Player 2", 
                                         logger);
 }
 
@@ -210,6 +213,15 @@ void application::draw_background() const
 {
     auto const bounds = getWindowBounds();
 
+    if (current_game->is_over())
+    {
+        cinder::gl::color(1.0, 1.0, 1.0, 0.5f);
+    }
+    else
+    {
+        cinder::gl::color(1.0, 1.0, 1.0, 1.0f);
+    }
+
     cinder::gl::draw(background_picture, bounds);
 }
 
@@ -229,9 +241,7 @@ void application::draw_title() const
 
 void application::draw_game_board() const
 {
-    auto const game_over = current_game->is_over();
-
-    board_renderer->draw_board(game_over);
+    board_renderer->draw_board();
 }
 
 void application::draw_player_info() const

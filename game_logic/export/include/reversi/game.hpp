@@ -42,6 +42,8 @@ public:
 
     virtual std::string get_player_name(player p) const = 0;
 
+    virtual bool can_place(cell_position pos) const = 0;
+
     virtual placement_outcome place(cell_position pos) = 0;
     
     virtual boost::optional<player> get_board_cell_mark(

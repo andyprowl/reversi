@@ -1,92 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="include">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="export">
-      <UniqueIdentifier>{fd236896-0d33-41c0-bbd8-0fb45a9908d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="export\include">
-      <UniqueIdentifier>{a5fef152-d350-4413-8219-9bffdc97fdfb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="export\include\reversi">
-      <UniqueIdentifier>{ab3ac536-a5fb-429c-9177-7aa7b420e633}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="src\cell_position.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game_board.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game_score.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\local_game.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stdafx.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\stdafx.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="export\include\reversi\game_board.hpp">
-      <Filter>export\include\reversi</Filter>
-    </ClInclude>
-    <ClInclude Include="export\include\reversi\player.hpp">
-      <Filter>export\include\reversi</Filter>
-    </ClInclude>
     <ClInclude Include="export\include\reversi\cell_position.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
     <ClInclude Include="export\include\reversi\direction.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
-    <ClInclude Include="export\include\reversi\game_score.hpp">
+    <ClInclude Include="export\include\reversi\game.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
-    <ClInclude Include="export\include\reversi\placement_outcome.hpp">
+    <ClInclude Include="export\include\reversi\game_board.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
     <ClInclude Include="export\include\reversi\game_logger.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="export\include\reversi\file_game_logger.hpp">
-      <Filter>export\include\reversi</Filter>
-    </ClInclude>
-    <ClInclude Include="export\include\reversi\stream_game_logger.hpp">
+    <ClInclude Include="export\include\reversi\game_score.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
     <ClInclude Include="export\include\reversi\local_game.hpp">
       <Filter>export\include\reversi</Filter>
     </ClInclude>
-=======
->>>>>>> 0767f8f... Extract stream logger implementation and corresponding unit tests out of game logic project. Add mock logger test double and allow using that instead of the logger spy for game logic unit tests.
-    <ClInclude Include="export\include\reversi\game.hpp">
+    <ClInclude Include="export\include\reversi\placement_outcome.hpp">
       <Filter>export\include\reversi</Filter>
+    </ClInclude>
+    <ClInclude Include="export\include\reversi\player.hpp">
+      <Filter>export\include\reversi</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stdafx.hpp">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\stdafx.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game_board.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cell_position.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game_score.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="src\file_game_logger.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\stream_game_logger.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\local_game.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-=======
->>>>>>> 0767f8f... Extract stream logger implementation and corresponding unit tests out of game logic project. Add mock logger test double and allow using that instead of the logger spy for game logic unit tests.
-    <ClCompile Include="src\game.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
+    <Filter Include="src">
+      <UniqueIdentifier>{1e045ce1-ff7a-4e75-bbbb-71e1ec20f764}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{d7926edd-ccd1-4771-9cf3-95f89e97c187}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="export">
+      <UniqueIdentifier>{22d142ec-3945-40d0-9cbb-51c9a079ae64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="export\include">
+      <UniqueIdentifier>{2a9e361f-56e2-4166-b790-5778a388d522}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="export\include\reversi">
+      <UniqueIdentifier>{70e298cf-fdee-4989-852d-1d2d01aa1d5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

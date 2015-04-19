@@ -33,8 +33,6 @@ public:
 
     bool is_valid_cell_position(cell_position pos) const;
 
-    bool is_cell_occupied(cell_position const pos) const;
-
     boost::optional<player> get_cell_mark(cell_position pos) const;
 
 private:
@@ -48,5 +46,7 @@ private:
     std::vector<boost::optional<player>> board;
 
 };
+
+bool is_cell_occupied(game_board const& b, cell_position pos);
 
 }

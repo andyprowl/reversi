@@ -1,13 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\local_game_test_suite.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\stdafx.cpp" />
+    <ClCompile Include="src\local_game_test_suite.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stdafx.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="export\include\reversi\testing\game_logger_mock.hpp" />
-    <ClInclude Include="export\include\reversi\testing\game_logger_spy.hpp" />
-    <ClInclude Include="include\stdafx.hpp" />
+    <ClInclude Include="export\include\reversi\testing\game_logger_mock.hpp">
+      <Filter>export\include\reversi\testing</Filter>
+    </ClInclude>
+    <ClInclude Include="export\include\reversi\testing\game_logger_spy.hpp">
+      <Filter>export\include\reversi\testing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stdafx.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{a778b996-4b6e-4f5b-bed8-bba6a653ac78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{86b20fe4-b044-4af7-9362-a079f1ebde62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="export">
+      <UniqueIdentifier>{1aaf2c33-eb4a-4b43-9a24-56a36741ba13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="export\include">
+      <UniqueIdentifier>{49b2919d-30ea-4e80-a4fa-44b915d838a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="export\include\reversi">
+      <UniqueIdentifier>{c07cb475-11e4-498a-85ff-2f02e297cfbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="export\include\reversi\testing">
+      <UniqueIdentifier>{ec0d2229-1ed2-4c7f-9653-8e818d8d1db1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

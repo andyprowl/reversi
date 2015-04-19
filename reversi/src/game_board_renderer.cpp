@@ -9,16 +9,24 @@
 
 namespace reversi
 {
+
+cinder::Vec2f get_mouse_position()
+{
+    return (cinder::app::App::getMousePos() - cinder::app::getWindowPos());
+}
     
 game_board_renderer::game_board_renderer(game& g, float const board_size)
     : current_game{g}
     , board_display_size{board_size}
+    , display_next_move_token{false}
 {
     load_pictures();
 }
 
-void game_board_renderer::draw_board(bool const game_over) const
+void game_board_renderer::draw_board() const
 {
+    cinder::gl::color(1.f, 1.f, 1.f, 1.f);
+
     draw_game_board_background();     
     
     draw_game_board_grid();
@@ -27,14 +35,15 @@ void game_board_renderer::draw_board(bool const game_over) const
 
     draw_tokens();
 
-    draw_currently_hovered_cell(game_over);    
+    draw_currently_hovered_cell();    
+
+    draw_next_move_token();
 }
 
 boost::optional<cell_position> 
     game_board_renderer::get_currently_hovered_cell() const
 {
-    auto const mouse_position = cinder::app::App::getMousePos() - 
-                                cinder::app::getWindowPos();
+    auto const mouse_position = get_mouse_position();
 
     auto const pos = get_cell_position_from_window_position(mouse_position);
 
@@ -58,13 +67,18 @@ cell_position game_board_renderer::get_cell_position_from_window_position(
 {
     auto const board_origin = get_game_board_origin();
 
-    auto const cell_size = get_cell_size();
-
     auto const relative_pos = (pos - board_origin);
+
+    auto const cell_size = get_cell_size();
 
     auto const cell_pos = (relative_pos / cell_size);
 
-    return {cell_pos.y, cell_pos.x};
+    return {std::floor(cell_pos.y), std::floor(cell_pos.x)};
+}
+
+void game_board_renderer::show_next_move_token(bool const show)
+{
+    display_next_move_token = show;
 }
 
 void game_board_renderer::load_pictures()
@@ -107,7 +121,7 @@ void game_board_renderer::draw_game_board_background() const
 
     auto const bottom_right = top_left + cinder::Vec2f{board_display_size, 
                                                        board_display_size};
-    
+ 
     cinder::gl::draw(game_board_picture, {top_left, bottom_right});    
 }
 
@@ -196,10 +210,28 @@ void game_board_renderer::draw_cell_content(cell_position const pos) const
     auto const mark = current_game.get_board_cell_mark(pos);
     if (!mark)
     {
+        draw_empty_cell(pos);
+    }
+    else
+    {
+        draw_player_token(pos.row, pos.col, *mark);
+    }
+}
+
+void game_board_renderer::draw_empty_cell(cell_position const pos) const
+{
+    if (!current_game.can_place(pos))
+    {
         return;
     }
 
-    draw_player_token(pos.row, pos.col, *mark);
+    auto const bounds = get_cell_bounds(pos.row, pos.col);
+            
+    cinder::gl::color(0.f, 1.f, 0.f, 0.2f);
+
+    cinder::gl::drawSolidRect(bounds);
+
+    cinder::gl::color(1.f, 1.f, 1.f, 1.f);
 }
 
 void game_board_renderer::draw_player_token(int const row, 
@@ -221,6 +253,31 @@ void game_board_renderer::draw_player_token(int const row,
     draw_token_shape(p, {top_left, bottom_right});        
 }
 
+void game_board_renderer::draw_next_move_token() const
+{
+    auto const hovered_cell = get_currently_hovered_cell();
+    if (!hovered_cell || current_game.is_over() || !display_next_move_token)
+    {
+        return;
+    }
+
+    auto const mouse_position = get_mouse_position();
+
+    auto const next_mover = current_game.get_next_moving_player();
+
+    auto const cell_sizes = cinder::Vec2f{get_cell_size(), get_cell_size()};
+
+    auto const top_left = mouse_position - cell_sizes / 3.f;
+
+    auto const bottom_right = mouse_position + cell_sizes / 3.f;
+
+    cinder::gl::color(1.f, 1.f, 1.f, 0.5f);
+
+    draw_token_shape(next_mover, {top_left, bottom_right});    
+
+    cinder::gl::color(1.f, 1.f, 1.f, 1.5f);
+}
+
 void game_board_renderer::draw_token_shape(player const p, 
                                            cinder::Rectf const bounds) const
 {
@@ -234,25 +291,25 @@ void game_board_renderer::draw_token_shape(player const p,
     }    
 }
 
-void game_board_renderer::draw_currently_hovered_cell(
-    bool const game_over) const
+void game_board_renderer::draw_currently_hovered_cell() const
 {
-    if (game_over)
-    {
-        return;
-    }
+    if (current_game.is_over()) { return; }
 
     auto const cell = get_currently_hovered_cell();
-    if (cell)
+    if (!cell) { return; }
+
+    if (current_game.can_place(*cell))
+    {
+        cinder::gl::color(0.0, 0.f, 1.f, 1.f);
+    }
+    else
     {
         cinder::gl::color(1.0, 0.f, 0.f, 1.f);
+    }
 
-        auto const cell_bounds = get_cell_bounds(cell->row, cell->col);
+    auto const cell_bounds = get_cell_bounds(cell->row, cell->col);
 
-        cinder::gl::drawStrokedRoundedRect(cell_bounds, 5.f);
-
-        cinder::gl::color(1.0, 0.f, 0.f, 1.f);
-    }    
+    cinder::gl::drawStrokedRoundedRect(cell_bounds, 5.f);
 }
 
 cinder::Rectf game_board_renderer::get_cell_bounds(int const row, 

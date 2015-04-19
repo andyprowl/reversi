@@ -32,6 +32,8 @@ private:
 
     virtual void keyDown(cinder::app::KeyEvent e) override;
 
+    virtual void keyUp(cinder::app::KeyEvent e) override;
+
     virtual void mouseDown(cinder::app::MouseEvent e) override;
 
 private:

@@ -28,6 +28,8 @@ public:
 
     virtual placement_outcome place(cell_position pos) override;
 
+    virtual bool can_place(cell_position pos) const override;
+
     virtual boost::optional<player> get_board_cell_mark(
         cell_position pos) const override;
 

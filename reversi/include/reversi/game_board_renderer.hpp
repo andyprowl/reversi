@@ -16,12 +16,14 @@ public:
 
     game_board_renderer(game& g, float board_size);
 
-    void draw_board(bool game_over) const;
+    void draw_board() const;
 
     boost::optional<cell_position> get_currently_hovered_cell() const;
 
     cell_position get_cell_position_from_window_position(
         cinder::Vec2f pos) const;
+
+    void show_next_move_token(bool show);
 
 private:
 
@@ -47,11 +49,15 @@ private:
 
     void draw_cell_content(cell_position pos) const;
 
+    void draw_empty_cell(cell_position pos) const;
+
     void draw_player_token(int row, int col, player p) const;
+
+    void draw_next_move_token() const;
 
     void draw_token_shape(player p, cinder::Rectf bounds) const;
 
-    void draw_currently_hovered_cell(bool game_over) const;
+    void draw_currently_hovered_cell() const;
 
     cinder::Rectf get_cell_bounds(int row, int col) const;
 
@@ -74,6 +80,8 @@ private:
     cinder::gl::Texture white_token_picture;
 
     float board_display_size;
+
+    bool display_next_move_token;
 
 };
 
