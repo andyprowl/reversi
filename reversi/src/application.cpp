@@ -93,9 +93,16 @@ void application::keyDown(cinder::app::KeyEvent const e)
 
         default:
         {
+            this->board_renderer->show_next_move_token(e.isControlDown());
+
             return;
         }
     }
+}
+
+void application::keyUp(cinder::app::KeyEvent const e)
+{
+    this->board_renderer->show_next_move_token(e.isControlDown());
 }
 
 void application::mouseDown(cinder::app::MouseEvent const e)
@@ -203,6 +210,15 @@ void application::draw_background() const
 {
     auto const bounds = getWindowBounds();
 
+    if (current_game->is_over())
+    {
+        cinder::gl::color(1.0, 1.0, 1.0, 0.5f);
+    }
+    else
+    {
+        cinder::gl::color(1.0, 1.0, 1.0, 1.0f);
+    }
+
     cinder::gl::draw(background_picture, bounds);
 }
 
@@ -222,9 +238,7 @@ void application::draw_title() const
 
 void application::draw_game_board() const
 {
-    auto const game_over = current_game->is_over();
-
-    board_renderer->draw_board(game_over);
+    board_renderer->draw_board();
 }
 
 void application::draw_player_info() const

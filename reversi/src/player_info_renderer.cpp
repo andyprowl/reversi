@@ -147,10 +147,9 @@ void player_info_renderer::draw_white_player_score(int const white_score) const
 void player_info_renderer::draw_turn_indicator(bool const game_over,
                                                player const next_mover) const
 {
-    if (game_over)
-    {
-        return;
-    }
+    if (game_over) { return; }
+
+    glLineWidth(3.0);
 
     if (next_mover == player::black)
     {
@@ -160,6 +159,8 @@ void player_info_renderer::draw_turn_indicator(bool const game_over,
     {
         draw_white_player_turn_indicator();
     }
+
+    glLineWidth(1.0);
 }
 
 void player_info_renderer::draw_black_player_turn_indicator() const
