@@ -47,6 +47,8 @@ private:
 
     void draw_cell_content(cell_position pos) const;
 
+    void draw_empty_cell(cell_position pos) const;
+
     void draw_player_token(int row, int col, player p) const;
 
     void draw_token_shape(player p, cinder::Rectf bounds) const;

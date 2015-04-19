@@ -51,6 +51,8 @@ public:
 
     std::string get_player_name(player p) const;
 
+    bool can_place(cell_position pos) const;
+
     placement_outcome place(cell_position pos);
 
     boost::optional<player> get_board_cell_mark(cell_position pos) const;

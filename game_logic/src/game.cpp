@@ -44,6 +44,18 @@ std::string game::get_player_name(player const p) const
     }
 }
 
+bool game::can_place(cell_position const pos) const
+{
+    if (is_cell_occupied(board, pos))
+    {
+        return false;
+    }
+
+    auto const reversals = get_reversals_for_placement(pos, next_moving_player);
+    
+    return !(reversals.empty());
+}
+
 placement_outcome game::place(cell_position const pos)
 {
     throw_if_cell_is_occupied(pos);
@@ -101,7 +113,7 @@ void game::place_initial_marks()
     
 void game::throw_if_cell_is_occupied(cell_position const pos) const
 {
-    if (board.is_cell_occupied(pos))
+    if (is_cell_occupied(board, pos))
     {
         throw cell_busy_exception{}; 
     }   
@@ -131,7 +143,7 @@ std::vector<cell_position> game::get_reversals_for_placement(
     cell_position const pos,
     player const p) const
 {
-    if (board.is_cell_occupied(pos)) { return {}; }
+    if (is_cell_occupied(board, pos)) { return {}; }
 
     auto reversals = std::vector<cell_position>{};
 

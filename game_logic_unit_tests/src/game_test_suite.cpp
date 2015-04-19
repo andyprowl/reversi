@@ -304,6 +304,30 @@ TEST_THAT(Game,
 }
 
 TEST_THAT(Game,
+     WHAT(CanPlace),
+     WHEN(GivenThePositionOfAnOccupiedCell),
+     THEN(ReturnsFalse))
+{
+    EXPECT_FALSE(the_game.can_place({1, 1}));
+}
+
+TEST_THAT(Game,
+     WHAT(CanPlace),
+     WHEN(GivenThePositionOfAFreeCellThatWouldNotLeadToAnyReversalIfMarked),
+     THEN(ReturnsFalse))
+{
+    EXPECT_FALSE(the_game.can_place({2, 0}));
+}
+
+TEST_THAT(Game,
+     WHAT(CanPlace),
+     WHEN(GivenThePositionOfACallThatWouldLeadToAtLeastOneReversalIfMarked),
+     THEN(ReturnsTrue))
+{
+    EXPECT_TRUE(the_game.can_place({1, 0}));
+}
+
+TEST_THAT(Game,
      WHAT(Place),
      WHEN(OnSuccess),
      THEN(LogsASuccessfulPlacementMessage))

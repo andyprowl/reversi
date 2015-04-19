@@ -32,13 +32,6 @@ bool game_board::is_valid_cell_position(cell_position const pos) const
             (pos.col < size));
 }
 
-bool game_board::is_cell_occupied(cell_position const pos) const
-{
-    auto const optional_mark = get_cell_mark(pos);
-
-    return bool{optional_mark};
-}
-
 boost::optional<player> game_board::get_cell_mark(cell_position const pos) const
 {
     throw_if_cell_position_is_not_valid(pos);
@@ -53,6 +46,13 @@ void game_board::throw_if_cell_position_is_not_valid(
     {
         throw bad_cell_coordinates_exception{};
     }
+}
+
+bool is_cell_occupied(game_board const& b, cell_position const pos)
+{
+    auto const optional_mark = b.get_cell_mark(pos);
+
+    return bool{optional_mark};
 }
 
 }

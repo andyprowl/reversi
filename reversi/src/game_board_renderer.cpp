@@ -196,10 +196,28 @@ void game_board_renderer::draw_cell_content(cell_position const pos) const
     auto const mark = current_game.get_board_cell_mark(pos);
     if (!mark)
     {
+        draw_empty_cell(pos);
+    }
+    else
+    {
+        draw_player_token(pos.row, pos.col, *mark);
+    }
+}
+
+void game_board_renderer::draw_empty_cell(cell_position const pos) const
+{
+    if (!current_game.can_place(pos))
+    {
         return;
     }
 
-    draw_player_token(pos.row, pos.col, *mark);
+    auto const bounds = get_cell_bounds(pos.row, pos.col);
+            
+    cinder::gl::color(0.f, 1.f, 0.f, 0.2f);
+
+    cinder::gl::drawSolidRect(bounds);
+
+    cinder::gl::color(1.f, 1.f, 1.f, 1.f);
 }
 
 void game_board_renderer::draw_player_token(int const row, 
