@@ -1,6 +1,6 @@
 # Reversi
 
-This is a simple *reversi* game for Windows developed in C++ with [Cinder](http://libcinder.org/).\
+This is a simple *reversi* game for Windows developed in C++ with Visual Studio 2013 using [Cinder](http://libcinder.org/).
 
 ## Rules
 
