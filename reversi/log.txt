@@ -1,8 +1,0 @@
-A black mark has been placed at position (row = 3, col = 4).
-Turn switched, white moves.
-A white mark has been placed at position (row = 4, col = 2).
-Turn switched, black moves.
-A black mark has been placed at position (row = 1, col = 1).
-Turn switched, white moves.
-A white mark has been placed at position (row = 2, col = 4).
-Turn switched, black moves.
