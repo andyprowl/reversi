@@ -8,7 +8,8 @@
 namespace reversi { namespace remoting
 {
 
-multiplayer_match_registry::multiplayer_match_registry(game_logger_factory& logger_factory)
+multiplayer_match_registry::multiplayer_match_registry(
+    game_logger_factory& logger_factory)
     : logger_factory{logger_factory}
 {    
 }
@@ -38,7 +39,8 @@ std::shared_ptr<multiplayer_match> multiplayer_match_registry::get_match(
     return it->second.lock();
 }
 
-std::vector<std::shared_ptr<multiplayer_match>> multiplayer_match_registry::get_all_matches() const
+std::vector<std::shared_ptr<multiplayer_match>> 
+    multiplayer_match_registry::get_all_matches() const
 {
     auto result = std::vector<std::shared_ptr<multiplayer_match>>{};
 
@@ -65,9 +67,9 @@ void multiplayer_match_registry::throw_if_match_name_is_not_unique(
     }    
 }
 
-std::shared_ptr<multiplayer_match> multiplayer_match_registry::create_tracked_match(
-    std::string name,
-    int const board_size)
+std::shared_ptr<multiplayer_match> 
+    multiplayer_match_registry::create_tracked_match(std::string name,
+                                                     int const board_size)
 {
     auto logger = logger_factory.make_logger_for_game(name);
 

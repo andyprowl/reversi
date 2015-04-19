@@ -13,8 +13,9 @@ game_server::game_server(boost::asio::io_service& service)
 {
 }
 
-networking::client_connection::message_processor game_server::get_message_processor_for_connection(
-    networking::client_connection& c)
+networking::client_connection::message_processor 
+    game_server::get_message_processor_for_connection(
+        networking::client_connection& c)
 {
     auto channel = multiplayer_match_messenger::client_communication_channel{
         [this, &c] (std::string msg)
@@ -22,8 +23,9 @@ networking::client_connection::message_processor game_server::get_message_proces
         c.send_message(std::move(msg));        
     }};
 
-    auto messenger = std::make_shared<multiplayer_match_messenger>(match_registry, 
-                                                                   std::move(channel));
+    auto messenger = std::make_shared<multiplayer_match_messenger>(
+        match_registry, 
+        std::move(channel));
 
     return [this, messenger] (util::value_ref<std::string> msg)
     {

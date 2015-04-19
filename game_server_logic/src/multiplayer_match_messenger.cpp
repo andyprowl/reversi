@@ -12,8 +12,9 @@
 namespace reversi { namespace remoting
 {
 
-multiplayer_match_messenger::multiplayer_match_messenger(multiplayer_match_registry& registry,
-                                                         client_communication_channel channel)
+multiplayer_match_messenger::multiplayer_match_messenger(
+    multiplayer_match_registry& registry,
+    client_communication_channel channel)
     : registry{registry}
     , channel{std::move(channel)}
     , player_name("Anonymous")
@@ -32,7 +33,8 @@ void multiplayer_match_messenger::execute_command(std::string command)
     handler(tokens);
 }
 
-std::shared_ptr<multiplayer_match> multiplayer_match_messenger::get_joined_match() const
+std::shared_ptr<multiplayer_match> 
+    multiplayer_match_messenger::get_joined_match() const
 {
     return joined_match;
 }
@@ -44,16 +46,18 @@ std::string multiplayer_match_messenger::get_player_name() const
 
 void multiplayer_match_messenger::setup_command_handlers()
 {
+    #define HANDLER(fxn) std::bind(fxn, this, _1);
+
     using std::placeholders::_1;
     using self = multiplayer_match_messenger;
 
-    processors["NAME"] = std::bind(&self::process_set_name_command, this, _1);
-    processors["CREATE"] = std::bind(&self::process_create_match_command, this, _1);
-    processors["JOIN"] = std::bind(&self::process_join_match_command, this, _1);
-    processors["PLACE"] = std::bind(&self::process_place_mark_command, this, _1);
-    processors["SIZE"] = std::bind(&self::process_board_size_query_command, this, _1);
-    processors["PLAYER"] = std::bind(&self::process_player_name_query_command, this, _1);
-    processors["CELL"] = std::bind(&self::process_cell_mark_query_command, this, _1);
+    processors["NAME"] = HANDLER(&self::process_set_name_command);
+    processors["CREATE"] = HANDLER(&self::process_create_match_command);
+    processors["JOIN"] = HANDLER(&self::process_join_match_command);
+    processors["PLACE"] = HANDLER(&self::process_place_mark_command);
+    processors["SIZE"] = HANDLER(&self::process_board_size_query_command);
+    processors["PLAYER"] = HANDLER(&self::process_player_name_query_command);
+    processors["CELL"] = HANDLER(&self::process_cell_mark_query_command);
 }
 
 void multiplayer_match_messenger::process_set_name_command(
@@ -162,7 +166,8 @@ void multiplayer_match_messenger::process_cell_mark_query_command(
     {
         auto& g = joined_match->get_game();
 
-        auto content = g.get_board_cell_mark({std::stoi(tokens[1]), std::stoi(tokens[2])});
+        auto content = g.get_board_cell_mark({std::stoi(tokens[1]), 
+                                              std::stoi(tokens[2])});
 
         channel("OK;" + format_optional_player(content));
     }
@@ -172,7 +177,8 @@ void multiplayer_match_messenger::process_cell_mark_query_command(
     }
 }
 
-void multiplayer_match_messenger::join_match(std::shared_ptr<multiplayer_match> m)
+void multiplayer_match_messenger::join_match(
+    std::shared_ptr<multiplayer_match> m)
 {
     m->join(player_name);
 
@@ -192,7 +198,8 @@ void multiplayer_match_messenger::join_match(std::shared_ptr<multiplayer_match> 
     channel("OK");
 }
 
-void multiplayer_match_messenger::register_for_full_match_notifications_from_joined_match()
+void multiplayer_match_messenger::
+     register_for_full_match_notifications_from_joined_match()
 {
     joined_match->register_match_full_handler([this] (game& g)
     {
@@ -208,7 +215,8 @@ void multiplayer_match_messenger::register_for_placement_notifications(game& g)
     using std::placeholders::_4;
     using self = multiplayer_match_messenger;
 
-    auto handler = std::bind(&self::on_placement_in_joined_game, this, _1, _2, _3, _4);
+    auto handler = 
+        std::bind(&self::on_placement_in_joined_game, this, _1, _2, _3, _4);
 
     g.register_placement_event_handler(handler);
 }
@@ -260,7 +268,8 @@ std::string multiplayer_match_messenger::format_all_positions(
     return result;
 }
 
-std::string multiplayer_match_messenger::format_position(cell_position const pos) const
+std::string multiplayer_match_messenger::format_position(
+    cell_position const pos) const
 {
     return std::to_string(pos.row) + ";" + std::to_string(pos.col);
 }

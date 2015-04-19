@@ -30,14 +30,16 @@ protected:
         messenger.execute_command("NAME;" + std::move(name));
     }
 
-    std::shared_ptr<multiplayer_match> create_match(util::value_ref<std::string> name)
+    std::shared_ptr<multiplayer_match> create_match(
+        util::value_ref<std::string> name)
     {
         messenger.execute_command("CREATE;" + name + ";4");
 
         return registry.get_match(name);        
     }
 
-    multiplayer_match_messenger::client_communication_channel make_client_communication_channel()
+    multiplayer_match_messenger::client_communication_channel 
+        make_client_communication_channel()
     {
         return [this] (std::string msg)
         {
@@ -53,7 +55,8 @@ protected:
 
     multiplayer_match_registry registry{logger_factory};
 
-    multiplayer_match_messenger messenger{registry, make_client_communication_channel()};
+    multiplayer_match_messenger messenger{registry, 
+                                          make_client_communication_channel()};
     
 };
 
@@ -215,7 +218,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAPlaceMarkCommandWithAValidCellPositionAfterTheJoinedGameHasStarted),
+     WHEN(GivenAPlaceCommandWithAValidCellPositionAfterTheJoinedGameHasStarted),
      THEN(LetTheGamePlaceTheMarkInTheEncodedPosition))
 {
     set_player_name("PLAYER");
@@ -233,7 +236,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAPlaceMarkCommandWithAValidCellPositionAfterTheJoinedGameHasStarted),
+     WHEN(GivenAPlaceCommandWithAValidCellPositionAfterTheJoinedGameHasStarted),
      THEN(CommunicatesASuccessCodeBackToTheClient))
 {
     set_player_name("PLAYER");
@@ -253,7 +256,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAPlaceMarkCommandWithAnInvalidCellPositionAfterTheJoinedGameHasStarted),
+     WHEN(GivenAPlaceCommandWithAnInvalidCellPositionAfterTheJoinedGameStarted),
      THEN(DoesNotThrowAndDoesNotPlaceAndyMark))
 {
     set_player_name("PLAYER");
@@ -271,7 +274,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAPlaceMarkCommandWithAnInvalidCellPositionAfterTheJoinedGameHasStarted),
+     WHEN(GivenAPlaceCommandWithAnInvalidCellPositionAfterTheJoinedGameStarted),
      THEN(CommunicatesASuccessCodeBackToTheClient))
 {
     set_player_name("PLAYER");
@@ -321,7 +324,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAGetBlackPlayerNameCommandAfterStartingAMatchJoinedAsTheFirstPlayer),
+     WHEN(GivenAGetBlackNameCommandAfterStartingAMatchJoinedAsFirstPlayer),
      THEN(CommunicatesOwnNameBackToTheClient))
 {
     set_player_name("COOL PLAYER");
@@ -343,7 +346,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAGetBlackPlayerNameCommandAfterStartingAMatchJoinedAsTheSecondPlayer),
+     WHEN(GivenAGetBlackNameCommandAfterStartingAMatchJoinedAsSecondPlayer),
      THEN(CommunicatesNameOfTheOpponentBackToTheClient))
 {
     set_player_name("COOL PLAYER");
@@ -365,7 +368,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAGetWhitePlayerNameCommandAfterStartingAMatchJoinedAsTheFirstPlayer),
+     WHEN(GivenAGetWhiteNameCommandAfterStartingAMatchJoinedAsFirstPlayer),
      THEN(CommunicatesNameOfTheOpponentBackToTheClient))
 {
     set_player_name("COOL PLAYER");
@@ -387,7 +390,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAGetWhitePlayerNameCommandAfterStartingAMatchJoinedAsTheSecondPlayer),
+     WHEN(GivenAGetWhiteNameCommandAfterStartingAMatchJoinedAsSecondPlayer),
      THEN(CommunicatesOwnNameBackToTheClient))
 {
     set_player_name("COOL PLAYER");
@@ -429,7 +432,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAGetPlayerNameCommandAfterAMatchWasJoinedButBeforeTheGameWasStarted),
+     WHEN(GivenAGetNameCommandAfterAMatchWasJoinedButBeforeTheGameWasStarted),
      THEN(DoesNotThrowAndCommunicatesAnErrorBackToTheClient))
 {
     set_player_name("COOL PLAYER");
@@ -449,7 +452,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAGetBoardCellMarkForCommandAnEmptyCellAfterTheJoinedGameWasStarted),
+     WHEN(GivenAGetCellMarkForCommandAnEmptyCellAfterTheJoinedGameWasStarted),
      THEN(CommunicatesTheEmptinessOfTheCellBackToTheClient))
 {
     auto m = create_match("NEW MATCH");
@@ -467,7 +470,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAGetBoardCellMarkCommandForACellWithAWhiteMarkAfterTheJoinedGameWasStarted),
+     WHEN(GivenAGetMarkCommandForACellWithWhiteMarkAfterTheJoinedGameStarted),
      THEN(CommunicatesTheContentOfTheCellBackToTheClient))
 {
     auto m = create_match("NEW MATCH");
@@ -485,7 +488,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAGetBoardCellMarkCommandForACellWithABlackMarkAfterTheJoinedGameWasStarted),
+     WHEN(GivenAGetMarkCommandForACellWithABlackMarkAfterTheJoinedGameStarted),
      THEN(CommunicatesTheContentOfTheCellBackToTheClient))
 {
     auto m = create_match("NEW MATCH");
@@ -503,7 +506,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAGetBoardCellMarkCommandBeforeTheJoinedGameWasStarted),
+     WHEN(GivenAGetMarkCommandBeforeTheJoinedGameWasStarted),
      THEN(DoesNotThrowAndCommunicatesAnErrorBackToTheClient))
 {
     auto m = create_match("NEW MATCH");
@@ -519,7 +522,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(ExecuteCommand),
-     WHEN(GivenAGetBoardCellMarkCommandBeforeAMatchWasJoined),
+     WHEN(GivenAGetMarkCommandBeforeAMatchWasJoined),
      THEN(DoesNotThrowAndCommunicatesAnErrorBackToTheClient))
 {
     auto m = registry.create_new_match("MATCH", 4);
@@ -550,7 +553,8 @@ TEST_THAT(MultiplayerMatchMessenger,
 
     ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
 
-    EXPECT_THAT(last_messages_for_client, Contains("PLACEMENT;0;1;WHITE;SWITCH;1;1"));
+    EXPECT_THAT(last_messages_for_client, 
+                Contains("PLACEMENT;0;1;WHITE;SWITCH;1;1"));
 }
 
 TEST_THAT(MultiplayerMatchMessenger,
@@ -584,7 +588,7 @@ TEST_THAT(MultiplayerMatchMessenger,
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(InternalEventHandlingLogic),
-     WHEN(WhenTheJoinedGameSendsNotificationsAboutPlacementsThatCauseMoreThanOneReversals),
+     WHEN(WhenTheJoinedGameNotifiesAboutPlacementsCausingMoreThanOneReversals),
      THEN(CommunicatesAllTheReversalsToTheClient))
 {
     auto m = create_match("MATCH");
@@ -605,12 +609,13 @@ TEST_THAT(MultiplayerMatchMessenger,
 
     ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
 
-    EXPECT_THAT(last_messages_for_client, Contains("PLACEMENT;3;2;BLACK;SWITCH;2;2;1;2"));
+    EXPECT_THAT(last_messages_for_client, 
+                Contains("PLACEMENT;3;2;BLACK;SWITCH;2;2;1;2"));
 }
 
 TEST_THAT(MultiplayerMatchMessenger,
      WHAT(InternalEventHandlingLogic),
-     WHEN(WhenTheJoinedGameSendsNotificationsAboutPlacementsThatCauseTheGameToEnd),
+     WHEN(WhenTheJoinedGameNotifiesAboutPlacementCausingTheGameToEnd),
      THEN(CommunicatesTheGameOverEventToTheClient))
 {
     auto m = create_match("MATCH");
@@ -633,7 +638,8 @@ TEST_THAT(MultiplayerMatchMessenger,
 
     ASSERT_THAT(last_messages_for_client.size(), Eq(1u));
 
-    EXPECT_THAT(last_messages_for_client, Contains("PLACEMENT;3;3;BLACK;OVER;2;2"));
+    EXPECT_THAT(last_messages_for_client, 
+                Contains("PLACEMENT;3;3;BLACK;OVER;2;2"));
 }
 
 } } }

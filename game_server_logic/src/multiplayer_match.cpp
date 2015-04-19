@@ -58,7 +58,8 @@ game& multiplayer_match::get_game() const
     return *played_game;
 }
 
-boost::signals2::connection multiplayer_match::register_match_full_handler(match_full_handler h)
+boost::signals2::connection multiplayer_match::register_match_full_handler(
+    match_full_handler h)
 {
     return on_match_full.connect(std::move(h));
 }

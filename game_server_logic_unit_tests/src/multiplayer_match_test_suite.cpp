@@ -24,7 +24,8 @@ protected:
 
     std::stringstream log;
 
-    std::unique_ptr<game_logger> logger = std::make_unique<stream_game_logger>(log);
+    std::unique_ptr<game_logger> logger = 
+        std::make_unique<stream_game_logger>(log);
 
     multiplayer_match the_match{match_name, board_size, std::move(logger)};
 
@@ -52,7 +53,7 @@ TEST_THAT(MultiplayerMatch,
 TEST_THAT(MultiplayerMatch,
      WHAT(Join),
      WHEN(WhenTheSecondPlayerJoins),
-     THEN(CreatesAGameWithTheBoardSizeSpecifiedAtConstructionAndInvokesRegisteredEventHandlers))
+     THEN(CreatesAGameWithSizeSpecifiedAtConstructionAndInvokesEventHandlers))
 {
     auto invoked = false;
     the_match.register_match_full_handler([&invoked, this] (game& g)

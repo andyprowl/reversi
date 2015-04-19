@@ -44,7 +44,8 @@ TEST_THAT(MultiplayerMatchRegistry,
     auto const match_name = "MATCH";
     auto m = registry.create_new_match(match_name, 4);
     
-    EXPECT_THROW(registry.create_new_match(match_name, 6), match_name_not_unique_exception);
+    EXPECT_THROW(registry.create_new_match(match_name, 6), 
+                 match_name_not_unique_exception);
 }
 
 TEST_THAT(MultiplayerMatchRegistry,
@@ -72,7 +73,7 @@ TEST_THAT(MultiplayerMatchRegistry,
 TEST_THAT(MultiplayerMatchRegistry,
      WHAT(CreateNewMatch),
      WHEN(OnSuccess),
-     THEN(ReturnsASharedPointerWithADeleterThatAutomaticallyPerformsUnregistrationOnDeletion))
+     THEN(ReturnsASharedPointerThatAutomaticallyUnregistersOnDeletion))
 {
     auto const match_name = "MATCH";
     auto const board_size = 42;
