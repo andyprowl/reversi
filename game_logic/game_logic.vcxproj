@@ -13,19 +13,16 @@
   <ItemGroup>
     <ClInclude Include="export\include\reversi\cell_position.hpp" />
     <ClInclude Include="export\include\reversi\direction.hpp" />
-    <ClInclude Include="export\include\reversi\file_game_logger.hpp" />
     <ClInclude Include="export\include\reversi\game.hpp" />
     <ClInclude Include="export\include\reversi\game_board.hpp" />
     <ClInclude Include="export\include\reversi\game_logger.hpp" />
     <ClInclude Include="export\include\reversi\placement_outcome.hpp" />
     <ClInclude Include="export\include\reversi\player.hpp" />
     <ClInclude Include="export\include\reversi\game_score.hpp" />
-    <ClInclude Include="export\include\reversi\stream_game_logger.hpp" />
     <ClInclude Include="include\stdafx.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\cell_position.cpp" />
-    <ClCompile Include="src\file_game_logger.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\game_board.cpp" />
     <ClCompile Include="src\game_score.cpp" />
@@ -33,7 +30,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\stream_game_logger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\foundational\foundational.vcxproj">

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_logic", "game_logic\game_logic.vcxproj", "{4A3859A0-0B1B-45BA-8AFB-DDADCE200A93}"
 EndProject
@@ -16,6 +16,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game_logic_integration_tests", "game_logic_integration_tests\game_logic_integration_tests.vcxproj", "{327185CD-694C-4539-8B42-27730221889E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "reversi", "reversi\reversi.vcxproj", "{FDD68AC9-D34D-4C17-AA56-00C144DA8360}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stream_logging", "stream_logging\stream_logging.vcxproj", "{E06618F6-A82A-4C7C-95B9-EB1E25EDBFCF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stream_logging_unit_tests", "stream_logging_unit_tests\stream_logging_unit_tests.vcxproj", "{6D8F389A-38F9-473B-81E0-1BB9AD9D564D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,14 @@ Global
 		{FDD68AC9-D34D-4C17-AA56-00C144DA8360}.Debug|x64.Build.0 = Debug|x64
 		{FDD68AC9-D34D-4C17-AA56-00C144DA8360}.Release|x64.ActiveCfg = Release|x64
 		{FDD68AC9-D34D-4C17-AA56-00C144DA8360}.Release|x64.Build.0 = Release|x64
+		{E06618F6-A82A-4C7C-95B9-EB1E25EDBFCF}.Debug|x64.ActiveCfg = Debug|x64
+		{E06618F6-A82A-4C7C-95B9-EB1E25EDBFCF}.Debug|x64.Build.0 = Debug|x64
+		{E06618F6-A82A-4C7C-95B9-EB1E25EDBFCF}.Release|x64.ActiveCfg = Release|x64
+		{E06618F6-A82A-4C7C-95B9-EB1E25EDBFCF}.Release|x64.Build.0 = Release|x64
+		{6D8F389A-38F9-473B-81E0-1BB9AD9D564D}.Debug|x64.ActiveCfg = Debug|x64
+		{6D8F389A-38F9-473B-81E0-1BB9AD9D564D}.Debug|x64.Build.0 = Debug|x64
+		{6D8F389A-38F9-473B-81E0-1BB9AD9D564D}.Release|x64.ActiveCfg = Release|x64
+		{6D8F389A-38F9-473B-81E0-1BB9AD9D564D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

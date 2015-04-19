@@ -22,11 +22,11 @@
     <ClInclude Include="include\stdafx.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\game_logic\game_logic.vcxproj">
-      <Project>{4a3859a0-0b1b-45ba-8afb-ddadce200a93}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\gmock_1.7.0\msvc\2013\gmock.vcxproj">
       <Project>{34681f0d-ce45-415d-b5f2-5c662dfe3bd5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\stream_logging\stream_logging.vcxproj">
+      <Project>{e06618f6-a82a-4c7c-95b9-eb1e25edbfcf}</Project>
     </ProjectReference>
     <ProjectReference Include="..\testing\testing.vcxproj">
       <Project>{58eb322d-e720-4af3-acee-ed934c1beec7}</Project>
@@ -76,7 +76,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\testing\export\include;..\game_logic\export\include;..\gmock_1.7.0\include;..\gmock_1.7.0\gtest\include;c:\program files\cinder_0.8.6_vc2013\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\testing\export\include;..\game_logic\export\include;..\stream_logging\export\include;..\gmock_1.7.0\include;..\gmock_1.7.0\gtest\include;c:\program files\cinder_0.8.6_vc2013\boost</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -98,7 +98,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\testing\export\include;..\game_logic\export\include;..\gmock_1.7.0\include;..\gmock_1.7.0\gtest\include;c:\program files\cinder_0.8.6_vc2013\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\testing\export\include;..\game_logic\export\include;..\stream_logging\export\include;..\gmock_1.7.0\include;..\gmock_1.7.0\gtest\include;c:\program files\cinder_0.8.6_vc2013\boost</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>

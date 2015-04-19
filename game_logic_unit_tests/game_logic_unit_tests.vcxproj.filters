@@ -29,9 +29,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\stream_game_logger_test_suite.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\game_test_suite.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -41,6 +38,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="export\include\reversi\testing\game_logger_spy.hpp">
+      <Filter>export\include\reversi\testing</Filter>
+    </ClInclude>
+    <ClInclude Include="export\include\reversi\testing\game_logger_mock.hpp">
       <Filter>export\include\reversi\testing</Filter>
     </ClInclude>
   </ItemGroup>

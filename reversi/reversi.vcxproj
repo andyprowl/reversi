@@ -47,7 +47,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>include;..\foundational\export\include;..\game_logic\export\include;c:\Program Files\cinder_0.8.6_vc2013\boost;c:\Program Files\cinder_0.8.6_vc2013\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\foundational\export\include;..\game_logic\export\include;..\stream_logging\export\include;c:\Program Files\cinder_0.8.6_vc2013\boost;c:\Program Files\cinder_0.8.6_vc2013\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -76,7 +76,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>include;..\foundational\export\include;..\game_logic\export\include;c:\Program Files\cinder_0.8.6_vc2013\boost;c:\Program Files\cinder_0.8.6_vc2013\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\foundational\export\include;..\game_logic\export\include;..\stream_logging\export\include;c:\Program Files\cinder_0.8.6_vc2013\boost;c:\Program Files\cinder_0.8.6_vc2013\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -109,11 +109,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\game_logic\game_logic.vcxproj">
-      <Project>{4a3859a0-0b1b-45ba-8afb-ddadce200a93}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="include\resources.hpp" />
     <ClInclude Include="include\reversi\application.hpp" />
     <ClInclude Include="include\reversi\game_board_renderer.hpp" />
@@ -133,6 +128,11 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources\resources.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\stream_logging\stream_logging.vcxproj">
+      <Project>{e06618f6-a82a-4c7c-95b9-eb1e25edbfcf}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

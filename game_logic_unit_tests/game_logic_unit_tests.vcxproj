@@ -17,9 +17,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\stream_game_logger_test_suite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="export\include\reversi\testing\game_logger_mock.hpp" />
     <ClInclude Include="export\include\reversi\testing\game_logger_spy.hpp" />
     <ClInclude Include="include\stdafx.hpp" />
   </ItemGroup>
