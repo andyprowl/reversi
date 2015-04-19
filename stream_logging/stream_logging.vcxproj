@@ -11,30 +11,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="export\include\reversi\remoting\file_game_logger_factory.hpp" />
-    <ClInclude Include="export\include\reversi\remoting\game_logger_factory.hpp" />
-    <ClInclude Include="export\include\reversi\remoting\multiplayer_match.hpp" />
-    <ClInclude Include="export\include\reversi\remoting\multiplayer_match_messenger.hpp" />
-    <ClInclude Include="export\include\reversi\remoting\multiplayer_match_registry.hpp" />
+    <ClInclude Include="export\include\reversi\file_game_logger.hpp" />
+    <ClInclude Include="export\include\reversi\stream_game_logger.hpp" />
     <ClInclude Include="include\stdafx.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\file_game_logger_factory.cpp" />
-    <ClCompile Include="src\multiplayer_match.cpp" />
-    <ClCompile Include="src\multiplayer_match_messenger.cpp" />
-    <ClCompile Include="src\multiplayer_match_registry.cpp" />
+    <ClCompile Include="src\file_game_logger.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\stream_game_logger.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\stream_logging\stream_logging.vcxproj">
-      <Project>{e06618f6-a82a-4c7c-95b9-eb1e25edbfcf}</Project>
+    <ProjectReference Include="..\game_logic\game_logic.vcxproj">
+      <Project>{4a3859a0-0b1b-45ba-8afb-ddadce200a93}</Project>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{E892C3C5-11B6-4243-806E-02EC06C00892}</ProjectGuid>
+    <ProjectGuid>{E06618F6-A82A-4C7C-95B9-EB1E25EDBFCF}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>game_logic</RootNamespace>
   </PropertyGroup>
@@ -71,7 +66,7 @@
       <PreprocessorDefinitions>WIN32;_SCL_SECURE_NO_WARNINGS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\game_logic\export\include;..\stream_logging\export\include;c:\program files\cinder_0.8.6_vc2013\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\game_logic\export\include;c:\program files\cinder_0.8.6_vc2013\boost</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -89,7 +84,7 @@
       <PreprocessorDefinitions>WIN32;_SCL_SECURE_NO_WARNINGS;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\game_logic\export\include;..\stream_logging\export\include;c:\program files\cinder_0.8.6_vc2013\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;export\include;..\foundational\export\include;..\game_logic\export\include;c:\program files\cinder_0.8.6_vc2013\boost</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>

@@ -31,7 +31,7 @@ protected:
     }
     
 protected:
-
+    
     std::stringstream log;
 
     stream_game_logger logger{log};

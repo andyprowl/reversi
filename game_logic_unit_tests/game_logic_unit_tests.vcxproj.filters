@@ -1,47 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="include">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="export">
-      <UniqueIdentifier>{fe2bdf45-2a3a-4c5b-b04d-43ef43676b26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="export\include">
-      <UniqueIdentifier>{af1bed50-78db-4c7b-bb42-f92057463f24}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="export\include\reversi">
-      <UniqueIdentifier>{271783ce-7d7b-4fe5-8dd8-3bea467db9ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="export\include\reversi\testing">
-      <UniqueIdentifier>{5d8e5ece-9361-4858-a881-a42b6e55ef23}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="src\local_game_test_suite.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\stdafx.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\stream_game_logger_test_suite.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\local_game_test_suite.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\stdafx.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="export\include\reversi\testing\game_logger_spy.hpp">
-      <Filter>export\include\reversi\testing</Filter>
-    </ClInclude>
+    <ClInclude Include="export\include\reversi\testing\game_logger_mock.hpp" />
+    <ClInclude Include="export\include\reversi\testing\game_logger_spy.hpp" />
+    <ClInclude Include="include\stdafx.hpp" />
   </ItemGroup>
 </Project>

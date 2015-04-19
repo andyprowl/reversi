@@ -5,13 +5,20 @@
 #include "reversi/placement_outcome.hpp"
 #include "reversi/player.hpp"
 #include "reversi/game_score.hpp"
+
+#ifdef USE_LOGGER_SPY
 #include "reversi/testing/game_logger_spy.hpp"
+#else
+#include "reversi/testing/game_logger_mock.hpp"
+#endif
 
 namespace reversi { namespace testing
 {
 
 using ::testing::Contains;
 using ::testing::Eq;
+using ::testing::Exactly;
+using ::testing::Ref;
 using ::testing::Test;
 
 class LocalGame : public Test
@@ -47,7 +54,11 @@ protected:
 
     int board_size = 4;
 
+#ifdef USE_LOGGER_SPY
     game_logger_spy logger;
+#else
+    game_logger_mock logger;
+#endif
 
     local_game the_game{board_size, 
                         black_player_name, 
@@ -300,9 +311,17 @@ TEST_THAT(LocalGame,
      WHEN(OnSuccess),
      THEN(LogsASuccessfulPlacementMessage))
 {
-    the_game.place({2, 3});
+#ifndef USE_LOGGER_SPY
+    EXPECT_CALL(logger, 
+                log_successful_placement(cell_position{2, 3}, player::black))
+                .Times(Exactly(1));
+#endif
 
+        the_game.place({2, 3});
+
+#ifdef USE_LOGGER_SPY
     EXPECT_THAT(logger.messages, Contains("SP black 2 3"));
+#endif
 }
 
 TEST_THAT(LocalGame,
@@ -310,9 +329,16 @@ TEST_THAT(LocalGame,
      WHEN(OnATurnSwitch),
      THEN(LogsATurnSwitchedMessage))
 {
+#ifndef USE_LOGGER_SPY
+    EXPECT_CALL(logger, log_turn_switched_message(player::white))
+                .Times(Exactly(1));
+#endif
+
     the_game.place({2, 3});
 
+#ifdef USE_LOGGER_SPY
     EXPECT_THAT(logger.messages, Contains("TS white"));
+#endif
 }
 
 TEST_THAT(LocalGame,
@@ -320,9 +346,16 @@ TEST_THAT(LocalGame,
      WHEN(OnATurnSkip),
      THEN(LogsATurnSkippedMessage))
 {
+#ifndef USE_LOGGER_SPY
+    EXPECT_CALL(logger, log_turn_skipped_message(player::black))
+                .Times(Exactly(1));
+#endif
+
     make_white_unable_to_move();
 
+#ifdef USE_LOGGER_SPY
     EXPECT_THAT(logger.messages, Contains("TSK black"));
+#endif
 }
 
 TEST_THAT(LocalGame,
@@ -330,9 +363,16 @@ TEST_THAT(LocalGame,
      WHEN(OnSuccess),
      THEN(LogsALocalGameOverMessage))
 {
+#ifndef USE_LOGGER_SPY
+    EXPECT_CALL(logger, log_game_over_message(Ref(the_game)))
+                .Times(Exactly(1));
+#endif
+
     make_black_win();
 
+#ifdef USE_LOGGER_SPY
     EXPECT_THAT(logger.messages, Contains("GO"));
+#endif
 }
 
 TEST_THAT(LocalGame,
