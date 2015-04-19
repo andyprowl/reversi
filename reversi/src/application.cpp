@@ -47,7 +47,9 @@ void application::update()
 
     try
     {
-        current_game->place(*placement_target);
+        auto const outcome = current_game->place(*placement_target);
+
+        process_placement_outcome(outcome);
     }
     catch (std::exception const&)
     {        
@@ -171,8 +173,6 @@ void application::start_new_game(int const board_size)
     current_game = create_new_game(board_size);
 
     create_renderers_for_game(*current_game);
-
-    register_for_placement_notifications_from_current_game();    
 }
 
 std::unique_ptr<game> application::create_new_game(int board_size) const
@@ -280,27 +280,6 @@ void application::draw_game_over_label() const
     auto const bottom_right = label_center + game_over_picture.getSize() / 2;
 
     cinder::gl::draw(game_over_picture, {top_left, bottom_right});    
-}
-
-void application::register_for_placement_notifications_from_current_game()
-{
-    using std::placeholders::_1;
-    using std::placeholders::_2;
-    using std::placeholders::_3;
-    using std::placeholders::_4;
-
-    auto handler = std::bind(&application::on_placement, this, _1, _2, _3, _4);
-
-    current_game->register_placement_event_handler(std::move(handler));
-}
-
-void application::on_placement(
-    cell_position const pos, 
-    player const p, 
-    placement_outcome const outcome, 
-    util::value_ref<std::vector<cell_position>> reversals)
-{
-    process_placement_outcome(outcome);
 }
 
 void application::process_placement_outcome(placement_outcome const outcome)

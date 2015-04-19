@@ -34,14 +34,6 @@ class game
 
 public:
 
-    using placement_event_handler = 
-        std::function<void(cell_position, 
-                           player, 
-                           placement_outcome, 
-                           util::value_ref<std::vector<cell_position>>)>;
-
-public:
-
     game(int board_size, 
          std::string black_player_name, 
          std::string white_player_name, 
@@ -62,9 +54,6 @@ public:
     player get_next_moving_player() const;
 
     bool is_over() const;
-
-    boost::signals2::connection register_placement_event_handler(
-        placement_event_handler h);
 
 private:
 
@@ -103,10 +92,6 @@ private:
 
 private:
 
-    using placement_event = util::signal_type_t<placement_event_handler>;
-
-private:
-
     game_board board;
 
     std::string black_player_name;
@@ -118,8 +103,6 @@ private:
     player next_moving_player;
 
     game_score score;
-
-    placement_event on_placement;
 
     bool game_over;
 

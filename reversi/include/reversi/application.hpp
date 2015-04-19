@@ -5,7 +5,6 @@
 #include "reversi/game.hpp"
 #include "reversi/game_board_renderer.hpp"
 #include "reversi/hint_message_renderer.hpp"
-#include "reversi/player.hpp"
 #include "reversi/player_info_renderer.hpp"
 #include <cinder/gl/Texture.h>
 #include <boost/optional.hpp>
@@ -69,13 +68,6 @@ private:
     void draw_hint_message() const;
 
     void draw_game_over_label() const;
-
-    void register_for_placement_notifications_from_current_game();
-
-    void on_placement(cell_position pos, 
-                      player p, 
-                      placement_outcome outcome, 
-                      util::value_ref<std::vector<cell_position>> reversals);
     
     void process_placement_outcome(placement_outcome outcome);
 

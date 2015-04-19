@@ -397,38 +397,6 @@ TEST_THAT(Game,
 }
 
 TEST_THAT(Game,
-     WHAT(Place),
-     WHEN(Always),
-     THEN(InvokesHandlersRegisteredForPlacementEventNotifications))
-{
-    the_game.place({3, 2}); // black
-    the_game.place({3, 3}); // white
-    the_game.place({2, 3}); // black
-
-    auto invoked = false;
-    the_game.register_placement_event_handler(
-        [&invoked, this] (cell_position const pos, 
-                          player const p, 
-                          placement_outcome const outcome,
-                          util::value_ref<std::vector<cell_position>> reversals)
-    {
-        EXPECT_THAT(pos, Eq(cell_position{1, 3}));
-        EXPECT_THAT(p, Eq(player::black));
-        EXPECT_THAT(outcome, Eq(placement_outcome::turn_switched));
-
-        ASSERT_THAT(reversals.size(), Eq(2u));
-        EXPECT_THAT(reversals, Contains(cell_position{2, 3}));
-        EXPECT_THAT(reversals, Contains(cell_position{1, 2}));
-
-        invoked = true;
-    });
-
-    the_game.place({1, 3}); // white
-
-    EXPECT_TRUE(invoked);
-}
-
-TEST_THAT(Game,
      WHAT(IsOver),
      WHEN(WhenTheGameIsNotOver),
      THEN(ReturnsFalse))

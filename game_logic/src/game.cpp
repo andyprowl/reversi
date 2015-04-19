@@ -60,27 +60,17 @@ placement_outcome game::place(cell_position const pos)
 {
     throw_if_cell_is_occupied(pos);
 
-    auto const reversals = apply_reversals_or_throw_if_none_is_triggered(pos);
+    apply_reversals_or_throw_if_none_is_triggered(pos);
     
     mark_placement_cell_and_update_score(pos);
 
-    auto const outcome = update_game_state();
-
-    on_placement(pos, next_moving_player, outcome, reversals);
-
-    return outcome;
+    return update_game_state();
 }
 
 boost::optional<player> game::get_board_cell_mark(
     cell_position const pos) const
 {
     return board.get_cell_mark(pos);
-}
-
-boost::signals2::connection game::register_placement_event_handler(
-    placement_event_handler h)
-{
-    return on_placement.connect(std::move(h));
 }
 
 game_score game::get_score() const
