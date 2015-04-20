@@ -19,17 +19,17 @@ player_info_renderer::player_info_renderer(game& g,
     load_winner_picture();
 }
 
-void player_info_renderer::draw_player_info(bool const game_over,
-                                            player const next_mover,
-                                            game_score const score)
+void player_info_renderer::draw_player_info()
 {
+    auto const score = current_game.get_score();
+
     draw_black_player_info(score.black);
 
     draw_white_player_info(score.white);
 
-    draw_turn_indicator(game_over, next_mover);
+    draw_turn_indicator();
 
-    draw_winner_indicator(game_over, score);
+    draw_winner_indicator();
 }
 
 void player_info_renderer::create_fonts()
@@ -69,7 +69,7 @@ void player_info_renderer::draw_black_player_name() const
 
     auto const center = cinder::Vec2f{(right + left) / 2.f, y_center};
 
-    auto const black_color = cinder::ColorA{0.f, 0.f, 0.f, 1.f};
+    auto const black_color = get_black_player_color();
 
     cinder::gl::drawStringCentered(name, center, black_color, player_name_font);
 }
@@ -90,7 +90,7 @@ void player_info_renderer::draw_black_player_score(int const black_score) const
 
     auto const center = cinder::Vec2f{(right + left) / 2.f, y_center};
 
-    auto const black_color = cinder::ColorA{0.f, 0.f, 0.f, 1.f};
+    auto const black_color = get_black_player_color();
 
     cinder::gl::drawStringCentered(score, center, black_color, score_font);    
 }
@@ -118,7 +118,7 @@ void player_info_renderer::draw_white_player_name() const
 
     auto const center = cinder::Vec2f{(right + left) / 2.f, y_center};
 
-    auto const white_color = cinder::ColorA{1.f, 1.f, 1.f, 1.f};
+    auto const white_color = get_white_player_color();
 
     cinder::gl::drawStringCentered(name, center, white_color, player_name_font);    
 }
@@ -139,19 +139,18 @@ void player_info_renderer::draw_white_player_score(int const white_score) const
 
     auto const center = cinder::Vec2f{(right + left) / 2.f, y_center};
 
-    auto const white_color = cinder::ColorA{1.f, 1.f, 1.f, 1.f};
+    auto const white_color = get_white_player_color();
 
     cinder::gl::drawStringCentered(score, center, white_color, score_font);    
 }
 
-void player_info_renderer::draw_turn_indicator(bool const game_over,
-                                               player const next_mover) const
+void player_info_renderer::draw_turn_indicator() const
 {
-    if (game_over) { return; }
+    if (current_game.is_over()) { return; }
 
     glLineWidth(3.0);
 
-    if (next_mover == player::black)
+    if (current_game.get_next_moving_player() == player::black)
     {
         draw_black_player_turn_indicator();
     }
@@ -207,11 +206,10 @@ void player_info_renderer::draw_white_player_turn_indicator() const
     cinder::gl::color(1.f, 1.f, 1.f, 1.f);     
 }
 
-void player_info_renderer::draw_winner_indicator(bool const game_over,
-                                                 game_score const score) const
+void player_info_renderer::draw_winner_indicator() const
 {
-    auto const winner = get_winning_player(score);
-    if (!game_over || !winner)
+    auto const winner = get_winning_player(current_game);
+    if (!current_game.is_over() || !winner)
     {
         return; 
     }
@@ -265,6 +263,50 @@ void player_info_renderer::draw_white_player_winner_indicator() const
                               cinder::Vec2f{winner_picture.getSize()} / 4.5;
 
     cinder::gl::draw(winner_picture, {top_left, bottom_right});    
+}
+
+cinder::ColorA player_info_renderer::get_black_player_color() const
+{
+    if (!current_game.is_over())
+    {
+        return cinder::ColorA::black();        
+    }
+
+    if (get_winning_player(current_game) != player::black)
+    {
+        return {0.f, 0.f, 0.f, 0.75f};
+    }
+
+    if (static_cast<int>(cinder::app::getElapsedSeconds()) % 2)
+    {
+        return cinder::ColorA::black();
+    }
+    else
+    {
+        return {1.f, 1.f, 0.f, 1.f};
+    }
+}
+
+cinder::ColorA player_info_renderer::get_white_player_color() const
+{
+    if (!current_game.is_over())
+    {
+        return cinder::ColorA::white();        
+    }
+
+    if (get_winning_player(current_game) != player::white)
+    {
+        return {1.f, 1.f, 1.f, 0.25f};
+    }
+
+    if (static_cast<int>(cinder::app::getElapsedSeconds()) % 2)
+    {
+        return cinder::ColorA::white();
+    }
+    else
+    {
+        return {1.f, 1.f, 0.f, 1.f};
+    }
 }
 
 }
