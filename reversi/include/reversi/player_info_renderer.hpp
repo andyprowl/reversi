@@ -17,7 +17,7 @@ public:
 
     player_info_renderer(game& g, float board_display_size);
 
-    void draw_player_info(bool game_over, player next_mover, game_score score);
+    void draw_player_info();
 
 private:
 
@@ -37,17 +37,21 @@ private:
 
     void draw_white_player_score(int white_score) const;
 
-    void draw_turn_indicator(bool game_over, player next_mover) const;
+    void draw_turn_indicator() const;
 
     void draw_black_player_turn_indicator() const;
 
     void draw_white_player_turn_indicator() const;
 
-    void draw_winner_indicator(bool game_over, game_score score) const;
+    void draw_winner_indicator() const;
 
     void draw_black_player_winner_indicator() const;
 
     void draw_white_player_winner_indicator() const;
+
+    cinder::ColorA get_black_player_color() const;
+
+    cinder::ColorA get_white_player_color() const;
 
 private:
 

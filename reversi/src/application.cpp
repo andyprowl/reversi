@@ -243,15 +243,7 @@ void application::draw_game_board() const
 
 void application::draw_player_info() const
 {
-    auto const next_mover = current_game->get_next_moving_player();
-
-    auto const score = current_game->get_score();
-
-    auto const game_over = current_game->is_over();
-
-    player_renderer->draw_player_info(game_over, 
-                                      next_mover, 
-                                      score);
+    player_renderer->draw_player_info();
 }
 
 void application::draw_hint_message() const
