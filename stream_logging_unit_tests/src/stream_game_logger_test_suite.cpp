@@ -59,7 +59,7 @@ TEST_THAT(StreamGameLogger,
      WHEN(GivenAPlayer),
      THEN(InsertsThePlayersDefaultRepresentationAndTheWordSwitch))
 {
-    logger.log_turn_switched_message(player::white);
+    logger.log_turn_switched(player::white);
 
     auto const content = log.str();
 
@@ -72,7 +72,7 @@ TEST_THAT(StreamGameLogger,
      WHEN(GivenAPlayer),
      THEN(InsertsThePlayersDefaultRepresentationAndTheWordSkip))
 {
-    logger.log_turn_skipped_message(player::white);
+    logger.log_turn_skipped(player::white);
 
     auto const content = log.str();
 
@@ -87,7 +87,7 @@ TEST_THAT(StreamGameLogger,
 {
     make_black_win();
 
-    logger.log_game_over_message(the_game);
+    logger.log_game_over(the_game);
 
     auto const content = log.str();
 
@@ -105,7 +105,7 @@ TEST_THAT(StreamGameLogger,
      WHEN(GivenAGameWhereNoneOfThePlayersWon),
      THEN(LogsTheScoreOfTheGameAndTheWordsOver))
 {
-    logger.log_game_over_message(the_game);
+    logger.log_game_over(the_game);
 
     auto const content = log.str();
 

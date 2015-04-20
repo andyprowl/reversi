@@ -351,8 +351,7 @@ TEST_THAT(Game,
      THEN(LogsATurnSwitchedMessage))
 {
 #ifndef USE_LOGGER_SPY
-    EXPECT_CALL(logger, log_turn_switched_message(player::white))
-                .Times(Exactly(1));
+    EXPECT_CALL(logger, log_turn_switched(player::white)).Times(Exactly(1));
 #endif
 
     the_game.place({2, 3});
@@ -368,8 +367,7 @@ TEST_THAT(Game,
      THEN(LogsATurnSkippedMessage))
 {
 #ifndef USE_LOGGER_SPY
-    EXPECT_CALL(logger, log_turn_skipped_message(player::black))
-                .Times(Exactly(1));
+    EXPECT_CALL(logger, log_turn_skipped(player::black)).Times(Exactly(1));
 #endif
 
     make_white_unable_to_move();
@@ -385,8 +383,7 @@ TEST_THAT(Game,
      THEN(LogsALocalGameOverMessage))
 {
 #ifndef USE_LOGGER_SPY
-    EXPECT_CALL(logger, log_game_over_message(Ref(the_game)))
-                .Times(Exactly(1));
+    EXPECT_CALL(logger, log_game_over(Ref(the_game))).Times(Exactly(1));
 #endif
 
     make_black_win();

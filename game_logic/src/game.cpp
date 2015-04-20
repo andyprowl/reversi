@@ -241,17 +241,17 @@ void game::log_placement_outcome(placement_outcome const p) const
 {
     if (p == placement_outcome::turn_switched)
     {
-        return logger.log_turn_switched_message(next_moving_player);
+        return logger.log_turn_switched(next_moving_player);
     }
 
     if (p == placement_outcome::turn_skipped)
     {
-        return logger.log_turn_skipped_message(next_moving_player);
+        return logger.log_turn_skipped(next_moving_player);
     }
 
     if (p == placement_outcome::game_over)
     {
-        return logger.log_game_over_message(*this);
+        return logger.log_game_over(*this);
     }
 }
 

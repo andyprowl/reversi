@@ -26,12 +26,12 @@ void stream_game_logger::log_successful_placement(cell_position const pos,
         << std::endl;
 }
 
-void stream_game_logger::log_turn_switched_message(player const p)
+void stream_game_logger::log_turn_switched(player const p)
 {
     log << "Turn switched, " << to_string(p) << " moves." << std::endl;
 }
 
-void stream_game_logger::log_turn_skipped_message(player const p)
+void stream_game_logger::log_turn_skipped(player const p)
 {
     auto const opponent = get_opponent_of(p);
 
@@ -43,7 +43,7 @@ void stream_game_logger::log_turn_skipped_message(player const p)
         << std::endl;
 }
 
-void stream_game_logger::log_game_over_message(game const& g)
+void stream_game_logger::log_game_over(game const& g)
 {
     auto const score = g.get_score();
 

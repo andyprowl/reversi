@@ -24,17 +24,17 @@ public:
                               std::to_string(pos.col));
     }
 
-    virtual void log_turn_switched_message(player p) override
+    virtual void log_turn_switched(player p) override
     {
         messages.emplace_back("TS " + to_string(p));
     }
 
-    virtual void log_turn_skipped_message(player p) override
+    virtual void log_turn_skipped(player p) override
     {
         messages.emplace_back("TSK " + to_string(p));
     }
 
-    virtual void log_game_over_message(game const& g) override
+    virtual void log_game_over(game const& g) override
     {
         messages.emplace_back("GO");
     }

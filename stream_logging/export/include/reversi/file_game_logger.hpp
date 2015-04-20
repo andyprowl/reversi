@@ -12,7 +12,7 @@ class file_game_logger : private std::ofstream, public stream_game_logger
 
 public:
 
-    file_game_logger(std::string file_name);
+    explicit file_game_logger(std::string file_name);
 
     using std::ofstream::close;
 
