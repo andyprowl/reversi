@@ -51,7 +51,7 @@ TEST_THAT(StreamGameLogger,
 
     EXPECT_THAT(content, HasSubstr("15"));
     EXPECT_THAT(content, HasSubstr("42"));
-    EXPECT_THAT(content, HasSubstr(to_string(player::white)));
+    EXPECT_THAT(content, HasSubstr("white"));
 }
 
 TEST_THAT(StreamGameLogger,
@@ -64,7 +64,7 @@ TEST_THAT(StreamGameLogger,
     auto const content = log.str();
 
     EXPECT_THAT(content, AnyOf(HasSubstr("switch"), HasSubstr("Switch")));
-    EXPECT_THAT(content, HasSubstr(to_string(player::white)));
+    EXPECT_THAT(content, HasSubstr("white"));
 }
 
 TEST_THAT(StreamGameLogger,
@@ -77,7 +77,7 @@ TEST_THAT(StreamGameLogger,
     auto const content = log.str();
 
     EXPECT_THAT(content, AnyOf(HasSubstr("skip"), HasSubstr("Skip")));
-    EXPECT_THAT(content, HasSubstr(to_string(player::white)));
+    EXPECT_THAT(content, HasSubstr("white"));
 }
 
 TEST_THAT(StreamGameLogger,
@@ -95,7 +95,7 @@ TEST_THAT(StreamGameLogger,
 
     EXPECT_THAT(content, HasSubstr("over"));
     EXPECT_THAT(content, HasSubstr("wins"));
-    EXPECT_THAT(content, HasSubstr(to_string(player::black)));
+    EXPECT_THAT(content, HasSubstr("black"));
     EXPECT_THAT(content, HasSubstr(std::to_string(score.white)));
     EXPECT_THAT(content, HasSubstr(std::to_string(score.black)));
 }

@@ -39,12 +39,11 @@ cell_position get_next_cell_position(cell_position const p, direction const d)
     }
 }
 
-std::string to_string(cell_position const p)
+std::ostream& operator << (std::ostream& out, cell_position const pos)
 {
-    return "(row = " + 
-           std::to_string(p.row) + 
-           ", col = " + 
-           std::to_string(p.col) + ")";
+    out << "(row = " << pos.row << ", col = " << pos.col << ")";
+
+    return out;
 }
 
 }

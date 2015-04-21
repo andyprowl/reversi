@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ostream>
 #include <string>
 
 namespace reversi
@@ -28,6 +29,6 @@ bool operator != (cell_position lhs, cell_position rhs);
 
 cell_position get_next_cell_position(cell_position p, direction d);
 
-std::string to_string(cell_position p);
+std::ostream& operator << (std::ostream& out, cell_position pos);
 
 }

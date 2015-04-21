@@ -20,15 +20,16 @@ void stream_game_logger::log_successful_placement(cell_position const pos,
                                                   player const p)
 {
     log << "A " 
-        << to_string(p) 
+        << p
         << " mark has been placed at position " 
-        << to_string(pos) << "." 
+        << pos 
+        << "." 
         << std::endl;
 }
 
 void stream_game_logger::log_turn_switched(player const p)
 {
-    log << "Turn switched, " << to_string(p) << " moves." << std::endl;
+    log << "Turn switched, " << p << " moves." << std::endl;
 }
 
 void stream_game_logger::log_turn_skipped(player const p)
@@ -36,9 +37,9 @@ void stream_game_logger::log_turn_skipped(player const p)
     auto const opponent = get_opponent_of(p);
 
     log << "Skipping " 
-        << to_string(opponent) 
+        << opponent
         << "'s turn because they cannot move; " 
-        << to_string(p)
+        << p
         << " moves again." 
         << std::endl;
 }
@@ -46,13 +47,12 @@ void stream_game_logger::log_turn_skipped(player const p)
 void stream_game_logger::log_game_over(game const& g)
 {
     auto const score = g.get_score();
-
-    auto const winner = get_winning_player(score);
+    auto const winner = get_winning_player(g);
 
     if (winner)
     {
         log << "Game over: " 
-            << to_string(*winner) 
+            << *winner
             << " wins with score " 
             << std::max(score.black, score.white)
             << " - "

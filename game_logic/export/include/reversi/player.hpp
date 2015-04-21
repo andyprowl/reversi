@@ -12,14 +12,9 @@ enum class player
     white
 };
 
-inline std::string to_string(player const p)
-{
-    return ((p == player::black) ? "black" : "white");
-}
-
 inline std::ostream& operator << (std::ostream& out, player const p)
 {
-    out << to_string(p);
+    out << ((p == player::black) ? "black" : "white");
 
     return out;
 }
